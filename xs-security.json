@@ -1,0 +1,31 @@
+{
+  "xsappname": "kpi",
+  "tenant-mode": "dedicated",
+  "scopes": [
+    {
+      "name": "$XSAPPNAME.CommunicatonUserAccess",
+      "description": "CommunicatonUserAccess"
+    }
+  ],
+  "attributes": [],
+  "role-templates": [
+    {
+      "name": "CommunicatonUserAccess",
+      "description": "generated",
+      "scope-references": [
+        "$XSAPPNAME.CommunicatonUserAccess"
+      ],
+      "attribute-references": []
+    }
+  ],
+  "oauth2-configuration": {
+      "credential-types": [
+          "binding-secret",
+          "x509"
+      ],
+      "redirect-uris": [
+          "https://*.applicationstudio.cloud.sap/**",
+          "https://*.hana.ondemand.com/**"
+      ]
+  }
+}

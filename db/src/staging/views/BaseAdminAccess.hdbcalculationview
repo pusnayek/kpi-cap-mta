@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="BaseAdminAccess" applyPrivilegeType="NONE" dataCategory="DIMENSION" dimensionType="STANDARD" schemaVersion="3.0" hierarchyGeneration="NONE" outputViewType="Aggregation" cacheInvalidationPeriod="NONE" enforceSqlExecution="true" runWithInvokerPrivileges="true">
+<descriptions defaultDescription="BaseAdminAccess"/>
+<localVariables/>
+<variableMappings/>
+<dataSources>
+  <DataSource id="FT_ADMINACCESS">
+    <resourceUri>FT_ADMINACCESS</resourceUri>
+  </DataSource>
+  <DataSource id="Domains$$$$FT_ADMINACCESS$$">
+    <resourceUri>FT_ADMINACCESS</resourceUri>
+  </DataSource>
+</dataSources>
+<snapshotProcedures/>
+<calculationViews>
+  <calculationView xsi:type="Calculation:ProjectionView" id="SubDomains">
+    <viewAttributes>
+      <viewAttribute id="USERID"/>
+      <viewAttribute id="SUBDOMAIN"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="FT_ADMINACCESS"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:ProjectionView" id="Domains">
+    <viewAttributes>
+      <viewAttribute id="USERID"/>
+      <viewAttribute id="DOMAIN"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="Domains$$$$FT_ADMINACCESS$$"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:UnionView" id="Combine">
+    <viewAttributes>
+      <viewAttribute id="USERID"/>
+      <viewAttribute id="DOMAIN"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="SubDomains">
+      <mapping xsi:type="Calculation:AttributeMapping" target="USERID" source="USERID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="DOMAIN" source="SUBDOMAIN"/>
+    </input>
+    <input node="Domains">
+      <mapping xsi:type="Calculation:AttributeMapping" target="USERID" source="USERID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="DOMAIN" source="DOMAIN"/>
+    </input>
+  </calculationView>
+</calculationViews>
+
+<logicalModel id="Combine">
+  <attributes>
+    <attribute id="USERID" order="1" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="USERID"/>
+      <keyMapping columnObjectName="Combine" columnName="USERID"/>
+    </attribute>
+    <attribute id="DOMAIN" order="2" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="DOMAIN"/>
+      <keyMapping columnObjectName="Combine" columnName="DOMAIN"/>
+    </attribute>
+  </attributes>
+  <calculatedAttributes/>
+  <baseMeasures/>
+  <calculatedMeasures/>
+  <restrictedMeasures/>
+</logicalModel>
+<layout>
+  <shapes>
+    <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+      <upperLeftCorner x="221.11302679000914" y="112"/>
+    
+      <rectangleSize width="160"/>
+    </shape>
+    
+  
+    <shape expanded="true" modelObjectName="SubDomains" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="92" y="356.9999988079071"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="Domains" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="302" y="356.9999988079071"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+  
+    <shape expanded="true" modelObjectName="Combine" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="214" y="223"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+  </shapes>
+</layout>
+</Calculation:scenario>

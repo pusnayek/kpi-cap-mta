@@ -1,0 +1,14 @@
+{
+    "name": "kpi-approuter",
+    "version": "0.0.1",
+    "description": "KPI Application",
+    "engines": {
+        "node": "16.19.x"
+    },
+    "scripts": {
+        "start": "node node_modules/@sap/approuter/approuter.js"
+    },
+    "dependencies": {
+        "@sap/approuter": "^14.0.0"
+    }
+}

@@ -1,0 +1,6 @@
+@server = https://port4004-workspaces-ws-46krm.eu10.applicationstudio.cloud.sap
+
+
+# Get service info
+GET {{server}}/service/data/Admins
+Authorization: Basic user:pawword
