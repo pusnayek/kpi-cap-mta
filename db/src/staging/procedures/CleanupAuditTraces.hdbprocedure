@@ -1,0 +1,22 @@
+PROCEDURE "CleanupAuditTraces"( )
+   LANGUAGE SQLSCRIPT
+   SQL SECURITY INVOKER
+   --DEFAULT SCHEMA <default_schema_name>
+   -- READS SQL DATA 
+   AS
+BEGIN
+
+    DECLARE EXIT HANDLER FOR sqlexception
+        INSERT INTO XT_ReplicationTrace
+         VALUES(CURRENT_TIMESTAMP, 'CleanupAuditTraces', ::SQL_ERROR_CODE, ::SQL_ERROR_MESSAGE);
+
+    /**Start of process**/
+    DELETE FROM CT_ExtractionStatusHistory
+    WHERE "DELTAPULLEND" <= ADD_DAYS(CURRENT_DATE, -7);
+    COMMIT;
+
+    DELETE FROM XT_ReplicationTrace
+    WHERE "TIMESTAMP" <= TO_TIMESTAMP(ADD_DAYS(CURRENT_DATE, -7));
+    COMMIT;
+
+END

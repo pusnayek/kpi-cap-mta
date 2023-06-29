@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="BaseCompletion" applyPrivilegeType="NONE" dataCategory="DIMENSION" schemaVersion="3.0" hierarchyGeneration="SQL" outputViewType="Projection" cacheInvalidationPeriod="NONE" enforceSqlExecution="true" runWithInvokerPrivileges="true">
+<descriptions defaultDescription="BaseCompletion"/>
+<localVariables/>
+<variableMappings/>
+<dataSources>
+  <DataSource id="ET_COMPLETION">
+    <resourceUri>ET_COMPLETION</resourceUri>
+  </DataSource>
+  <DataSource id="ET_RECENTCOMPLETION">
+    <resourceUri>ET_RECENTCOMPLETION</resourceUri>
+  </DataSource>
+  <DataSource id="AllCompletions$$$$ET_COMPLETION$$">
+    <resourceUri>ET_COMPLETION</resourceUri>
+  </DataSource>
+</dataSources>
+<snapshotProcedures/>
+<calculationViews>
+  <calculationView xsi:type="Calculation:ProjectionView" id="Completion" filterExpressionLanguage="SQL">
+    <viewAttributes>
+      <viewAttribute id="USERID"/>
+      <viewAttribute id="DELTA_ACTION"/>
+      <viewAttribute id="DELTA_LASTUPDATETIME"/>
+      <viewAttribute id="DELTA_RECORD"/>
+      <viewAttribute id="ITEMID"/>
+      <viewAttribute id="ITEMTYPE"/>
+      <viewAttribute id="COMPLETIONSTATUS"/>
+      <viewAttribute id="COMPLETIONDATE"/>
+      <viewAttribute id="PROCESSINGSTATUS"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="ET_COMPLETION"/>
+    <filter>&quot;PROCESSINGSTATUS&quot;='P'</filter>
+  </calculationView>
+  <calculationView xsi:type="Calculation:ProjectionView" id="RecentCompletion" filterExpressionLanguage="SQL">
+    <viewAttributes>
+      <viewAttribute id="USERID"/>
+      <viewAttribute id="ITEMID"/>
+      <viewAttribute id="ITEMTYPE"/>
+      <viewAttribute id="PROCESSINGSTATUS"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="ET_RECENTCOMPLETION"/>
+    <filter>&quot;PROCESSINGSTATUS&quot;='P'</filter>
+  </calculationView>
+  <calculationView xsi:type="Calculation:ProjectionView" id="AllCompletions" filterExpressionLanguage="COLUMN_ENGINE">
+    <viewAttributes>
+      <viewAttribute id="USERID"/>
+      <viewAttribute id="DELTA_ACTION"/>
+      <viewAttribute id="DELTA_LASTUPDATETIME"/>
+      <viewAttribute id="DELTA_RECORD"/>
+      <viewAttribute id="ITEMID"/>
+      <viewAttribute id="ITEMTYPE"/>
+      <viewAttribute id="COMPLETIONSTATUS"/>
+      <viewAttribute id="COMPLETIONDATE"/>
+      <viewAttribute id="PROCESSINGSTATUS"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="AllCompletions$$$$ET_COMPLETION$$"/>
+    <filter>&quot;PROCESSINGSTATUS&quot;='P'</filter>
+  </calculationView>
+  <calculationView xsi:type="Calculation:JoinView" id="RecentChanges" cardinality="CN_N" joinType="inner">
+    <viewAttributes>
+      <viewAttribute id="USERID"/>
+      <viewAttribute id="DELTA_ACTION"/>
+      <viewAttribute id="DELTA_LASTUPDATETIME"/>
+      <viewAttribute id="DELTA_RECORD"/>
+      <viewAttribute id="ITEMID"/>
+      <viewAttribute id="ITEMTYPE"/>
+      <viewAttribute id="COMPLETIONSTATUS"/>
+      <viewAttribute id="COMPLETIONDATE"/>
+      <viewAttribute hidden="true" id="JOIN$USERID$USERID"/>
+      <viewAttribute hidden="true" id="JOIN$ITEMID$ITEMID"/>
+      <viewAttribute hidden="true" id="JOIN$ITEMTYPE$ITEMTYPE"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="Completion">
+      <mapping xsi:type="Calculation:AttributeMapping" target="USERID" source="USERID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="DELTA_ACTION" source="DELTA_ACTION"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="DELTA_LASTUPDATETIME" source="DELTA_LASTUPDATETIME"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="DELTA_RECORD" source="DELTA_RECORD"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ITEMID" source="ITEMID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ITEMTYPE" source="ITEMTYPE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMPLETIONSTATUS" source="COMPLETIONSTATUS"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMPLETIONDATE" source="COMPLETIONDATE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$USERID$USERID" source="USERID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$ITEMID$ITEMID" source="ITEMID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$ITEMTYPE$ITEMTYPE" source="ITEMTYPE"/>
+    </input>
+    <input node="RecentCompletion">
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$USERID$USERID" source="USERID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$ITEMID$ITEMID" source="ITEMID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$ITEMTYPE$ITEMTYPE" source="ITEMTYPE"/>
+    </input>
+    <joinAttribute name="JOIN$USERID$USERID"/>
+    <joinAttribute name="JOIN$ITEMID$ITEMID"/>
+    <joinAttribute name="JOIN$ITEMTYPE$ITEMTYPE"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:UnionView" id="Combine">
+    <viewAttributes>
+      <viewAttribute id="USERID"/>
+      <viewAttribute id="DELTA_ACTION"/>
+      <viewAttribute id="DELTA_LASTUPDATETIME"/>
+      <viewAttribute id="DELTA_RECORD"/>
+      <viewAttribute id="ITEMID"/>
+      <viewAttribute id="ITEMTYPE"/>
+      <viewAttribute id="COMPLETIONSTATUS"/>
+      <viewAttribute id="COMPLETIONDATE"/>
+    
+      <viewAttribute datatype="NVARCHAR" length="1" id="MODE"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="RecentChanges" emptyUnionBehavior="NO_ROW">
+      <mapping xsi:type="Calculation:AttributeMapping" target="USERID" source="USERID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="DELTA_ACTION" source="DELTA_ACTION"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="DELTA_LASTUPDATETIME" source="DELTA_LASTUPDATETIME"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="DELTA_RECORD" source="DELTA_RECORD"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ITEMID" source="ITEMID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ITEMTYPE" source="ITEMTYPE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMPLETIONSTATUS" source="COMPLETIONSTATUS"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMPLETIONDATE" source="COMPLETIONDATE"/>
+    
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="MODE" null="false" value="D"/>
+    </input>
+    <input node="AllCompletions" emptyUnionBehavior="NO_ROW">
+      <mapping xsi:type="Calculation:AttributeMapping" target="USERID" source="USERID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="DELTA_ACTION" source="DELTA_ACTION"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="DELTA_LASTUPDATETIME" source="DELTA_LASTUPDATETIME"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="DELTA_RECORD" source="DELTA_RECORD"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ITEMID" source="ITEMID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ITEMTYPE" source="ITEMTYPE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMPLETIONSTATUS" source="COMPLETIONSTATUS"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMPLETIONDATE" source="COMPLETIONDATE"/>
+    
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="MODE" null="false" value="F"/>
+    </input>
+  </calculationView>
+</calculationViews>
+
+<logicalModel id="Combine">
+  <attributes>
+    <attribute id="MODE" order="1" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="MODE"/>
+      <keyMapping columnObjectName="Combine" columnName="MODE"/>
+    </attribute>
+    <attribute id="USERID" order="2" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="USERID"/>
+      <keyMapping columnObjectName="Combine" columnName="USERID"/>
+    </attribute>
+    <attribute id="DELTA_ACTION" order="3" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="DELTA_ACTION"/>
+      <keyMapping columnObjectName="Combine" columnName="DELTA_ACTION"/>
+    </attribute>
+    <attribute id="DELTA_LASTUPDATETIME" order="4" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="DELTA_LASTUPDATETIME"/>
+      <keyMapping columnObjectName="Combine" columnName="DELTA_LASTUPDATETIME"/>
+    </attribute>
+    <attribute id="DELTA_RECORD" order="5" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="DELTA_RECORD"/>
+      <keyMapping columnObjectName="Combine" columnName="DELTA_RECORD"/>
+    </attribute>
+    <attribute id="ITEMID" order="6" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="ITEMID"/>
+      <keyMapping columnObjectName="Combine" columnName="ITEMID"/>
+    </attribute>
+    <attribute id="ITEMTYPE" order="7" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="ITEMTYPE"/>
+      <keyMapping columnObjectName="Combine" columnName="ITEMTYPE"/>
+    </attribute>
+    <attribute id="COMPLETIONSTATUS" order="8" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="COMPLETIONSTATUS"/>
+      <keyMapping columnObjectName="Combine" columnName="COMPLETIONSTATUS"/>
+    </attribute>
+    <attribute id="COMPLETIONDATE" order="9" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="COMPLETIONDATE"/>
+      <keyMapping columnObjectName="Combine" columnName="COMPLETIONDATE"/>
+    </attribute>
+  </attributes>
+  <calculatedAttributes/>
+  <baseMeasures/>
+  <calculatedMeasures/>
+  <restrictedMeasures/></logicalModel>
+<layout>
+  <shapes>
+    <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+      <upperLeftCorner x="328" y="112"/>
+    
+      <rectangleSize width="160"/>
+    </shape>
+    
+  
+    <shape expanded="true" modelObjectName="Completion" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="92" y="501"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="RecentCompletion" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="302" y="501"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="AllCompletions" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="395" y="356"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="RecentChanges" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="118" y="360"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape modelObjectName="Completion" modelObjectNameSpace="RecentChanges" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="20" y="30"/>
+      <rectangleSize width="223"/>
+    </shape>
+    <shape modelObjectName="RecentCompletion" modelObjectNameSpace="RecentChanges" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="320" y="30"/>
+      <rectangleSize width="201"/>
+    </shape>
+    <shape expanded="true" modelObjectName="Combine" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="328" y="217"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+  </shapes>
+</layout>
+</Calculation:scenario>

@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="CompressItemOperations" applyPrivilegeType="NONE" dataCategory="DIMENSION" dimensionType="STANDARD" schemaVersion="3.0" hierarchyGeneration="SQL" outputViewType="Projection" cacheInvalidationPeriod="NONE" enforceSqlExecution="true" runWithInvokerPrivileges="true">
+<descriptions defaultDescription="CompressItemOperations"/>
+<localVariables/>
+<variableMappings/>
+<dataSources>
+  <DataSource id="ST_ITEM">
+    <resourceUri>ST_ITEM</resourceUri>
+  </DataSource>
+  <DataSource id="StagedRecord$$$$ST_ITEM$$">
+    <resourceUri>ST_ITEM</resourceUri>
+  </DataSource>
+</dataSources>
+<snapshotProcedures/>
+<calculationViews>
+  <calculationView xsi:type="Calculation:AggregationView" id="FinalOperations" filterExpressionLanguage="SQL">
+    <viewAttributes>
+      <viewAttribute id="ITEMID"/>
+      <viewAttribute id="ITEMTYPE"/>
+      <viewAttribute id="DELTA_ACTION"/>
+      <viewAttribute id="DELTA_LASTUPDATETIME" aggregationType="min"/>
+      <viewAttribute id="DELTA_RECORD" aggregationType="sum"/>
+      <viewAttribute id="PROCESSINGSTATUS"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <restrictedViewAttributes/>
+    <input node="ST_ITEM"/>
+    <filter>&quot;PROCESSINGSTATUS&quot;='P'</filter>
+  </calculationView>
+  <calculationView xsi:type="Calculation:ProjectionView" id="StagedRecord" filterExpressionLanguage="SQL">
+    <viewAttributes>
+      <viewAttribute id="ITEMID"/>
+      <viewAttribute id="ITEMTYPE"/>
+      <viewAttribute id="DELTA_ACTION"/>
+      <viewAttribute id="DELTA_LASTUPDATETIME"/>
+      <viewAttribute id="DELTA_RECORD"/>
+      <viewAttribute id="ITEMTITLE"/>
+      <viewAttribute id="COMPETENCY_ID"/>
+      <viewAttribute id="COMPETENCY_NAME"/>
+      <viewAttribute id="COMPETENCY_AREA"/>
+      <viewAttribute id="COMPETENCY_DESCRIPTION"/>
+      <viewAttribute id="COMPETENCY_COMPETENCYTYPE"/>
+      <viewAttribute id="COMPETENCY_GRANTSCERTIFICATE"/>
+      <viewAttribute id="RETAININGNUMER"/>
+      <viewAttribute id="PROCESSINGSTATUS"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="StagedRecord$$$$ST_ITEM$$"/>
+    <filter>&quot;PROCESSINGSTATUS&quot;='P'</filter>
+  </calculationView>
+  <calculationView xsi:type="Calculation:JoinView" id="FinalOps" cardinality="CN_N" joinType="inner">
+    <viewAttributes>
+      <viewAttribute id="ITEMID"/>
+      <viewAttribute id="ITEMTYPE"/>
+      <viewAttribute id="DELTA_ACTION"/>
+      <viewAttribute id="ITEMTITLE"/>
+      <viewAttribute id="COMPETENCY_ID"/>
+      <viewAttribute id="COMPETENCY_NAME"/>
+      <viewAttribute id="COMPETENCY_AREA"/>
+      <viewAttribute id="COMPETENCY_DESCRIPTION"/>
+      <viewAttribute id="COMPETENCY_COMPETENCYTYPE"/>
+      <viewAttribute id="COMPETENCY_GRANTSCERTIFICATE"/>
+      <viewAttribute id="RETAININGNUMER"/>
+      <viewAttribute hidden="true" id="JOIN$ITEMID$ITEMID"/>
+      <viewAttribute hidden="true" id="JOIN$ITEMTYPE$ITEMTYPE"/>
+      <viewAttribute hidden="true" id="JOIN$DELTA_ACTION$DELTA_ACTION"/>
+      <viewAttribute hidden="true" id="JOIN$DELTA_LASTUPDATETIME$DELTA_LASTUPDATETIME"/>
+      <viewAttribute hidden="true" id="JOIN$DELTA_RECORD$DELTA_RECORD"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="FinalOperations">
+      <mapping xsi:type="Calculation:AttributeMapping" target="ITEMID" source="ITEMID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ITEMTYPE" source="ITEMTYPE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="DELTA_ACTION" source="DELTA_ACTION"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$ITEMID$ITEMID" source="ITEMID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$ITEMTYPE$ITEMTYPE" source="ITEMTYPE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$DELTA_ACTION$DELTA_ACTION" source="DELTA_ACTION"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$DELTA_LASTUPDATETIME$DELTA_LASTUPDATETIME" source="DELTA_LASTUPDATETIME"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$DELTA_RECORD$DELTA_RECORD" source="DELTA_RECORD"/>
+    </input>
+    <input node="StagedRecord">
+      <mapping xsi:type="Calculation:AttributeMapping" target="ITEMTITLE" source="ITEMTITLE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMPETENCY_ID" source="COMPETENCY_ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMPETENCY_NAME" source="COMPETENCY_NAME"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMPETENCY_AREA" source="COMPETENCY_AREA"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMPETENCY_DESCRIPTION" source="COMPETENCY_DESCRIPTION"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMPETENCY_COMPETENCYTYPE" source="COMPETENCY_COMPETENCYTYPE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMPETENCY_GRANTSCERTIFICATE" source="COMPETENCY_GRANTSCERTIFICATE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="RETAININGNUMER" source="RETAININGNUMER"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$ITEMID$ITEMID" source="ITEMID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$ITEMTYPE$ITEMTYPE" source="ITEMTYPE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$DELTA_ACTION$DELTA_ACTION" source="DELTA_ACTION"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$DELTA_LASTUPDATETIME$DELTA_LASTUPDATETIME" source="DELTA_LASTUPDATETIME"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$DELTA_RECORD$DELTA_RECORD" source="DELTA_RECORD"/>
+    </input>
+    <joinAttribute name="JOIN$ITEMID$ITEMID"/>
+    <joinAttribute name="JOIN$ITEMTYPE$ITEMTYPE"/>
+    <joinAttribute name="JOIN$DELTA_ACTION$DELTA_ACTION"/>
+    <joinAttribute name="JOIN$DELTA_LASTUPDATETIME$DELTA_LASTUPDATETIME"/>
+    <joinAttribute name="JOIN$DELTA_RECORD$DELTA_RECORD"/>
+  </calculationView>
+</calculationViews>
+
+<logicalModel id="FinalOps">
+  <attributes>
+    <attribute id="ITEMID" order="1" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="ITEMID"/>
+      <keyMapping columnObjectName="FinalOps" columnName="ITEMID"/>
+    </attribute>
+    <attribute id="ITEMTYPE" order="2" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="ITEMTYPE"/>
+      <keyMapping columnObjectName="FinalOps" columnName="ITEMTYPE"/>
+    </attribute>
+    <attribute id="DELTA_ACTION" order="3" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="DELTA_ACTION"/>
+      <keyMapping columnObjectName="FinalOps" columnName="DELTA_ACTION"/>
+    </attribute>
+    <attribute id="ITEMTITLE" order="4" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="ITEMTITLE"/>
+      <keyMapping columnObjectName="FinalOps" columnName="ITEMTITLE"/>
+    </attribute>
+    <attribute id="COMPETENCY_ID" order="5" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="COMPETENCY_ID"/>
+      <keyMapping columnObjectName="FinalOps" columnName="COMPETENCY_ID"/>
+    </attribute>
+    <attribute id="COMPETENCY_NAME" order="6" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="COMPETENCY_NAME"/>
+      <keyMapping columnObjectName="FinalOps" columnName="COMPETENCY_NAME"/>
+    </attribute>
+    <attribute id="COMPETENCY_AREA" order="7" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="COMPETENCY_AREA"/>
+      <keyMapping columnObjectName="FinalOps" columnName="COMPETENCY_AREA"/>
+    </attribute>
+    <attribute id="COMPETENCY_DESCRIPTION" order="8" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="COMPETENCY_DESCRIPTION"/>
+      <keyMapping columnObjectName="FinalOps" columnName="COMPETENCY_DESCRIPTION"/>
+    </attribute>
+    <attribute id="COMPETENCY_COMPETENCYTYPE" order="9" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="COMPETENCY_COMPETENCYTYPE"/>
+      <keyMapping columnObjectName="FinalOps" columnName="COMPETENCY_COMPETENCYTYPE"/>
+    </attribute>
+    <attribute id="COMPETENCY_GRANTSCERTIFICATE" order="10" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="COMPETENCY_GRANTSCERTIFICATE"/>
+      <keyMapping columnObjectName="FinalOps" columnName="COMPETENCY_GRANTSCERTIFICATE"/>
+    </attribute>
+    <attribute id="RETAININGNUMER" order="11" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="RETAININGNUMER"/>
+      <keyMapping columnObjectName="FinalOps" columnName="RETAININGNUMER"/>
+    </attribute>
+  </attributes>
+  <calculatedAttributes/>
+  <baseMeasures/>
+  <calculatedMeasures/>
+  <restrictedMeasures/>
+</logicalModel>
+<layout>
+  <shapes>
+    <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+      <upperLeftCorner x="221.11302679000914" y="112"/>
+    
+      <rectangleSize width="160"/>
+    </shape>
+    
+  
+    <shape expanded="true" modelObjectName="FinalOperations" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="92" y="356.9999988079071"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="StagedRecord" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="302.00000000000006" y="356.9999988079071"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="FinalOps" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="221.11302679000914" y="217"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape modelObjectName="FinalOperations" modelObjectNameSpace="FinalOps" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="20" y="30"/>
+      <rectangleSize width="223.52685546875"/>
+    </shape>
+    <shape modelObjectName="StagedRecord" modelObjectNameSpace="FinalOps" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="320" y="30"/>
+      <rectangleSize width="286.66943359375"/>
+    </shape>
+  </shapes>
+</layout>
+</Calculation:scenario>

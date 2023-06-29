@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="StageAdmins" applyPrivilegeType="NONE" dataCategory="DIMENSION" dimensionType="STANDARD" schemaVersion="3.0" hierarchyGeneration="SQL" outputViewType="Aggregation" cacheInvalidationPeriod="NONE" enforceSqlExecution="true" runWithInvokerPrivileges="true">
+<descriptions defaultDescription="StageAdmins"/>
+<localVariables/>
+<variableMappings/>
+<dataSources>
+  <DataSource id="ET_ADMINACCESS">
+    <resourceUri>ET_ADMINACCESS</resourceUri>
+  </DataSource>
+</dataSources>
+<snapshotProcedures/>
+<calculationViews>
+  <calculationView xsi:type="Calculation:ProjectionView" id="AdminAccess">
+    <viewAttributes>
+      <viewAttribute id="USERID"/>
+      <viewAttribute id="DOMAIN"/>
+      <viewAttribute id="SUBDOMAIN"/>
+      <viewAttribute id="PROCESSINGSTATUS"/>
+    </viewAttributes>
+    <calculatedViewAttributes>
+      <calculatedViewAttribute id="EXTRACTEDDOMAIN" datatype="NVARCHAR" length="100" expressionLanguage="COLUMN_ENGINE">
+        <formula>if(isNull(&quot;DOMAIN&quot;) OR strlen(trim(&quot;DOMAIN&quot;))=0,string('*'),&quot;DOMAIN&quot;)</formula>
+      </calculatedViewAttribute>
+    </calculatedViewAttributes>
+    <input node="ET_ADMINACCESS"/>
+  </calculationView>
+</calculationViews>
+
+<logicalModel id="AdminAccess">
+  <attributes>
+    <attribute id="USERID" order="1" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="USERID"/>
+      <keyMapping columnObjectName="AdminAccess" columnName="USERID"/>
+    </attribute>
+    <attribute id="DOMAIN" order="2" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="EXTRACTEDDOMAIN"/>
+      <keyMapping columnObjectName="AdminAccess" columnName="EXTRACTEDDOMAIN"/>
+    </attribute>
+    <attribute id="SUBDOMAIN" order="3" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="SUBDOMAIN"/>
+      <keyMapping columnObjectName="AdminAccess" columnName="SUBDOMAIN"/>
+    </attribute>
+  </attributes>
+  <calculatedAttributes/>
+  <baseMeasures/>
+  <calculatedMeasures/>
+  <restrictedMeasures/>
+</logicalModel>
+<layout>
+  <shapes>
+    <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+      <upperLeftCorner x="92" y="112"/>
+    
+      <rectangleSize width="160"/>
+    </shape>
+    
+  
+    <shape expanded="true" modelObjectName="AdminAccess" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="92" y="217"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+  </shapes>
+</layout>
+</Calculation:scenario>

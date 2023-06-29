@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="CalculateAdminAccess" applyPrivilegeType="NONE" dataCategory="DIMENSION" dimensionType="STANDARD" schemaVersion="3.0" hierarchyGeneration="SQL" outputViewType="Projection" cacheInvalidationPeriod="NONE" enforceSqlExecution="true">
+<descriptions defaultDescription="CalculateAdminAccess"/>
+<localVariables/>
+<variableMappings/>
+<dataSources>
+  <DataSource id="BaseAdminAccess">
+    <resourceUri>BaseAdminAccess</resourceUri>
+  </DataSource>
+  <DataSource id="Employees">
+    <resourceUri>Employees</resourceUri>
+  </DataSource>
+  <DataSource id="FT_ADMINACCESS">
+    <resourceUri>FT_ADMINACCESS</resourceUri>
+  </DataSource>
+  <DataSource id="WithoutAllAccess$$$$BaseAdminAccess$$">
+    <resourceUri>BaseAdminAccess</resourceUri>
+  </DataSource>
+</dataSources>
+<snapshotProcedures/>
+<calculationViews>
+  <calculationView xsi:type="Calculation:AggregationView" id="AdminDomains" filterExpressionLanguage="COLUMN_ENGINE">
+    <viewAttributes>
+      <viewAttribute id="DOMAIN"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <restrictedViewAttributes/>
+    <input node="BaseAdminAccess"/>
+    <filter>&quot;DOMAIN&quot;!='*'</filter>
+  </calculationView>
+  <calculationView xsi:type="Calculation:AggregationView" id="EmpDomains">
+    <viewAttributes>
+      <viewAttribute id="DOMAIN"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <restrictedViewAttributes/>
+    <input node="Employees"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:ProjectionView" id="WithAllAccess" filterExpressionLanguage="COLUMN_ENGINE">
+    <viewAttributes>
+      <viewAttribute id="USERID"/>
+      <viewAttribute id="DOMAIN"/>
+    </viewAttributes>
+    <calculatedViewAttributes>
+      <calculatedViewAttribute id="CC_DUMMY" datatype="TINYINT" expressionLanguage="COLUMN_ENGINE">
+        <formula>1</formula>
+      </calculatedViewAttribute>
+    </calculatedViewAttributes>
+    <input node="FT_ADMINACCESS"/>
+    <filter>&quot;DOMAIN&quot;='*'</filter>
+  </calculationView>
+  <calculationView xsi:type="Calculation:ProjectionView" id="WithoutAllAccess" filterExpressionLanguage="SQL">
+    <viewAttributes>
+      <viewAttribute id="USERID"/>
+      <viewAttribute id="DOMAIN"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="WithoutAllAccess$$$$BaseAdminAccess$$"/>
+    <filter>&quot;DOMAIN&quot;!='*'</filter>
+  </calculationView>
+  <calculationView xsi:type="Calculation:UnionView" id="CombineDomains">
+    <viewAttributes>
+      <viewAttribute id="DOMAIN"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="AdminDomains">
+      <mapping xsi:type="Calculation:AttributeMapping" target="DOMAIN" source="DOMAIN"/>
+    </input>
+    <input node="EmpDomains">
+      <mapping xsi:type="Calculation:AttributeMapping" target="DOMAIN" source="DOMAIN"/>
+    </input>
+  </calculationView>
+  <calculationView xsi:type="Calculation:AggregationView" id="AllDomains">
+    <viewAttributes>
+      <viewAttribute id="DOMAIN"/>
+    </viewAttributes>
+    <calculatedViewAttributes>
+      <calculatedViewAttribute id="CC_DUMMY" datatype="TINYINT" expressionLanguage="COLUMN_ENGINE">
+        <formula>1</formula>
+      </calculatedViewAttribute>
+    </calculatedViewAttributes>
+    <restrictedViewAttributes/>
+    <input node="CombineDomains"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:JoinView" id="AllAccess" cardinality="CN_N" joinType="inner">
+    <viewAttributes>
+      <viewAttribute id="USERID"/>
+      <viewAttribute id="DOMAIN"/>
+      <viewAttribute hidden="true" id="JOIN$CC_DUMMY$CC_DUMMY"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="AllDomains">
+      <mapping xsi:type="Calculation:AttributeMapping" target="DOMAIN" source="DOMAIN"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$CC_DUMMY$CC_DUMMY" source="CC_DUMMY"/>
+    </input>
+    <input node="WithAllAccess">
+      <mapping xsi:type="Calculation:AttributeMapping" target="USERID" source="USERID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$CC_DUMMY$CC_DUMMY" source="CC_DUMMY"/>
+    </input>
+    <joinAttribute name="JOIN$CC_DUMMY$CC_DUMMY"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:UnionView" id="Combine">
+    <viewAttributes>
+      <viewAttribute id="USERID"/>
+      <viewAttribute id="DOMAIN"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="AllAccess">
+      <mapping xsi:type="Calculation:AttributeMapping" target="USERID" source="USERID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="DOMAIN" source="DOMAIN"/>
+    </input>
+    <input node="WithoutAllAccess">
+      <mapping xsi:type="Calculation:AttributeMapping" target="USERID" source="USERID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="DOMAIN" source="DOMAIN"/>
+    </input>
+  </calculationView>
+</calculationViews>
+
+<logicalModel id="Combine">
+  <attributes>
+    <attribute id="USERID" order="1" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="USERID"/>
+      <keyMapping columnObjectName="Combine" columnName="USERID"/>
+    </attribute>
+    <attribute id="DOMAIN" order="2" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="DOMAIN"/>
+      <keyMapping columnObjectName="Combine" columnName="DOMAIN"/>
+    </attribute>
+  </attributes>
+  <calculatedAttributes/>
+  <baseMeasures/>
+  <calculatedMeasures/>
+  <restrictedMeasures/>
+</logicalModel>
+<layout>
+  <shapes>
+    <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+      <upperLeftCorner x="313.1571701549222" y="112"/>
+    
+      <rectangleSize width="160"/>
+    </shape>
+    
+  
+    <shape expanded="true" modelObjectName="AdminDomains" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="174.89471301357878" y="766.9999964237213"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="EmpDomains" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="384.8947130135788" y="766.9999964237213"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="CombineDomains" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="301.99999999999994" y="626.9999976158142"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="AllDomains" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="301.99999999999994" y="511.9999976158142"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="WithAllAccess" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="92" y="501.9999976158142"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="AllAccess" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="118.66666666666666" y="360.3333321412404"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape modelObjectName="AllDomains" modelObjectNameSpace="AllAccess" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="20" y="30"/>
+      <rectangleSize width="130.01171875"/>
+    </shape>
+    <shape modelObjectName="WithAllAccess" modelObjectNameSpace="AllAccess" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="320" y="30"/>
+      <rectangleSize width="147.25"/>
+    </shape>
+    <shape expanded="true" modelObjectName="Combine" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="313.1571701549222" y="217"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="WithoutAllAccess" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="382.1650813644655" y="356.9999988079071"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+  </shapes>
+</layout>
+</Calculation:scenario>
