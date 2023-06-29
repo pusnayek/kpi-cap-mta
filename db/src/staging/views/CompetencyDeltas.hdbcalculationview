@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="CompetencyDeltas" applyPrivilegeType="NONE" dataCategory="DIMENSION" dimensionType="STANDARD" schemaVersion="3.0" hierarchyGeneration="SQL" outputViewType="Projection" cacheInvalidationPeriod="NONE" enforceSqlExecution="true">
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="CompetencyDeltas" applyPrivilegeType="NONE" dataCategory="DIMENSION" dimensionType="STANDARD" schemaVersion="3.0" hierarchyGeneration="SQL" outputViewType="Aggregation" cacheInvalidationPeriod="NONE" enforceSqlExecution="true" runWithInvokerPrivileges="true">
 <descriptions defaultDescription="CompetencyDeltas"/>
 <localVariables/>
 <variableMappings/>
@@ -9,6 +9,27 @@
   </DataSource>
   <DataSource id="FT_ASSIGNMENT">
     <resourceUri>FT_ASSIGNMENT</resourceUri>
+  </DataSource>
+  <DataSource id="CompressEmployeeOperations">
+    <resourceUri>CompressEmployeeOperations</resourceUri>
+  </DataSource>
+  <DataSource id="FT_ITEM">
+    <resourceUri>FT_ITEM</resourceUri>
+  </DataSource>
+  <DataSource id="ItemCompletions$$$$FT_COMPLETION$$">
+    <resourceUri>FT_COMPLETION</resourceUri>
+  </DataSource>
+  <DataSource id="ItemAssignments$$$$FT_ASSIGNMENT$$">
+    <resourceUri>FT_ASSIGNMENT</resourceUri>
+  </DataSource>
+  <DataSource id="CompressItemOperations">
+    <resourceUri>CompressItemOperations</resourceUri>
+  </DataSource>
+  <DataSource id="CompressCompletionOperations">
+    <resourceUri>CompressCompletionOperations</resourceUri>
+  </DataSource>
+  <DataSource id="CompressAssignments">
+    <resourceUri>CompressAssignments</resourceUri>
   </DataSource>
 </dataSources>
 <snapshotProcedures/>
@@ -31,6 +52,77 @@
     <calculatedViewAttributes/>
     <input node="FT_ASSIGNMENT"/>
   </calculationView>
+  <calculationView xsi:type="Calculation:ProjectionView" id="Employees">
+    <viewAttributes>
+      <viewAttribute id="USERID"/>
+      <viewAttribute id="DELTA_ACTION"/>
+      <viewAttribute id="EMPLOYEESTATUS"/>
+    </viewAttributes>
+    <calculatedViewAttributes>
+      <calculatedViewAttribute id="CC_ACTION" datatype="NVARCHAR" length="1" expressionLanguage="COLUMN_ENGINE">
+        <formula>if(&quot;EMPLOYEESTATUS&quot; != 'Active','D',&quot;DELTA_ACTION&quot;)</formula>
+      </calculatedViewAttribute>
+    </calculatedViewAttributes>
+    <input node="CompressEmployeeOperations"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:ProjectionView" id="ItemCompetency" filterExpressionLanguage="COLUMN_ENGINE">
+    <viewAttributes>
+      <viewAttribute id="ITEMID"/>
+      <viewAttribute id="ITEMTYPE"/>
+      <viewAttribute id="COMPETENCY_ID"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="FT_ITEM"/>
+    <filter>&quot;COMPETENCY_ID&quot;!=''</filter>
+  </calculationView>
+  <calculationView xsi:type="Calculation:ProjectionView" id="ItemCompletions">
+    <viewAttributes>
+      <viewAttribute id="USERID"/>
+      <viewAttribute id="ITEMID"/>
+      <viewAttribute id="ITEMTYPE"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="ItemCompletions$$$$FT_COMPLETION$$"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:ProjectionView" id="ItemAssignments">
+    <viewAttributes>
+      <viewAttribute id="USERID"/>
+      <viewAttribute id="ITEMID"/>
+      <viewAttribute id="ITEMTYPE"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="ItemAssignments$$$$FT_ASSIGNMENT$$"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:ProjectionView" id="Items">
+    <viewAttributes>
+      <viewAttribute id="ITEMID"/>
+      <viewAttribute id="ITEMTYPE"/>
+      <viewAttribute id="DELTA_ACTION"/>
+      <viewAttribute id="COMPETENCY_ID"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="CompressItemOperations"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:ProjectionView" id="Completions">
+    <viewAttributes>
+      <viewAttribute id="USERID"/>
+      <viewAttribute id="ITEMID"/>
+      <viewAttribute id="ITEMTYPE"/>
+      <viewAttribute id="DELTA_ACTION"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="CompressCompletionOperations"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:ProjectionView" id="Assignments">
+    <viewAttributes>
+      <viewAttribute id="USERID"/>
+      <viewAttribute id="ITEMID"/>
+      <viewAttribute id="ITEMTYPE"/>
+      <viewAttribute id="DELTA_ACTION"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="CompressAssignments"/>
+  </calculationView>
   <calculationView xsi:type="Calculation:UnionView" id="AllItems">
     <viewAttributes>
       <viewAttribute id="USERID"/>
@@ -38,12 +130,30 @@
       <viewAttribute id="ITEMTYPE"/>
     </viewAttributes>
     <calculatedViewAttributes/>
-    <input node="UserCompletions">
+    <input node="UserCompletions" emptyUnionBehavior="NO_ROW">
       <mapping xsi:type="Calculation:AttributeMapping" target="USERID" source="USERID"/>
       <mapping xsi:type="Calculation:AttributeMapping" target="ITEMID" source="ITEMID"/>
       <mapping xsi:type="Calculation:AttributeMapping" target="ITEMTYPE" source="ITEMTYPE"/>
     </input>
-    <input node="UserAssignments">
+    <input node="UserAssignments" emptyUnionBehavior="NO_ROW">
+      <mapping xsi:type="Calculation:AttributeMapping" target="USERID" source="USERID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ITEMID" source="ITEMID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ITEMTYPE" source="ITEMTYPE"/>
+    </input>
+  </calculationView>
+  <calculationView xsi:type="Calculation:UnionView" id="AllUsers">
+    <viewAttributes>
+      <viewAttribute id="USERID"/>
+      <viewAttribute id="ITEMID"/>
+      <viewAttribute id="ITEMTYPE"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="ItemCompletions">
+      <mapping xsi:type="Calculation:AttributeMapping" target="USERID" source="USERID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ITEMID" source="ITEMID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ITEMTYPE" source="ITEMTYPE"/>
+    </input>
+    <input node="ItemAssignments">
       <mapping xsi:type="Calculation:AttributeMapping" target="USERID" source="USERID"/>
       <mapping xsi:type="Calculation:AttributeMapping" target="ITEMID" source="ITEMID"/>
       <mapping xsi:type="Calculation:AttributeMapping" target="ITEMTYPE" source="ITEMTYPE"/>
@@ -59,10 +169,135 @@
     <restrictedViewAttributes/>
     <input node="AllItems"/>
   </calculationView>
+  <calculationView xsi:type="Calculation:AggregationView" id="DistinctUsers">
+    <viewAttributes>
+      <viewAttribute id="USERID"/>
+      <viewAttribute id="ITEMID"/>
+      <viewAttribute id="ITEMTYPE"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <restrictedViewAttributes/>
+    <input node="AllUsers"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:JoinView" id="EmpItems" cardinality="CN_N" joinType="inner">
+    <viewAttributes>
+      <viewAttribute id="USERID"/>
+      <viewAttribute id="ITEMID"/>
+      <viewAttribute id="ITEMTYPE"/>
+      <viewAttribute id="CC_ACTION"/>
+      <viewAttribute hidden="true" id="JOIN$USERID$USERID"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="DistinctItems">
+      <mapping xsi:type="Calculation:AttributeMapping" target="USERID" source="USERID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ITEMID" source="ITEMID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ITEMTYPE" source="ITEMTYPE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$USERID$USERID" source="USERID"/>
+    </input>
+    <input node="Employees">
+      <mapping xsi:type="Calculation:AttributeMapping" target="CC_ACTION" source="CC_ACTION"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$USERID$USERID" source="USERID"/>
+    </input>
+    <joinAttribute name="JOIN$USERID$USERID"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:JoinView" id="ItemUsers" cardinality="CN_N" joinType="inner">
+    <viewAttributes>
+      <viewAttribute id="USERID"/>
+      <viewAttribute id="ITEMID"/>
+      <viewAttribute id="ITEMTYPE"/>
+      <viewAttribute id="DELTA_ACTION"/>
+      <viewAttribute hidden="true" id="JOIN$ITEMID$ITEMID"/>
+      <viewAttribute hidden="true" id="JOIN$ITEMTYPE$ITEMTYPE"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="Items">
+      <mapping xsi:type="Calculation:AttributeMapping" target="ITEMID" source="ITEMID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ITEMTYPE" source="ITEMTYPE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="DELTA_ACTION" source="DELTA_ACTION"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$ITEMID$ITEMID" source="ITEMID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$ITEMTYPE$ITEMTYPE" source="ITEMTYPE"/>
+    </input>
+    <input node="DistinctUsers">
+      <mapping xsi:type="Calculation:AttributeMapping" target="USERID" source="USERID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$ITEMID$ITEMID" source="ITEMID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$ITEMTYPE$ITEMTYPE" source="ITEMTYPE"/>
+    </input>
+    <joinAttribute name="JOIN$ITEMID$ITEMID"/>
+    <joinAttribute name="JOIN$ITEMTYPE$ITEMTYPE"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:UnionView" id="Combine">
+    <viewAttributes>
+      <viewAttribute id="USERID"/>
+      <viewAttribute id="ITEMID"/>
+      <viewAttribute id="ITEMTYPE"/>
+      <viewAttribute id="DELTA_ACTION"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="EmpItems">
+      <mapping xsi:type="Calculation:AttributeMapping" target="USERID" source="USERID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ITEMID" source="ITEMID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ITEMTYPE" source="ITEMTYPE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="DELTA_ACTION" source="CC_ACTION"/>
+    </input>
+    <input node="ItemUsers">
+      <mapping xsi:type="Calculation:AttributeMapping" target="USERID" source="USERID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ITEMID" source="ITEMID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ITEMTYPE" source="ITEMTYPE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="DELTA_ACTION" source="DELTA_ACTION"/>
+    </input>
+    <input node="Completions">
+      <mapping xsi:type="Calculation:AttributeMapping" target="USERID" source="USERID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ITEMID" source="ITEMID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ITEMTYPE" source="ITEMTYPE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="DELTA_ACTION" source="DELTA_ACTION"/>
+    </input>
+    <input node="Assignments">
+      <mapping xsi:type="Calculation:AttributeMapping" target="USERID" source="USERID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ITEMID" source="ITEMID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ITEMTYPE" source="ITEMTYPE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="DELTA_ACTION" source="DELTA_ACTION"/>
+    </input>
+  </calculationView>
+  <calculationView xsi:type="Calculation:JoinView" id="Competencies" cardinality="CN_N" joinType="inner">
+    <viewAttributes>
+      <viewAttribute id="USERID"/>
+      <viewAttribute id="COMPETENCY_ID"/>
+      <viewAttribute id="CC_ACTION"/>
+      <viewAttribute hidden="true" id="JOIN$ITEMID$ITEMID"/>
+      <viewAttribute hidden="true" id="JOIN$ITEMTYPE$ITEMTYPE"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="Combine">
+      <mapping xsi:type="Calculation:AttributeMapping" target="USERID" source="USERID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CC_ACTION" source="DELTA_ACTION"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$ITEMID$ITEMID" source="ITEMID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$ITEMTYPE$ITEMTYPE" source="ITEMTYPE"/>
+    </input>
+    <input node="ItemCompetency">
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMPETENCY_ID" source="COMPETENCY_ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$ITEMID$ITEMID" source="ITEMID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$ITEMTYPE$ITEMTYPE" source="ITEMTYPE"/>
+    </input>
+    <joinAttribute name="JOIN$ITEMID$ITEMID"/>
+    <joinAttribute name="JOIN$ITEMTYPE$ITEMTYPE"/>
+  </calculationView>
 </calculationViews>
 
-<logicalModel>
-  <attributes/>
+<logicalModel id="Competencies">
+  <attributes>
+    <attribute id="USERID" order="1" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="USERID"/>
+      <keyMapping columnObjectName="Competencies" columnName="USERID"/>
+    </attribute>
+    <attribute id="COMPETENCY_ID" order="2" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="COMPETENCY_ID"/>
+      <keyMapping columnObjectName="Competencies" columnName="COMPETENCY_ID"/>
+    </attribute>
+    <attribute id="CC_ACTION" order="3" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="CC_ACTION"/>
+      <keyMapping columnObjectName="Competencies" columnName="CC_ACTION"/>
+    </attribute>
+  </attributes>
   <calculatedAttributes/>
   <baseMeasures/>
   <calculatedMeasures/>
@@ -71,24 +306,103 @@
 <layout>
   <shapes>
     <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
-      <upperLeftCorner x="40" y="85"/>
+      <upperLeftCorner x="683.1822611358145" y="112"/>
+    
+      <rectangleSize width="160"/>
     </shape>
     
   
     <shape expanded="true" modelObjectName="UserCompletions" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="-356" y="147"/>
-      <rectangleSize height="30" width="135"/>
+      <upperLeftCorner x="814.0820487607889" y="951.9999940395355"/>
+      <rectangleSize height="30" width="160"/>
     </shape>
     <shape expanded="true" modelObjectName="UserAssignments" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="-178" y="157"/>
+      <upperLeftCorner x="604.0820487607891" y="951.9999940395355"/>
       <rectangleSize height="30" width="160"/>
     </shape>
     <shape expanded="true" modelObjectName="AllItems" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="-288" y="59"/>
+      <upperLeftCorner x="726.4902295438203" y="811.9999952316284"/>
       <rectangleSize height="30" width="160"/>
     </shape>
     <shape expanded="true" modelObjectName="DistinctItems" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="-316" y="-42"/>
+      <upperLeftCorner x="726.4902295438203" y="686.9999964237213"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+  
+    <shape expanded="true" modelObjectName="Employees" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="516.4902295438203" y="686.9999964237213"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="EmpItems" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="587.4847097638878" y="546.9999976158142"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape modelObjectName="DistinctItems" modelObjectNameSpace="EmpItems" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="20" y="30"/>
+      <rectangleSize width="141.00537109375"/>
+    </shape>
+    <shape modelObjectName="Employees" modelObjectNameSpace="EmpItems" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="320" y="30"/>
+      <rectangleSize width="188.28173828125"/>
+    </shape>
+    <shape expanded="true" modelObjectName="Combine" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="393.48470976388796" y="356.9999988079071"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="ItemCompetency" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="711.8945014672599" y="356.9999988079071"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="Competencies" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="683.1822611358145" y="217"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape modelObjectName="Combine" modelObjectNameSpace="Competencies" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="20" y="30"/>
+      <rectangleSize width="149.5615234375"/>
+    </shape>
+    <shape modelObjectName="ItemCompetency" modelObjectNameSpace="Competencies" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="320" y="30"/>
+      <rectangleSize width="180.7353515625"/>
+    </shape>
+    <shape expanded="true" modelObjectName="ItemCompletions" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="328.6109821835446" y="951.9999940395355"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="ItemAssignments" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="118.61098218354459" y="951.9999940395355"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="AllUsers" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="145.2776488502111" y="811.9999952316284"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="DistinctUsers" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="92.00000000000023" y="686.9999964237213"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="Items" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="302.00000000000017" y="686.9999964237213"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="ItemUsers" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="118.66666666666674" y="546.9999976158142"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape modelObjectName="Items" modelObjectNameSpace="ItemUsers" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="20" y="30"/>
+      <rectangleSize width="180.7353515625"/>
+    </shape>
+    <shape modelObjectName="DistinctUsers" modelObjectNameSpace="ItemUsers" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="320" y="30"/>
+      <rectangleSize width="141.361328125"/>
+    </shape>
+    <shape expanded="true" modelObjectName="Completions" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="377.48470976388796" y="546.9999976158142"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="Assignments" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="797.4847097638878" y="546.9999976158142"/>
       <rectangleSize height="30" width="160"/>
     </shape>
   </shapes>
