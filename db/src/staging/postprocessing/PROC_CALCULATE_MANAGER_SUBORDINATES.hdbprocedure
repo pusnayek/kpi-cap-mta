@@ -1,0 +1,81 @@
+PROCEDURE "PROC_CALCULATE_MANAGER_SUBORDINATES"( )
+   LANGUAGE SQLSCRIPT
+   SQL SECURITY INVOKER
+   --DEFAULT SCHEMA <default_schema_name>
+   --READS SQL DATA 
+   AS
+BEGIN
+
+    DECLARE NumOfLines  INTEGER;
+    DECLARE NumOfCycles INTEGER;
+
+    DECLARE CYCLE_DETECTED CONDITION FOR SQL_ERROR_CODE 10001;
+    DECLARE EXIT HANDLER FOR CYCLE_DETECTED
+        INSERT INTO XT_ReplicationTrace
+         VALUES(CURRENT_TIMESTAMP, 'ManagerSubordinates', ::SQL_ERROR_CODE, ::SQL_ERROR_MESSAGE);
+
+    /**Get the DIRECT relations**/    
+    lt_DIRECTs = 
+        SELECT "USERID", "MANAGERUSERID"
+        FROM FT_EMPLOYEE
+        WHERE NOT( '?' = COALESCE("MANAGERUSERID", '?')) AND LENGTH( TRIM(' ' FROM "MANAGERUSERID") ) > 0
+            AND "EMPLOYEESTATUS" = 'Active';
+
+    lt_subordinates = 
+        SELECT "USERID", "MANAGERUSERID", 1 AS "DIRECT" FROM :lt_DIRECTs;
+
+    /**count the relations**/
+    SELECT COUNT(*) INTO NumOfLines FROM :lt_subordinates;
+
+    WHILE NumOfLines > 0 do
+        /**Get the inDIRECT relations**/    
+        lt_inDIRECTs = 
+        SELECT empl."USERID", relation."MANAGERUSERID"
+        FROM :lt_DIRECTs AS empl
+            INNER JOIN :lt_subordinates AS relation 
+                ON empl."MANAGERUSERID" = relation."USERID";
+
+        /**Detect cycle**/
+        lt_intersections = 
+        SELECT * FROM (
+            SELECT "USERID" AS "MANAGERUSERID", "MANAGERUSERID" AS "USERID" 
+                FROM :lt_inDIRECTs
+            INTERSECT
+            SELECT "MANAGERUSERID", "USERID" FROM :lt_subordinates 
+        );
+
+        /**count the cycles**/
+        SELECT COUNT(*) INTO NumOfCycles FROM :lt_intersections;
+        IF NumOfCycles > 0 THEN
+            SIGNAL CYCLE_DETECTED SET MESSAGE_TEXT = 'Cycle detected, cannot continue';
+        END IF;
+
+        /**Get the new records only**/
+        lt_newrecords = 
+        SELECT * FROM (
+            SELECT "USERID", "MANAGERUSERID" FROM :lt_inDIRECTs
+            EXCEPT
+            SELECT "USERID", "MANAGERUSERID" FROM :lt_subordinates 
+        );
+        
+        /**Append records to main table**/
+        lt_subordinates = 
+        SELECT "USERID", "MANAGERUSERID", "DIRECT" FROM :lt_subordinates
+        UNION ALL
+        SELECT "USERID", "MANAGERUSERID", 0 AS "DIRECT" FROM :lt_newrecords;
+
+        /**count the new relations**/
+        SELECT COUNT(*) INTO NumOfLines FROM :lt_newrecords;
+        
+    END WHILE;    
+
+    /**delete and insert**/
+    DELETE FROM FT_ManagerReportees;
+    INSERT INTO FT_ManagerReportees(
+        "MANAGERUSERID", "USERID", "DIRECT" 
+    ) SELECT  
+        "MANAGERUSERID", "USERID", "DIRECT"
+        FROM :lt_subordinates;
+    COMMIT;    
+
+END

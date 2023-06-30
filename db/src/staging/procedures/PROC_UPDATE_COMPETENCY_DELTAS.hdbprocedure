@@ -1,0 +1,132 @@
+PROCEDURE "PROC_UPDATE_COMPETENCY_DELTAS"( )
+   LANGUAGE SQLSCRIPT
+   SQL SECURITY INVOKER
+   --DEFAULT SCHEMA <default_schema_name>
+   --READS SQL DATA 
+   AS
+BEGIN
+
+    DECLARE EXIT HANDLER FOR sqlexception
+        INSERT INTO XT_ReplicationTrace
+         VALUES(CURRENT_TIMESTAMP, 'UpdateCompetencyDeltas', ::SQL_ERROR_CODE, ::SQL_ERROR_MESSAGE);
+
+    /**
+    * Set processing status to 'P' - in process for all records; 
+    * this will avoid conflicts with records which are inserted after this processing starts and can be deleted safely
+    */
+    UPDATE ST_ComptencyDeltas
+    SET "PROCESSINGSTATUS" = 'P';
+    COMMIT;
+
+
+    /**
+    * Transfer records with latest timestamp timestamp and distinct Action value with processing status P
+    * to stage table
+    */
+    DELETE FROM "LMS"."cbc.lms.competency.setup.structures::FT.Competencies"
+    WHERE ("UserID", "Competency.Id") IN (
+        SELECT "UserID", "CompetencyID" AS "Competency.Id"
+        FROM "LMS"."cbc.lms.competency.setup.structures::ST.ComptencyDeltas"
+        WHERE "Action" = 'D'
+    );
+    COMMIT;
+    
+    /**
+    * Delete rows with user and competencyId combination and then insert user competency data
+    */
+    lt_competencyDelta = 
+    SELECT 
+	 "UserID",
+	 "ItemID",
+	 "ItemType",
+	 "ItemTitle",
+	 "CompetencyId" AS "Competency.Id",
+	 "CompetencyName" AS "Competency.Name",
+	 "CompetencyArea" AS "Competency.Area",
+	 "CompetencyDescription" AS "Competency.Description",
+	 "CompetencyType" AS "Competency.CompetencyType",
+	 "GrantsCertificate" AS "Competency.GrantsCertificate",
+	 "RetainingNumer",
+	 "CompletionStatus",
+	 "CompletionDate",
+	 "AssignmentDate",
+	 "LastAssignedItemID",
+	 "LastAssignedItemType",
+	 "LastAssignedItemTitle",
+	 "LatestItemAssignmentDate",
+	 "LastItemAssignedBy",
+	 "HasCurrentAssignment",
+	 "HasExpiry",
+	 "ExpirationDate" 
+    FROM "_SYS_BIC"."cbc.lms.competency.kpi.views.cached/DeltaUserCompetency";
+
+
+    DELETE FROM "LMS"."cbc.lms.competency.setup.structures::FT.Competencies"
+    WHERE ("UserID") IN (
+        SELECT "UserID"
+        FROM :lt_competencyDelta
+    );
+    COMMIT;
+        
+    UPSERT "LMS"."cbc.lms.competency.setup.structures::FT.Competencies"(
+	 "UserID",
+	 "ItemID",
+	 "ItemType",
+	 "ItemTitle", 
+	 "Competency.Id",
+	 "Competency.Name",
+	 "Competency.Area",
+	 "Competency.Description",
+	 "Competency.CompetencyType",
+	 "Competency.GrantsCertificate",
+	 "RetainingNumer",
+	 "CompletionStatus",
+	 "CompletionDate",
+	 "AssignmentDate",
+	 "LastAssignedItemID",
+	 "LastAssignedItemType",
+	 "LastAssignedItemTitle",
+	 "LatestItemAssignmentDate",
+	 "LastItemAssignedBy",
+	 "HasCurrentAssignment",
+	 "HasExpiry",
+	 "ExpirationDate" 
+    )
+    SELECT 
+	 "UserID",
+	 "ItemID",
+	 "ItemType",
+	 "ItemTitle",
+	 "Competency.Id",
+	 "Competency.Name",
+	 "Competency.Area",
+	 "Competency.Description",
+	 "Competency.CompetencyType",
+	 "Competency.GrantsCertificate",
+	 "RetainingNumer",
+	 "CompletionStatus",
+	 "CompletionDate",
+	 "AssignmentDate",
+	 "LastAssignedItemID",
+	 "LastAssignedItemType",
+	 "LastAssignedItemTitle",
+	 "LatestItemAssignmentDate",
+	 "LastItemAssignedBy",
+	 "HasCurrentAssignment",
+	 "HasExpiry",
+	 "ExpirationDate" 
+    FROM :lt_competencyDelta;
+    COMMIT;
+    
+    /**
+    * End inserting data in competency DB
+    */
+
+    /**
+    * Delete all records with status 'P' from extraction table
+    */
+    DELETE FROM ST_ComptencyDeltas
+    WHERE "PROCESSINGSTATUS" = 'P';
+    COMMIT;
+
+END

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="StageItemLatestOperation" applyPrivilegeType="NONE" dataCategory="DIMENSION" dimensionType="STANDARD" schemaVersion="3.0" hierarchyGeneration="SQL" outputViewType="Projection" cacheInvalidationPeriod="NONE" enforceSqlExecution="true" runWithInvokerPrivileges="true">
-<descriptions defaultDescription="StageEmployeesLatestOperation"/>
+<descriptions defaultDescription="StageItemLatestOperation"/>
 <localVariables/>
 <variableMappings/>
 <dataSources>
@@ -19,7 +19,7 @@
 </dataSources>
 <snapshotProcedures/>
 <calculationViews>
-  <calculationView xsi:type="Calculation:AggregationView" id="LastActTime" filterExpressionLanguage="SQL">
+  <calculationView xsi:type="Calculation:AggregationView" id="LastActTime">
     <viewAttributes>
       <viewAttribute id="ITEMID"/>
       <viewAttribute id="ITEMTYPE"/>
@@ -27,7 +27,7 @@
     <calculatedViewAttributes/>
     <restrictedViewAttributes/>
     <input node="BaseItem"/></calculationView>
-  <calculationView xsi:type="Calculation:AggregationView" id="ActTimes" filterExpressionLanguage="COLUMN_ENGINE">
+  <calculationView xsi:type="Calculation:AggregationView" id="ActTimes">
     <viewAttributes>
       <viewAttribute id="ITEMID"/>
       <viewAttribute id="ITEMTYPE"/>
@@ -46,7 +46,7 @@
     <calculatedViewAttributes/>
     <input node="CT_OPSMERGE"/>
   </calculationView>
-  <calculationView xsi:type="Calculation:AggregationView" id="Extracts" filterExpressionLanguage="COLUMN_ENGINE">
+  <calculationView xsi:type="Calculation:AggregationView" id="Extracts">
     <viewAttributes>
       <viewAttribute id="ITEMID"/>
       <viewAttribute id="ITEMTYPE"/>

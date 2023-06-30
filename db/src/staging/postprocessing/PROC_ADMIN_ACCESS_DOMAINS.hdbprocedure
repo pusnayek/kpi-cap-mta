@@ -1,0 +1,19 @@
+PROCEDURE "PROC_ADMIN_ACCESS_DOMAINS"( )
+   LANGUAGE SQLSCRIPT
+   SQL SECURITY INVOKER
+   --DEFAULT SCHEMA <default_schema_name>
+   --READS SQL DATA 
+   AS
+BEGIN
+
+    /**delete and insert**/
+    DELETE FROM FT_TrainingAdminAccess;
+    
+    INSERT INTO FT_TrainingAdminAccess(
+        "USERID", "DOMAIN"
+    ) SELECT "USERID", "DOMAIN" 
+        FROM "CalculateAdminAccess";
+    
+    COMMIT;    
+
+END
