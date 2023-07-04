@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="UserCompletions" applyPrivilegeType="NONE" dataCategory="DIMENSION" dimensionType="STANDARD" schemaVersion="3.0" hierarchyGeneration="SQL" outputViewType="Aggregation" cacheInvalidationPeriod="NONE" enforceSqlExecution="true" runWithInvokerPrivileges="true">
+<descriptions defaultDescription="UserCompletions"/>
+<localVariables/>
+<variableMappings/>
+<dataSources>
+  <DataSource id="AuthorizedUsers">
+    <resourceUri>AuthorizedUsers</resourceUri>
+  </DataSource>
+  <DataSource id="FT_COMPLETION">
+    <resourceUri>FT_COMPLETION</resourceUri>
+  </DataSource>
+</dataSources>
+<snapshotProcedures/>
+<calculationViews>
+  <calculationView xsi:type="Calculation:ProjectionView" id="AuthUsers">
+    <viewAttributes>
+      <viewAttribute id="ACTING_USERID"/>
+      <viewAttribute id="USERID"/>
+      <viewAttribute id="ACTOR"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="AuthorizedUsers"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:ProjectionView" id="Completions">
+    <viewAttributes>
+      <viewAttribute id="USERID"/>
+      <viewAttribute id="ITEMID"/>
+      <viewAttribute id="ITEMTYPE"/>
+      <viewAttribute id="COMPLETIONSTATUS"/>
+      <viewAttribute id="COMPLETIONDATE"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="FT_COMPLETION"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:JoinView" id="AuthCompletions" cardinality="CN_N" joinType="inner">
+    <viewAttributes>
+      <viewAttribute id="ACTING_USERID"/>
+      <viewAttribute id="USERID"/>
+      <viewAttribute id="ACTOR"/>
+      <viewAttribute id="ITEMID"/>
+      <viewAttribute id="ITEMTYPE"/>
+      <viewAttribute id="COMPLETIONSTATUS"/>
+      <viewAttribute id="COMPLETIONDATE"/>
+      <viewAttribute hidden="true" id="JOIN$USERID$USERID"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="AuthUsers">
+      <mapping xsi:type="Calculation:AttributeMapping" target="ACTING_USERID" source="ACTING_USERID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="USERID" source="USERID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ACTOR" source="ACTOR"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$USERID$USERID" source="USERID"/>
+    </input>
+    <input node="Completions">
+      <mapping xsi:type="Calculation:AttributeMapping" target="ITEMID" source="ITEMID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ITEMTYPE" source="ITEMTYPE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMPLETIONSTATUS" source="COMPLETIONSTATUS"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMPLETIONDATE" source="COMPLETIONDATE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$USERID$USERID" source="USERID"/>
+    </input>
+    <joinAttribute name="JOIN$USERID$USERID"/>
+  </calculationView>
+</calculationViews>
+
+<logicalModel id="AuthCompletions">
+  <attributes>
+    <attribute id="ACTING_USERID" order="1" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="USERID"/>
+      <keyMapping columnObjectName="AuthCompletions" columnName="ACTING_USERID"/>
+    </attribute>
+    <attribute id="USERID" order="2" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="USERID"/>
+      <keyMapping columnObjectName="AuthCompletions" columnName="USERID"/>
+    </attribute>
+    <attribute id="ACTOR" order="3" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="ACTOR"/>
+      <keyMapping columnObjectName="AuthCompletions" columnName="ACTOR"/>
+    </attribute>
+    <attribute id="ITEMID" order="4" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="ITEMID"/>
+      <keyMapping columnObjectName="AuthCompletions" columnName="ITEMID"/>
+    </attribute>
+    <attribute id="ITEMTYPE" order="5" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="ITEMTYPE"/>
+      <keyMapping columnObjectName="AuthCompletions" columnName="ITEMTYPE"/>
+    </attribute>
+    <attribute id="COMPLETIONSTATUS" order="6" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="COMPLETIONSTATUS"/>
+      <keyMapping columnObjectName="AuthCompletions" columnName="COMPLETIONSTATUS"/>
+    </attribute>
+    <attribute id="COMPLETIONDATE" order="7" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="COMPLETIONDATE"/>
+      <keyMapping columnObjectName="AuthCompletions" columnName="COMPLETIONDATE"/>
+    </attribute>
+  </attributes>
+  <calculatedAttributes/>
+  <baseMeasures/>
+  <calculatedMeasures/>
+  <restrictedMeasures/>
+</logicalModel>
+<layout>
+  <shapes>
+    <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+      <upperLeftCorner x="221.11302679000914" y="112"/>
+    
+      <rectangleSize width="160"/>
+    </shape>
+    
+  
+    <shape expanded="true" modelObjectName="AuthUsers" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="92.00000000000001" y="356.9999988079071"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="Completions" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="302.00000000000006" y="356.9999988079071"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="AuthCompletions" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="221.11302679000914" y="217"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape modelObjectName="AuthUsers" modelObjectNameSpace="AuthCompletions" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="20" y="30"/>
+      <rectangleSize width="175.2353515625"/>
+    </shape>
+    <shape modelObjectName="Completions" modelObjectNameSpace="AuthCompletions" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="320" y="30"/>
+      <rectangleSize width="200.490234375"/>
+    </shape>
+  </shapes>
+</layout>
+</Calculation:scenario>

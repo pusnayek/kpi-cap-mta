@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="Populations" applyPrivilegeType="NONE" dataCategory="DIMENSION" dimensionType="STANDARD" schemaVersion="3.0" hierarchyGeneration="SQL" outputViewType="Aggregation" cacheInvalidationPeriod="NONE" enforceSqlExecution="true" runWithInvokerPrivileges="true">
+<descriptions defaultDescription="Populations"/>
+<localVariables/>
+<variableMappings/>
+<dataSources>
+  <DataSource id="EmployeesMaster">
+    <resourceUri>EmployeesMaster</resourceUri>
+  </DataSource>
+  <DataSource id="Managers$$$$EmployeesMaster$$">
+    <resourceUri>EmployeesMaster</resourceUri>
+  </DataSource>
+  <DataSource id="FT_ADMINACCESS">
+    <resourceUri>FT_ADMINACCESS</resourceUri>
+  </DataSource>
+</dataSources>
+<snapshotProcedures/>
+<calculationViews>
+  <calculationView xsi:type="Calculation:ProjectionView" id="Users">
+    <viewAttributes>
+      <viewAttribute id="USERID"/>
+    </viewAttributes>
+    <calculatedViewAttributes>
+      <calculatedViewAttribute id="ACTOR" datatype="VARCHAR" length="2" expressionLanguage="COLUMN_ENGINE">
+        <formula>'RE'</formula>
+      </calculatedViewAttribute>
+      <calculatedViewAttribute id="INDEX_OF_POPULATION" datatype="TINYINT" expressionLanguage="COLUMN_ENGINE">
+        <formula>1</formula>
+      </calculatedViewAttribute>
+    </calculatedViewAttributes>
+    <input node="EmployeesMaster"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:AggregationView" id="Managers">
+    <viewAttributes>
+      <viewAttribute id="MANAGERUSERID"/>
+    </viewAttributes>
+    <calculatedViewAttributes>
+      <calculatedViewAttribute id="ACTOR" datatype="VARCHAR" length="2" expressionLanguage="COLUMN_ENGINE">
+        <formula>'RM'</formula>
+      </calculatedViewAttribute>
+      <calculatedViewAttribute id="INDEX_OF_POPULATION" datatype="TINYINT" expressionLanguage="COLUMN_ENGINE">
+        <formula>2</formula>
+      </calculatedViewAttribute>
+    </calculatedViewAttributes>
+    <restrictedViewAttributes/>
+    <input node="Managers$$$$EmployeesMaster$$"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:AggregationView" id="Admins">
+    <viewAttributes>
+      <viewAttribute id="USERID"/>
+    </viewAttributes>
+    <calculatedViewAttributes>
+      <calculatedViewAttribute id="ACTOR" datatype="VARCHAR" length="2" expressionLanguage="COLUMN_ENGINE">
+        <formula>'RH'</formula>
+      </calculatedViewAttribute>
+      <calculatedViewAttribute id="INDEX_OF_POPULATION" datatype="TINYINT" expressionLanguage="COLUMN_ENGINE">
+        <formula>3</formula>
+      </calculatedViewAttribute>
+    </calculatedViewAttributes>
+    <restrictedViewAttributes/>
+    <input node="FT_ADMINACCESS"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:UnionView" id="Combine">
+    <viewAttributes>
+      <viewAttribute id="USERID"/>
+      <viewAttribute id="ACTOR"/>
+      <viewAttribute id="INDEX_OF_POPULATION"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="Users">
+      <mapping xsi:type="Calculation:AttributeMapping" target="USERID" source="USERID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ACTOR" source="ACTOR"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="INDEX_OF_POPULATION" source="INDEX_OF_POPULATION"/>
+    </input>
+    <input node="Managers">
+      <mapping xsi:type="Calculation:AttributeMapping" target="USERID" source="MANAGERUSERID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ACTOR" source="ACTOR"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="INDEX_OF_POPULATION" source="INDEX_OF_POPULATION"/>
+    </input>
+    <input node="Admins">
+      <mapping xsi:type="Calculation:AttributeMapping" target="USERID" source="USERID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ACTOR" source="ACTOR"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="INDEX_OF_POPULATION" source="INDEX_OF_POPULATION"/>
+    </input>
+  </calculationView>
+</calculationViews>
+
+<logicalModel id="Combine">
+  <attributes>
+    <attribute id="USERID" order="1" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="USERID"/>
+      <keyMapping columnObjectName="Combine" columnName="USERID"/>
+    </attribute>
+    <attribute id="ACTOR" order="2" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="ACTOR"/>
+      <keyMapping columnObjectName="Combine" columnName="ACTOR"/>
+    </attribute>
+    <attribute id="INDEX_OF_POPULATION" order="3" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="INDEX_OF_POPULATION"/>
+      <keyMapping columnObjectName="Combine" columnName="INDEX_OF_POPULATION"/>
+    </attribute>
+  </attributes>
+  <calculatedAttributes/>
+  <baseMeasures/>
+  <calculatedMeasures/>
+  <restrictedMeasures/>
+</logicalModel>
+<layout>
+  <shapes>
+    <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+      <upperLeftCorner x="361.75405278666415" y="112"/>
+    
+      <rectangleSize width="160"/>
+    </shape>
+    
+  
+    <shape expanded="true" modelObjectName="Users" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="92" y="391.9999976158142"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="Managers" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="512" y="391.9999976158142"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="Admins" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="302" y="391.9999976158142"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="Combine" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="302" y="236.9999988079071"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+  </shapes>
+</layout>
+</Calculation:scenario>

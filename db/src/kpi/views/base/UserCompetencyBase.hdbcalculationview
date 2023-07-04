@@ -283,7 +283,6 @@
       <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$USERID$USERID" source="USERID"/>
       <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$COMPETENCY_ID$COMPETENCY_ID" source="COMPETENCY_ID"/>
     </input>
-  
     <joinAttribute name="JOIN$USERID$USERID"/>
     <joinAttribute name="JOIN$COMPETENCY_ID$COMPETENCY_ID"/>
   </calculationView>
@@ -370,21 +369,19 @@
       <keyCalculation datatype="NVARCHAR" expressionLanguage="COLUMN_ENGINE" length="1">
         <formula>if(isnull(&quot;LAST_ASSIGNED_ITEMID&quot;),'','X')</formula>
       </keyCalculation>
-      </calculatedAttribute>
+    </calculatedAttribute>
     <calculatedAttribute id="HAS_EXPIRY" order="20" semanticType="empty" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="Has Expiry"/>
       <keyCalculation datatype="NVARCHAR" expressionLanguage="COLUMN_ENGINE" length="1">
         <formula>if(isnull(&quot;RETAININGNUMER&quot;),'','X')</formula>
       </keyCalculation>
-      </calculatedAttribute>
+    </calculatedAttribute>
     <calculatedAttribute id="EXPIRATION_DATE" order="21" semanticType="empty" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="Expiration Date"/>
       <keyCalculation datatype="SECONDDATE" expressionLanguage="COLUMN_ENGINE">
-        <formula>if(isnull(&quot;COMPLETIONDATE&quot;) or isnull(&quot;RETAININGNUMER&quot;),
-date(null),
-adddays(&quot;COMPLETIONDATE&quot;,&quot;RETAININGNUMER&quot;))</formula>
+        <formula>adddays(&quot;COMPLETIONDATE&quot;,&quot;RETAININGNUMER&quot;)</formula>
       </keyCalculation>
-      </calculatedAttribute>
+    </calculatedAttribute>
   </calculatedAttributes>
   <baseMeasures/>
   <calculatedMeasures/>
@@ -468,7 +465,7 @@ adddays(&quot;COMPLETIONDATE&quot;,&quot;RETAININGNUMER&quot;))</formula>
     </shape>
     <shape modelObjectName="LatestAssignmentData" modelObjectNameSpace="WithLatestItem" modelObjectType="JoinNodeInput">
       <upperLeftCorner x="394" y="30"/>
-      <rectangleSize width="266.51171875"/>
+      <rectangleSize width="266"/>
     </shape>
   </shapes>
 </layout>

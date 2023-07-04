@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="CompetencyStatus" applyPrivilegeType="NONE" dataCategory="DIMENSION" dimensionType="STANDARD" schemaVersion="3.0" hierarchyGeneration="SQL" outputViewType="Projection" cacheInvalidationPeriod="NONE" enforceSqlExecution="true" runWithInvokerPrivileges="true">
+<descriptions defaultDescription="CompetencyStatus"/>
+<localVariables/>
+<variableMappings/>
+<dataSources>
+  <DataSource id="ItemCompetency">
+    <resourceUri>ItemCompetency</resourceUri>
+  </DataSource>
+  <DataSource id="EmployeesMaster">
+    <resourceUri>EmployeesMaster</resourceUri>
+  </DataSource>
+</dataSources>
+<snapshotProcedures/>
+<calculationViews>
+  <calculationView xsi:type="Calculation:ProjectionView" id="Competency">
+    <viewAttributes>
+      <viewAttribute id="ACTING_USERID"/>
+      <viewAttribute id="USERID"/>
+      <viewAttribute id="ACTOR"/>
+      <viewAttribute id="ITEMID"/>
+      <viewAttribute id="ITEMTYPE"/>
+      <viewAttribute id="ITEMTITLE"/>
+      <viewAttribute id="COMPETENCY_ID"/>
+      <viewAttribute id="COMPETENCY_NAME"/>
+      <viewAttribute id="COMPETENCY_AREA"/>
+      <viewAttribute id="COMPETENCY_DESCRIPTION"/>
+      <viewAttribute id="COMPETENCY_COMPETENCYTYPE"/>
+      <viewAttribute id="COMPETENCY_GRANTSCERTIFICATE"/>
+      <viewAttribute id="RETAININGNUMER"/>
+      <viewAttribute id="LASTACCUMULATIONDATE"/>
+      <viewAttribute id="LASTASSIGNEDITEMID"/>
+      <viewAttribute id="LASTASSIGNEDITEMTYPE"/>
+      <viewAttribute id="LASTASSIGNEDITEMTITLE"/>
+      <viewAttribute id="LATESTITEMASSIGNMENTDATE"/>
+      <viewAttribute id="LASTITEMASSIGNEDBY"/>
+      <viewAttribute id="HASCURRENTASSIGNMENT"/>
+      <viewAttribute id="HASEXPIRY"/>
+      <viewAttribute id="EXPIRATIONDATE"/>
+      <viewAttribute id="QUALIFIED"/>
+      <viewAttribute id="TIME_TO_EXPIRATION"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="ItemCompetency"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:ProjectionView" id="UserData">
+    <viewAttributes>
+      <viewAttribute id="USERID"/>
+      <viewAttribute id="EMPLOYEEID"/>
+      <viewAttribute id="FIRSTNAME"/>
+      <viewAttribute id="LASTNAME"/>
+      <viewAttribute id="DOMAIN"/>
+      <viewAttribute id="JOBCODE"/>
+      <viewAttribute id="JOBGROUP"/>
+      <viewAttribute id="GROUPBU"/>
+      <viewAttribute id="EMPLOYEEGROUP"/>
+      <viewAttribute id="EMPCUSTOMSTATUS"/>
+      <viewAttribute id="DEPARTMENT"/>
+      <viewAttribute id="DIVISION"/>
+      <viewAttribute id="JOBLOCATION"/>
+      <viewAttribute id="MANAGERUSERID"/>
+      <viewAttribute id="MANAGERNAME"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="EmployeesMaster"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:JoinView" id="WithUserInfo" cardinality="CN_N" joinType="inner">
+    <viewAttributes>
+      <viewAttribute id="ACTING_USERID"/>
+      <viewAttribute id="USERID"/>
+      <viewAttribute id="ACTOR"/>
+      <viewAttribute id="ITEMID"/>
+      <viewAttribute id="ITEMTYPE"/>
+      <viewAttribute id="ITEMTITLE"/>
+      <viewAttribute id="COMPETENCY_ID"/>
+      <viewAttribute id="COMPETENCY_NAME"/>
+      <viewAttribute id="COMPETENCY_AREA"/>
+      <viewAttribute id="COMPETENCY_DESCRIPTION"/>
+      <viewAttribute id="COMPETENCY_COMPETENCYTYPE"/>
+      <viewAttribute id="COMPETENCY_GRANTSCERTIFICATE"/>
+      <viewAttribute id="RETAININGNUMER"/>
+      <viewAttribute id="LASTACCUMULATIONDATE"/>
+      <viewAttribute id="LASTASSIGNEDITEMID"/>
+      <viewAttribute id="LASTASSIGNEDITEMTYPE"/>
+      <viewAttribute id="LASTASSIGNEDITEMTITLE"/>
+      <viewAttribute id="LATESTITEMASSIGNMENTDATE"/>
+      <viewAttribute id="LASTITEMASSIGNEDBY"/>
+      <viewAttribute id="HASCURRENTASSIGNMENT"/>
+      <viewAttribute id="HASEXPIRY"/>
+      <viewAttribute id="EXPIRATIONDATE"/>
+      <viewAttribute id="QUALIFIED"/>
+      <viewAttribute id="TIME_TO_EXPIRATION"/>
+      <viewAttribute id="EMPLOYEEID"/>
+      <viewAttribute id="FIRSTNAME"/>
+      <viewAttribute id="LASTNAME"/>
+      <viewAttribute id="DOMAIN"/>
+      <viewAttribute id="JOBCODE"/>
+      <viewAttribute id="JOBGROUP"/>
+      <viewAttribute id="GROUPBU"/>
+      <viewAttribute id="EMPLOYEEGROUP"/>
+      <viewAttribute id="EMPCUSTOMSTATUS"/>
+      <viewAttribute id="DEPARTMENT"/>
+      <viewAttribute id="DIVISION"/>
+      <viewAttribute id="JOBLOCATION"/>
+      <viewAttribute id="MANAGERUSERID"/>
+      <viewAttribute id="MANAGERNAME"/>
+      <viewAttribute hidden="true" id="JOIN$USERID$USERID"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="Competency">
+      <mapping xsi:type="Calculation:AttributeMapping" target="ACTING_USERID" source="ACTING_USERID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="USERID" source="USERID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ACTOR" source="ACTOR"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ITEMID" source="ITEMID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ITEMTYPE" source="ITEMTYPE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ITEMTITLE" source="ITEMTITLE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMPETENCY_ID" source="COMPETENCY_ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMPETENCY_NAME" source="COMPETENCY_NAME"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMPETENCY_AREA" source="COMPETENCY_AREA"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMPETENCY_DESCRIPTION" source="COMPETENCY_DESCRIPTION"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMPETENCY_COMPETENCYTYPE" source="COMPETENCY_COMPETENCYTYPE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMPETENCY_GRANTSCERTIFICATE" source="COMPETENCY_GRANTSCERTIFICATE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="RETAININGNUMER" source="RETAININGNUMER"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="LASTACCUMULATIONDATE" source="LASTACCUMULATIONDATE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="LASTASSIGNEDITEMID" source="LASTASSIGNEDITEMID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="LASTASSIGNEDITEMTYPE" source="LASTASSIGNEDITEMTYPE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="LASTASSIGNEDITEMTITLE" source="LASTASSIGNEDITEMTITLE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="LATESTITEMASSIGNMENTDATE" source="LATESTITEMASSIGNMENTDATE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="LASTITEMASSIGNEDBY" source="LASTITEMASSIGNEDBY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="HASCURRENTASSIGNMENT" source="HASCURRENTASSIGNMENT"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="HASEXPIRY" source="HASEXPIRY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="EXPIRATIONDATE" source="EXPIRATIONDATE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="QUALIFIED" source="QUALIFIED"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="TIME_TO_EXPIRATION" source="TIME_TO_EXPIRATION"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$USERID$USERID" source="USERID"/>
+    </input>
+    <input node="UserData">
+      <mapping xsi:type="Calculation:AttributeMapping" target="EMPLOYEEID" source="EMPLOYEEID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="FIRSTNAME" source="FIRSTNAME"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="LASTNAME" source="LASTNAME"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="DOMAIN" source="DOMAIN"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOBCODE" source="JOBCODE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOBGROUP" source="JOBGROUP"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="GROUPBU" source="GROUPBU"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="EMPLOYEEGROUP" source="EMPLOYEEGROUP"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="EMPCUSTOMSTATUS" source="EMPCUSTOMSTATUS"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="DEPARTMENT" source="DEPARTMENT"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="DIVISION" source="DIVISION"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOBLOCATION" source="JOBLOCATION"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="MANAGERUSERID" source="MANAGERUSERID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="MANAGERNAME" source="MANAGERNAME"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$USERID$USERID" source="USERID"/>
+    </input>
+    <joinAttribute name="JOIN$USERID$USERID"/>
+  </calculationView>
+</calculationViews>
+
+<logicalModel id="WithUserInfo">
+  <attributes>
+    <attribute id="ACTING_USERID" order="1" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="USERID"/>
+      <keyMapping columnObjectName="WithUserInfo" columnName="ACTING_USERID"/>
+    </attribute>
+    <attribute id="USERID" order="2" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="USERID"/>
+      <keyMapping columnObjectName="WithUserInfo" columnName="USERID"/>
+    </attribute>
+    <attribute id="ACTOR" order="3" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="ACTOR"/>
+      <keyMapping columnObjectName="WithUserInfo" columnName="ACTOR"/>
+    </attribute>
+    <attribute id="ITEMID" order="4" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="ITEMID"/>
+      <keyMapping columnObjectName="WithUserInfo" columnName="ITEMID"/>
+    </attribute>
+    <attribute id="ITEMTYPE" order="5" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="ITEMTYPE"/>
+      <keyMapping columnObjectName="WithUserInfo" columnName="ITEMTYPE"/>
+    </attribute>
+    <attribute id="ITEMTITLE" order="6" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="ITEMTITLE"/>
+      <keyMapping columnObjectName="WithUserInfo" columnName="ITEMTITLE"/>
+    </attribute>
+    <attribute id="COMPETENCY_ID" order="7" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="COMPETENCY_ID"/>
+      <keyMapping columnObjectName="WithUserInfo" columnName="COMPETENCY_ID"/>
+    </attribute>
+    <attribute id="COMPETENCY_NAME" order="8" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="COMPETENCY_NAME"/>
+      <keyMapping columnObjectName="WithUserInfo" columnName="COMPETENCY_NAME"/>
+    </attribute>
+    <attribute id="COMPETENCY_AREA" order="9" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="COMPETENCY_AREA"/>
+      <keyMapping columnObjectName="WithUserInfo" columnName="COMPETENCY_AREA"/>
+    </attribute>
+    <attribute id="COMPETENCY_DESCRIPTION" order="10" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="COMPETENCY_DESCRIPTION"/>
+      <keyMapping columnObjectName="WithUserInfo" columnName="COMPETENCY_DESCRIPTION"/>
+    </attribute>
+    <attribute id="COMPETENCY_COMPETENCYTYPE" order="11" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="COMPETENCY_COMPETENCYTYPE"/>
+      <keyMapping columnObjectName="WithUserInfo" columnName="COMPETENCY_COMPETENCYTYPE"/>
+    </attribute>
+    <attribute id="COMPETENCY_GRANTSCERTIFICATE" order="12" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="COMPETENCY_GRANTSCERTIFICATE"/>
+      <keyMapping columnObjectName="WithUserInfo" columnName="COMPETENCY_GRANTSCERTIFICATE"/>
+    </attribute>
+    <attribute id="RETAININGNUMER" order="13" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="RETAININGNUMER"/>
+      <keyMapping columnObjectName="WithUserInfo" columnName="RETAININGNUMER"/>
+    </attribute>
+    <attribute id="LASTACCUMULATIONDATE" order="14" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="COMPLETIONDATE"/>
+      <keyMapping columnObjectName="WithUserInfo" columnName="LASTACCUMULATIONDATE"/>
+    </attribute>
+    <attribute id="LASTASSIGNEDITEMID" order="15" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="LASTASSIGNEDITEMID"/>
+      <keyMapping columnObjectName="WithUserInfo" columnName="LASTASSIGNEDITEMID"/>
+    </attribute>
+    <attribute id="LASTASSIGNEDITEMTYPE" order="16" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="LASTASSIGNEDITEMTYPE"/>
+      <keyMapping columnObjectName="WithUserInfo" columnName="LASTASSIGNEDITEMTYPE"/>
+    </attribute>
+    <attribute id="LASTASSIGNEDITEMTITLE" order="17" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="LASTASSIGNEDITEMTITLE"/>
+      <keyMapping columnObjectName="WithUserInfo" columnName="LASTASSIGNEDITEMTITLE"/>
+    </attribute>
+    <attribute id="LATESTITEMASSIGNMENTDATE" order="18" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="LATESTITEMASSIGNMENTDATE"/>
+      <keyMapping columnObjectName="WithUserInfo" columnName="LATESTITEMASSIGNMENTDATE"/>
+    </attribute>
+    <attribute id="LASTITEMASSIGNEDBY" order="19" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="LASTITEMASSIGNEDBY"/>
+      <keyMapping columnObjectName="WithUserInfo" columnName="LASTITEMASSIGNEDBY"/>
+    </attribute>
+    <attribute id="HASCURRENTASSIGNMENT" order="20" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="HASCURRENTASSIGNMENT"/>
+      <keyMapping columnObjectName="WithUserInfo" columnName="HASCURRENTASSIGNMENT"/>
+    </attribute>
+    <attribute id="HASEXPIRY" order="21" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="HASEXPIRY"/>
+      <keyMapping columnObjectName="WithUserInfo" columnName="HASEXPIRY"/>
+    </attribute>
+    <attribute id="EXPIRATIONDATE" order="22" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="EXPIRATIONDATE"/>
+      <keyMapping columnObjectName="WithUserInfo" columnName="EXPIRATIONDATE"/>
+    </attribute>
+    <attribute id="QUALIFIED" order="23" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="QUALIFIED"/>
+      <keyMapping columnObjectName="WithUserInfo" columnName="QUALIFIED"/>
+    </attribute>
+    <attribute id="TIME_TO_EXPIRATION" order="24" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="TIME_TO_EXPIRATION"/>
+      <keyMapping columnObjectName="WithUserInfo" columnName="TIME_TO_EXPIRATION"/>
+    </attribute>
+    <attribute id="EMPLOYEEID" order="25" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="EMPLOYEEID"/>
+      <keyMapping columnObjectName="WithUserInfo" columnName="EMPLOYEEID"/>
+    </attribute>
+    <attribute id="FIRSTNAME" order="26" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="FIRSTNAME"/>
+      <keyMapping columnObjectName="WithUserInfo" columnName="FIRSTNAME"/>
+    </attribute>
+    <attribute id="LASTNAME" order="27" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="LASTNAME"/>
+      <keyMapping columnObjectName="WithUserInfo" columnName="LASTNAME"/>
+    </attribute>
+    <attribute id="DOMAIN" order="28" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="DOMAIN"/>
+      <keyMapping columnObjectName="WithUserInfo" columnName="DOMAIN"/>
+    </attribute>
+    <attribute id="JOBCODE" order="29" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="JOBCODE"/>
+      <keyMapping columnObjectName="WithUserInfo" columnName="JOBCODE"/>
+    </attribute>
+    <attribute id="JOBGROUP" order="30" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="JOBGROUP"/>
+      <keyMapping columnObjectName="WithUserInfo" columnName="JOBGROUP"/>
+    </attribute>
+    <attribute id="GROUPBU" order="31" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="GROUPBU"/>
+      <keyMapping columnObjectName="WithUserInfo" columnName="GROUPBU"/>
+    </attribute>
+    <attribute id="EMPLOYEEGROUP" order="32" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="EMPLOYEEGROUP"/>
+      <keyMapping columnObjectName="WithUserInfo" columnName="EMPLOYEEGROUP"/>
+    </attribute>
+    <attribute id="EMPCUSTOMSTATUS" order="33" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="EMPCUSTOMSTATUS"/>
+      <keyMapping columnObjectName="WithUserInfo" columnName="EMPCUSTOMSTATUS"/>
+    </attribute>
+    <attribute id="DEPARTMENT" order="34" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="DEPARTMENT"/>
+      <keyMapping columnObjectName="WithUserInfo" columnName="DEPARTMENT"/>
+    </attribute>
+    <attribute id="DIVISION" order="35" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="DIVISION"/>
+      <keyMapping columnObjectName="WithUserInfo" columnName="DIVISION"/>
+    </attribute>
+    <attribute id="JOBLOCATION" order="36" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="JOBLOCATION"/>
+      <keyMapping columnObjectName="WithUserInfo" columnName="JOBLOCATION"/>
+    </attribute>
+    <attribute id="MANAGERUSERID" order="37" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="MANAGERUSERID"/>
+      <keyMapping columnObjectName="WithUserInfo" columnName="MANAGERUSERID"/>
+    </attribute>
+    <attribute id="MANAGERNAME" order="38" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="MANAGERNAME"/>
+      <keyMapping columnObjectName="WithUserInfo" columnName="MANAGERNAME"/>
+    </attribute></attributes>
+  <calculatedAttributes>
+    <calculatedAttribute id="IS_QUALIFIED" order="39" semanticType="empty" displayAttribute="false" attributeHierarchyActive="false">
+      <keyCalculation datatype="TINYINT" expressionLanguage="COLUMN_ENGINE">
+        <formula>int(&quot;QUALIFIED&quot;)</formula>
+      </keyCalculation>
+    </calculatedAttribute>
+  </calculatedAttributes>
+  <baseMeasures/>
+  <calculatedMeasures/>
+  <restrictedMeasures/>
+</logicalModel>
+<layout>
+  <shapes>
+    <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+      <upperLeftCorner x="221" y="105"/>
+    
+      <rectangleSize width="160"/>
+    </shape>
+    
+  
+    <shape expanded="true" modelObjectName="Competency" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="92" y="356"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="UserData" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="302" y="356"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="WithUserInfo" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="221" y="217"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape modelObjectName="Competency" modelObjectNameSpace="WithUserInfo" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="20" y="30"/>
+      <rectangleSize width="286"/>
+    </shape>
+    <shape modelObjectName="UserData" modelObjectNameSpace="WithUserInfo" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="403" y="30"/>
+      <rectangleSize width="199"/>
+    </shape>
+  </shapes>
+</layout>
+</Calculation:scenario>

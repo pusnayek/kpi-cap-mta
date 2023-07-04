@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="ManagerSubordinates" applyPrivilegeType="NONE" dataCategory="DIMENSION" dimensionType="STANDARD" schemaVersion="3.0" hierarchyGeneration="SQL" outputViewType="Aggregation" cacheInvalidationPeriod="NONE" enforceSqlExecution="true" runWithInvokerPrivileges="true">
+<descriptions defaultDescription="ManagerSubordinates"/>
+<localVariables/>
+<variableMappings/>
+<dataSources>
+  <DataSource id="AuthorizedUsers">
+    <resourceUri>AuthorizedUsers</resourceUri>
+  </DataSource>
+  <DataSource id="EmployeesMaster">
+    <resourceUri>EmployeesMaster</resourceUri>
+  </DataSource>
+</dataSources>
+<snapshotProcedures/>
+<calculationViews>
+  <calculationView xsi:type="Calculation:ProjectionView" id="Subordinates">
+    <viewAttributes>
+      <viewAttribute id="ACTING_USERID"/>
+      <viewAttribute id="USERID"/>
+      <viewAttribute id="ACTOR"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="AuthorizedUsers"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:AggregationView" id="Managers">
+    <viewAttributes>
+      <viewAttribute id="MANAGERUSERID"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <restrictedViewAttributes/>
+    <input node="EmployeesMaster"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:JoinView" id="ManagerReports" cardinality="CN_N" joinType="inner">
+    <viewAttributes>
+      <viewAttribute id="ACTING_USERID"/>
+      <viewAttribute id="USERID"/>
+      <viewAttribute id="ACTOR"/>
+      <viewAttribute hidden="true" id="JOIN$USERID$MANAGERUSERID"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="Subordinates">
+      <mapping xsi:type="Calculation:AttributeMapping" target="ACTING_USERID" source="ACTING_USERID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="USERID" source="USERID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ACTOR" source="ACTOR"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$USERID$MANAGERUSERID" source="USERID"/>
+    </input>
+    <input node="Managers">
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$USERID$MANAGERUSERID" source="MANAGERUSERID"/>
+    </input>
+    <joinAttribute name="JOIN$USERID$MANAGERUSERID"/>
+  </calculationView>
+</calculationViews>
+
+<logicalModel id="ManagerReports">
+  <attributes>
+    <attribute id="ACTING_USERID" order="1" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="USERID"/>
+      <keyMapping columnObjectName="ManagerReports" columnName="ACTING_USERID"/>
+    </attribute>
+    <attribute id="USERID" order="2" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="USERID"/>
+      <keyMapping columnObjectName="ManagerReports" columnName="USERID"/>
+    </attribute>
+    <attribute id="ACTOR" order="3" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="ACTOR"/>
+      <keyMapping columnObjectName="ManagerReports" columnName="ACTOR"/>
+    </attribute>
+  </attributes>
+  <calculatedAttributes/>
+  <baseMeasures/>
+  <calculatedMeasures/>
+  <restrictedMeasures/>
+</logicalModel>
+<layout>
+  <shapes>
+    <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+      <upperLeftCorner x="221.11302679000914" y="112"/>
+    
+      <rectangleSize width="160"/>
+    </shape>
+    
+  
+    <shape expanded="true" modelObjectName="Subordinates" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="92.00000000000001" y="356.9999988079071"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="Managers" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="302.00000000000006" y="356.9999988079071"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="ManagerReports" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="221.11302679000914" y="217"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape modelObjectName="Subordinates" modelObjectNameSpace="ManagerReports" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="20" y="30"/>
+      <rectangleSize width="175.2353515625"/>
+    </shape>
+    <shape modelObjectName="Managers" modelObjectNameSpace="ManagerReports" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="320" y="30"/>
+      <rectangleSize width="183.17919921875"/>
+    </shape>
+  </shapes>
+</layout>
+</Calculation:scenario>
