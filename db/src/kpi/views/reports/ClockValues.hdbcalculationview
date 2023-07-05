@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="ClockValues" applyPrivilegeType="NONE" dataCategory="CUBE" schemaVersion="3.0" hierarchyGeneration="SQL" outputViewType="Aggregation" cacheInvalidationPeriod="NONE" enforceSqlExecution="true" runWithInvokerPrivileges="true">
+<descriptions defaultDescription="ClockValues"/>
+<localVariables/>
+<variableMappings/>
+<dataSources>
+  <DataSource id="EmployeeCompetency">
+    <resourceUri>EmployeeCompetency</resourceUri>
+  </DataSource>
+</dataSources>
+<snapshotProcedures/>
+<calculationViews>
+  <calculationView xsi:type="Calculation:AggregationView" id="Competencies">
+    <viewAttributes>
+      <viewAttribute id="ACTING_USERID"/>
+      <viewAttribute id="ACTOR_TYPE"/>
+      <viewAttribute id="GENERAL_COMPETENCY"/>
+    </viewAttributes>
+    <calculatedViewAttributes>
+      <calculatedViewAttribute id="EMPLOYEE_CLOCK_VALUE" datatype="INTEGER" expressionLanguage="COLUMN_ENGINE">
+        <formula>if(&quot;ACTOR_TYPE&quot;='RE',&quot;GENERAL_COMPETENCY&quot;,0)</formula>
+      </calculatedViewAttribute>
+      <calculatedViewAttribute id="MANAGER_CLOCK_VALUE" datatype="INTEGER" expressionLanguage="COLUMN_ENGINE">
+        <formula>if(&quot;ACTOR_TYPE&quot;='RM',&quot;GENERAL_COMPETENCY&quot;,0)</formula>
+      </calculatedViewAttribute>
+    </calculatedViewAttributes>
+    <restrictedViewAttributes/>
+    <input node="EmployeeCompetency">
+      <mapping xsi:type="Calculation:AttributeMapping" target="GENERAL_COMPETENCY" source="TOTAL_COMPETENCY_PERCENTAGE"/>
+    </input>
+  </calculationView>
+</calculationViews>
+
+<logicalModel id="Competencies">
+  <attributes>
+    <attribute id="ACTING_USERID" order="1" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="ACTING_USERID"/>
+      <keyMapping columnObjectName="Competencies" columnName="ACTING_USERID"/>
+    </attribute>
+    <attribute id="ACTOR_TYPE" order="2" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="ACTOR"/>
+      <keyMapping columnObjectName="Competencies" columnName="ACTOR_TYPE"/>
+    </attribute>
+  </attributes>
+  <calculatedAttributes>
+    <calculatedAttribute id="EMPLOYEE_CLOCK_STATUS" order="3" semanticType="empty" displayAttribute="false" attributeHierarchyActive="false">
+      <keyCalculation datatype="VARCHAR" expressionLanguage="COLUMN_ENGINE" length="1">
+        <formula>if(&quot;EMPLOYEE_CLOCK_VALUE&quot;&lt;50,'R',if(&quot;EMPLOYEE_CLOCK_VALUE&quot;&lt;95,'Y','G'))</formula>
+      </keyCalculation>
+      </calculatedAttribute>
+    <calculatedAttribute id="MANAGER_CLOCK_STATUS" order="4" semanticType="empty" displayAttribute="false" attributeHierarchyActive="false">
+      <keyCalculation datatype="VARCHAR" expressionLanguage="COLUMN_ENGINE" length="1">
+        <formula>if(&quot;MANAGER_CLOCK_VALUE&quot;&lt;50,'R',if(&quot;MANAGER_CLOCK_VALUE&quot;&lt;95,'Y','G'))</formula>
+      </keyCalculation>
+      </calculatedAttribute>
+  </calculatedAttributes>
+  <baseMeasures>
+    <measure id="EMPLOYEE_CLOCK_VALUE" order="5" aggregationType="sum" measureType="simple" restrictionExpressionLanguage="SQL">
+      <descriptions defaultDescription="EMPLOYEE_CLOCK_VALUE"/>
+      <measureMapping columnObjectName="Competencies" columnName="EMPLOYEE_CLOCK_VALUE"/>
+      <exceptionAggregationMetadata/>
+    </measure>
+    <measure id="MANAGER_CLOCK_VALUE" order="6" aggregationType="sum" measureType="simple" restrictionExpressionLanguage="SQL">
+      <descriptions defaultDescription="MANAGER_CLOCK_VALUE"/>
+      <measureMapping columnObjectName="Competencies" columnName="MANAGER_CLOCK_VALUE"/>
+      <exceptionAggregationMetadata/>
+    </measure>
+  </baseMeasures>
+  <calculatedMeasures/>
+  <restrictedMeasures/>
+  <localDimensions/>
+</logicalModel>
+<layout>
+  <shapes>
+    <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+      <upperLeftCorner x="92" y="112"/>
+    
+      <rectangleSize width="160"/>
+    </shape>
+    
+  
+    <shape expanded="true" modelObjectName="Competencies" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="92" y="217"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+  </shapes>
+</layout>
+</Calculation:scenario>

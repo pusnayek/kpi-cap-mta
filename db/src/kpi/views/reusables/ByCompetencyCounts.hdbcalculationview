@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="ByCompetencyCounts" applyPrivilegeType="NONE" dataCategory="CUBE" schemaVersion="3.0" hierarchyGeneration="SQL" outputViewType="Aggregation" cacheInvalidationPeriod="NONE" enforceSqlExecution="true" runWithInvokerPrivileges="true">
+<descriptions defaultDescription="ByCompetencyCounts"/>
+<localVariables/>
+<variableMappings/>
+<dataSources>
+  <DataSource id="CountCompetency">
+    <resourceUri>CountCompetency</resourceUri>
+  </DataSource>
+  <DataSource id="EmployeesMaster">
+    <resourceUri>EmployeesMaster</resourceUri>
+  </DataSource>
+</dataSources>
+<snapshotProcedures/>
+<calculationViews>
+  <calculationView xsi:type="Calculation:AggregationView" id="Competency">
+    <viewAttributes>
+      <viewAttribute id="ACTING_USERID"/>
+      <viewAttribute id="ACTOR_TYPE"/>
+      <viewAttribute id="USERID"/>
+      <viewAttribute id="COMPETENCY_ID"/>
+      <viewAttribute id="COMPETENCY_NAME"/>
+      <viewAttribute id="COMPETENCY_AREA"/>
+      <viewAttribute id="COMPETENCY_TYPE"/>
+      <viewAttribute id="COMPETENCY_DESCRIPTION"/>
+      <viewAttribute id="COMPETENCY_GRANTSCERTIFICATE"/>
+      <viewAttribute id="RETAININGNUMER"/>
+      <viewAttribute id="QUALIFIED"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <restrictedViewAttributes/>
+    <input node="CountCompetency">
+      <mapping xsi:type="Calculation:AttributeMapping" target="ACTOR_TYPE" source="ACTOR"/>
+    </input>
+  </calculationView>
+  <calculationView xsi:type="Calculation:ProjectionView" id="EmployeeData">
+    <viewAttributes>
+      <viewAttribute id="USERID"/>
+      <viewAttribute id="DOMAIN"/>
+      <viewAttribute id="DEPARTMENT"/>
+      <viewAttribute id="DIVISION"/>
+      <viewAttribute id="JOBCODE"/>
+      <viewAttribute id="JOBGROUP"/>
+      <viewAttribute id="JOBLOCATION"/>
+      <viewAttribute id="GROUPBU"/>
+      <viewAttribute id="EMPLOYEEGROUP"/>
+      <viewAttribute id="EMPCUSTOMSTATUS"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="EmployeesMaster"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:JoinView" id="WithEmployee" cardinality="CN_N" joinType="inner">
+    <viewAttributes>
+      <viewAttribute id="ACTING_USERID"/>
+      <viewAttribute id="ACTOR_TYPE"/>
+      <viewAttribute id="USERID"/>
+      <viewAttribute id="COMPETENCY_ID"/>
+      <viewAttribute id="COMPETENCY_NAME"/>
+      <viewAttribute id="COMPETENCY_AREA"/>
+      <viewAttribute id="COMPETENCY_TYPE"/>
+      <viewAttribute id="COMPETENCY_DESCRIPTION"/>
+      <viewAttribute id="COMPETENCY_GRANTSCERTIFICATE"/>
+      <viewAttribute id="RETAININGNUMER" aggregationType="sum"/>
+      <viewAttribute id="QUALIFIED" aggregationType="sum"/>
+      <viewAttribute id="DOMAIN"/>
+      <viewAttribute id="DEPARTMENT"/>
+      <viewAttribute id="DIVISION"/>
+      <viewAttribute id="JOBCODE"/>
+      <viewAttribute id="JOBGROUP"/>
+      <viewAttribute id="JOBLOCATION"/>
+      <viewAttribute id="GROUPBU"/>
+      <viewAttribute id="EMPLOYEEGROUP"/>
+      <viewAttribute id="EMPCUSTOMSTATUS"/>
+      <viewAttribute hidden="true" id="JOIN$USERID$USERID"/>
+    </viewAttributes>
+    <calculatedViewAttributes>
+      <calculatedViewAttribute id="USER_QUALIFIED" datatype="VARCHAR" length="50" expressionLanguage="COLUMN_ENGINE">
+        <formula>if(isNull(&quot;QUALIFIED&quot;),string(null),
+if(&quot;QUALIFIED&quot;=1,&quot;USERID&quot;,string(null)))</formula>
+      </calculatedViewAttribute>
+    </calculatedViewAttributes>
+    <input node="Competency">
+      <mapping xsi:type="Calculation:AttributeMapping" target="ACTING_USERID" source="ACTING_USERID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ACTOR_TYPE" source="ACTOR_TYPE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="USERID" source="USERID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMPETENCY_ID" source="COMPETENCY_ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMPETENCY_NAME" source="COMPETENCY_NAME"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMPETENCY_AREA" source="COMPETENCY_AREA"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMPETENCY_TYPE" source="COMPETENCY_TYPE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMPETENCY_DESCRIPTION" source="COMPETENCY_DESCRIPTION"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMPETENCY_GRANTSCERTIFICATE" source="COMPETENCY_GRANTSCERTIFICATE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="RETAININGNUMER" source="RETAININGNUMER"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="QUALIFIED" source="QUALIFIED"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$USERID$USERID" source="USERID"/>
+    </input>
+    <input node="EmployeeData">
+      <mapping xsi:type="Calculation:AttributeMapping" target="DOMAIN" source="DOMAIN"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="DEPARTMENT" source="DEPARTMENT"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="DIVISION" source="DIVISION"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOBCODE" source="JOBCODE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOBGROUP" source="JOBGROUP"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOBLOCATION" source="JOBLOCATION"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="GROUPBU" source="GROUPBU"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="EMPLOYEEGROUP" source="EMPLOYEEGROUP"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="EMPCUSTOMSTATUS" source="EMPCUSTOMSTATUS"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$USERID$USERID" source="USERID"/>
+    </input>
+    <joinAttribute name="JOIN$USERID$USERID"/>
+  </calculationView>
+</calculationViews>
+
+<logicalModel id="WithEmployee">
+  <attributes>
+    <attribute id="ACTING_USERID" order="1" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="ACTING_USERID"/>
+      <keyMapping columnObjectName="WithEmployee" columnName="ACTING_USERID"/>
+    </attribute>
+    <attribute id="ACTOR_TYPE" order="2" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="ACTOR"/>
+      <keyMapping columnObjectName="WithEmployee" columnName="ACTOR_TYPE"/>
+    </attribute>
+    <attribute id="USERID" order="3" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="USERID"/>
+      <keyMapping columnObjectName="WithEmployee" columnName="USERID"/>
+    </attribute>
+    <attribute id="COMPETENCY_ID" order="4" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="COMPETENCY_ID"/>
+      <keyMapping columnObjectName="WithEmployee" columnName="COMPETENCY_ID"/>
+    </attribute>
+    <attribute id="COMPETENCY_NAME" order="5" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="COMPETENCY_NAME"/>
+      <keyMapping columnObjectName="WithEmployee" columnName="COMPETENCY_NAME"/>
+    </attribute>
+    <attribute id="COMPETENCY_AREA" order="6" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="COMPETENCY_AREA"/>
+      <keyMapping columnObjectName="WithEmployee" columnName="COMPETENCY_AREA"/>
+    </attribute>
+    <attribute id="COMPETENCY_TYPE" order="7" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="COMPETENCY_TYPE"/>
+      <keyMapping columnObjectName="WithEmployee" columnName="COMPETENCY_TYPE"/>
+    </attribute>
+    <attribute id="COMPETENCY_DESCRIPTION" order="8" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="COMPETENCY_DESCRIPTION"/>
+      <keyMapping columnObjectName="WithEmployee" columnName="COMPETENCY_DESCRIPTION"/>
+    </attribute>
+    <attribute id="COMPETENCY_GRANTSCERTIFICATE" order="9" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="COMPETENCY_GRANTSCERTIFICATE"/>
+      <keyMapping columnObjectName="WithEmployee" columnName="COMPETENCY_GRANTSCERTIFICATE"/>
+    </attribute>
+    <attribute id="DOMAIN" order="12" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="DOMAIN"/>
+      <keyMapping columnObjectName="WithEmployee" columnName="DOMAIN"/>
+    </attribute>
+    <attribute id="DEPARTMENT" order="13" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="DEPARTMENT"/>
+      <keyMapping columnObjectName="WithEmployee" columnName="DEPARTMENT"/>
+    </attribute>
+    <attribute id="DIVISION" order="14" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="DIVISION"/>
+      <keyMapping columnObjectName="WithEmployee" columnName="DIVISION"/>
+    </attribute>
+    <attribute id="JOBCODE" order="15" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="JOBCODE"/>
+      <keyMapping columnObjectName="WithEmployee" columnName="JOBCODE"/>
+    </attribute>
+    <attribute id="JOBGROUP" order="16" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="JOBGROUP"/>
+      <keyMapping columnObjectName="WithEmployee" columnName="JOBGROUP"/>
+    </attribute>
+    <attribute id="JOBLOCATION" order="17" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="JOBLOCATION"/>
+      <keyMapping columnObjectName="WithEmployee" columnName="JOBLOCATION"/>
+    </attribute>
+    <attribute id="GROUPBU" order="18" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="GROUPBU"/>
+      <keyMapping columnObjectName="WithEmployee" columnName="GROUPBU"/>
+    </attribute>
+    <attribute id="EMPLOYEEGROUP" order="19" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="EMPLOYEEGROUP"/>
+      <keyMapping columnObjectName="WithEmployee" columnName="EMPLOYEEGROUP"/>
+    </attribute>
+    <attribute id="EMPCUSTOMSTATUS" order="20" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="EMPCUSTOMSTATUS"/>
+      <keyMapping columnObjectName="WithEmployee" columnName="EMPCUSTOMSTATUS"/>
+    </attribute>
+    <attribute id="USER_QUALIFIED" order="21" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="USER_QUALIFIED"/>
+      <keyMapping columnObjectName="WithEmployee" columnName="USER_QUALIFIED"/>
+    </attribute>
+  </attributes>
+  <calculatedAttributes/>
+  <baseMeasures>
+    <measure id="RETAININGNUMER" order="10" aggregationType="sum" measureType="simple" restrictionExpressionLanguage="SQL">
+      <descriptions defaultDescription="RETAININGNUMER"/>
+      <measureMapping columnObjectName="WithEmployee" columnName="RETAININGNUMER"/>
+      <exceptionAggregationMetadata/>
+    </measure>
+    <measure id="QUALIFIED" order="11" aggregationType="sum" measureType="simple" restrictionExpressionLanguage="SQL">
+      <descriptions defaultDescription="QUALIFIED"/>
+      <measureMapping columnObjectName="WithEmployee" columnName="QUALIFIED"/>
+      <exceptionAggregationMetadata/>
+    </measure>
+  </baseMeasures>
+  <calculatedMeasures>
+    <measure id="NUMBER_OF_EMPLOYEES" order="22" aggregationType="sum" measureType="simple" calculatedMeasureType="counter" datatype="BIGINT" length="" restrictionExpressionLanguage="SQL">
+      <descriptions defaultDescription="NUMBER_OF_EMPLOYEES"/>
+      <exceptionAggregation>
+        <attribute attributeName="USERID"/>
+      </exceptionAggregation>
+      <formula>1</formula>
+      
+      <exceptionAggregationMetadata/>
+    </measure>
+    <measure id="NUMBER_OF_QUALIFIED_EMPLOYEES" order="23" aggregationType="sum" measureType="simple" calculatedMeasureType="counter" datatype="BIGINT" length="" restrictionExpressionLanguage="SQL">
+      <descriptions defaultDescription="NUMBER_OF_QUALIFIED_EMPLOYEES"/>
+      <exceptionAggregation>
+        <attribute attributeName="USER_QUALIFIED"/>
+      </exceptionAggregation>
+      <formula>1</formula>
+      
+      <exceptionAggregationMetadata/>
+    </measure>
+  </calculatedMeasures>
+  <restrictedMeasures/>
+  <localDimensions/>
+</logicalModel>
+<layout>
+  <shapes>
+    <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+      <upperLeftCorner x="221" y="112"/>
+    
+      <rectangleSize width="160"/>
+    </shape>
+    
+  
+    <shape expanded="true" modelObjectName="Competency" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="92" y="356"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="EmployeeData" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="302" y="356"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="WithEmployee" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="221" y="217"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape modelObjectName="Competency" modelObjectNameSpace="WithEmployee" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="20" y="30"/>
+      <rectangleSize width="286"/>
+    </shape>
+    <shape modelObjectName="EmployeeData" modelObjectNameSpace="WithEmployee" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="388" y="30"/>
+      <rectangleSize width="199"/>
+    </shape>
+  </shapes>
+</layout>
+</Calculation:scenario>
