@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="Populations" applyPrivilegeType="NONE" dataCategory="DIMENSION" dimensionType="STANDARD" schemaVersion="3.0" hierarchyGeneration="SQL" outputViewType="Aggregation" cacheInvalidationPeriod="NONE" enforceSqlExecution="true" runWithInvokerPrivileges="true">
-<descriptions defaultDescription="Populations"/>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="POPULATIONS" applyPrivilegeType="NONE" dataCategory="DIMENSION" dimensionType="STANDARD" schemaVersion="3.0" hierarchyGeneration="SQL" outputViewType="Aggregation" cacheInvalidationPeriod="NONE" enforceSqlExecution="true" runWithInvokerPrivileges="true">
+<descriptions defaultDescription="POPULATIONS"/>
 <localVariables/>
 <variableMappings/>
 <dataSources>
@@ -67,17 +67,17 @@
       <viewAttribute id="INDEX_OF_POPULATION"/>
     </viewAttributes>
     <calculatedViewAttributes/>
-    <input node="Users">
+    <input node="Users" emptyUnionBehavior="NO_ROW">
       <mapping xsi:type="Calculation:AttributeMapping" target="USERID" source="USERID"/>
       <mapping xsi:type="Calculation:AttributeMapping" target="ACTOR" source="ACTOR"/>
       <mapping xsi:type="Calculation:AttributeMapping" target="INDEX_OF_POPULATION" source="INDEX_OF_POPULATION"/>
     </input>
-    <input node="Managers">
+    <input node="Managers" emptyUnionBehavior="NO_ROW">
       <mapping xsi:type="Calculation:AttributeMapping" target="USERID" source="MANAGERUSERID"/>
       <mapping xsi:type="Calculation:AttributeMapping" target="ACTOR" source="ACTOR"/>
       <mapping xsi:type="Calculation:AttributeMapping" target="INDEX_OF_POPULATION" source="INDEX_OF_POPULATION"/>
     </input>
-    <input node="Admins">
+    <input node="Admins" emptyUnionBehavior="NO_ROW">
       <mapping xsi:type="Calculation:AttributeMapping" target="USERID" source="USERID"/>
       <mapping xsi:type="Calculation:AttributeMapping" target="ACTOR" source="ACTOR"/>
       <mapping xsi:type="Calculation:AttributeMapping" target="INDEX_OF_POPULATION" source="INDEX_OF_POPULATION"/>
@@ -108,26 +108,26 @@
 <layout>
   <shapes>
     <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
-      <upperLeftCorner x="361.75405278666415" y="112"/>
+      <upperLeftCorner x="361" y="112"/>
     
       <rectangleSize width="160"/>
     </shape>
     
   
     <shape expanded="true" modelObjectName="Users" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="92" y="391.9999976158142"/>
+      <upperLeftCorner x="92" y="391"/>
       <rectangleSize height="30" width="160"/>
     </shape>
     <shape expanded="true" modelObjectName="Managers" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="512" y="391.9999976158142"/>
+      <upperLeftCorner x="512" y="391"/>
       <rectangleSize height="30" width="160"/>
     </shape>
     <shape expanded="true" modelObjectName="Admins" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="302" y="391.9999976158142"/>
+      <upperLeftCorner x="302" y="391"/>
       <rectangleSize height="30" width="160"/>
     </shape>
     <shape expanded="true" modelObjectName="Combine" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="302" y="236.9999988079071"/>
+      <upperLeftCorner x="302" y="236"/>
       <rectangleSize height="30" width="160"/>
     </shape>
   </shapes>
