@@ -17,12 +17,12 @@
         },
         "dataSources": {
             "mainService": {
-                "uri": "kpi/",
+                "uri": "../v2/kpi/",
                 "type": "OData",
                 "settings": {
                     "annotations": [],
                     "localUri": "localService/metadata.xml",
-                    "odataVersion": "4.0"
+                    "odataVersion": "2.0"
                 }
             }
         }
@@ -44,7 +44,7 @@
         }
     },
     "sap.ui5": {
-        "flexEnabled": true,
+        "flexEnabled": false,
         "dependencies": {
             "minUI5Version": "1.116.0",
             "libs": {
