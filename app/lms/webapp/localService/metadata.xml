@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+    <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Common.xml">
+        <edmx:Include Alias="Common" Namespace="com.sap.vocabularies.Common.v1"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Core.V1.xml">
+        <edmx:Include Alias="Core" Namespace="Org.OData.Core.V1"/>
+    </edmx:Reference>
+    <edmx:DataServices>
+        <Schema Namespace="KpiService" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+            <EntityContainer Name="EntityContainer">
+                <EntitySet Name="Populations" EntityType="KpiService.Populations"/>
+            </EntityContainer>
+            <EntityType Name="Populations">
+                <Key>
+                    <PropertyRef Name="USERID"/>
+                </Key>
+                <Property Name="USERID" Type="Edm.String" MaxLength="50" Nullable="false"/>
+                <Property Name="ACTOR" Type="Edm.String" MaxLength="2"/>
+                <Property Name="INDEX_OF_POPULATION" Type="Edm.Byte"/>
+            </EntityType>
+            <Annotations Target="KpiService.Populations/USERID">
+                <Annotation Term="Common.Label" String="USERID: USERID"/>
+            </Annotations>
+            <Annotations Target="KpiService.Populations/ACTOR">
+                <Annotation Term="Common.Label" String="ACTOR: ACTOR"/>
+            </Annotations>
+            <Annotations Target="KpiService.Populations/INDEX_OF_POPULATION">
+                <Annotation Term="Common.Label" String="INDEX_OF_POPULATION: INDEX_OF_POPULATION"/>
+            </Annotations>
+        </Schema>
+    </edmx:DataServices>
+</edmx:Edmx>
