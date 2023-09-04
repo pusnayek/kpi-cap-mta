@@ -1,0 +1,2 @@
+sap.ui.define(["sap/ui/core/mvc/Controller","sap/ui/model/json/JSONModel"],function(e,n){"use strict";return e.extend("ui.lms.controller.Main",{onInit:function(){},onBeforeRendering:function(e){var o=this;this.getOwnerComponent().getModel().read("/Populations",{success:function(e){o.getView().setModel(new n({items:e.results}),"population")},error:function(e){}})}})});
+//# sourceMappingURL=Main.controller.js.map
