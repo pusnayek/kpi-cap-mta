@@ -33,6 +33,8 @@
       <viewAttribute id="HAS_CURRENT_ASSIGNMENT"/>
       <viewAttribute id="HAS_EXPIRY"/>
       <viewAttribute id="EXPIRATION_DATE"/>
+    
+      <viewAttribute id="LAST_ITEM_ASSIGNED_BY"/>
     </viewAttributes>
     <calculatedViewAttributes>
       <calculatedViewAttribute id="PRIORITY_BY_DATE" datatype="SECONDDATE" expressionLanguage="COLUMN_ENGINE">
@@ -66,6 +68,8 @@
       <viewAttribute id="HAS_EXPIRY"/>
       <viewAttribute id="EXPIRATION_DATE"/>
       <viewAttribute id="PRIORITY_BY_DATE"/>
+    
+      <viewAttribute id="LAST_ITEM_ASSIGNED_BY"/>
     </viewAttributes>
     <calculatedViewAttributes/>
     <input node="Completions"/>
@@ -165,6 +169,11 @@
     <attribute id="EXPIRATION_DATE" order="21" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="Expiration Date"/>
       <keyMapping columnObjectName="LatestCompletions" columnName="EXPIRATION_DATE"/>
+    </attribute>
+  
+    <attribute id="LAST_ITEM_ASSIGNED_BY" order="22" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="LAST_ITEM_ASSIGNED_BY"/>
+      <keyMapping columnObjectName="LatestCompletions" columnName="LAST_ITEM_ASSIGNED_BY"/>
     </attribute>
   </attributes>
   <calculatedAttributes/>

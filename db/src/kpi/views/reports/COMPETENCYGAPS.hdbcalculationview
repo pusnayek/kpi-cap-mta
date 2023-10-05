@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="CompetencyGaps" applyPrivilegeType="NONE" dataCategory="DIMENSION" dimensionType="STANDARD" schemaVersion="3.0" hierarchyGeneration="SQL" outputViewType="Projection" cacheInvalidationPeriod="NONE" enforceSqlExecution="true" runWithInvokerPrivileges="true">
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="COMPETENCYGAPS" applyPrivilegeType="NONE" dataCategory="DIMENSION" dimensionType="STANDARD" schemaVersion="3.0" hierarchyGeneration="SQL" outputViewType="Projection" cacheInvalidationPeriod="NONE" enforceSqlExecution="true" runWithInvokerPrivileges="true">
 <descriptions defaultDescription="CompetencyGaps"/>
 <localVariables/>
 <variableMappings/>
@@ -36,7 +36,6 @@
     <input node="ItemCompetency">
       <mapping xsi:type="Calculation:AttributeMapping" target="ACTOR_TYPE" source="ACTOR"/>
     </input>
-  
     <filter>&quot;QUALIFIED&quot;=0</filter>
   </calculationView>
   <calculationView xsi:type="Calculation:ProjectionView" id="UserData">
@@ -263,7 +262,7 @@
       <keyCalculation datatype="TINYINT" expressionLanguage="COLUMN_ENGINE">
         <formula>int(&quot;QUALIFIED&quot;)</formula>
       </keyCalculation>
-      </calculatedAttribute>
+    </calculatedAttribute>
   </calculatedAttributes>
   <baseMeasures/>
   <calculatedMeasures/>

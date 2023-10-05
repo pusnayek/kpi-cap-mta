@@ -1,8 +1,8 @@
-PROCEDURE PROC_FULL_PULL_ADMIN_ACCESS( )
+PROCEDURE "PROC_DELTA_PULL_COMPLETIONS"( )
    LANGUAGE SQLSCRIPT
    SQL SECURITY INVOKER
    --DEFAULT SCHEMA <default_schema_name>
-   -- READS SQL DATA 
+   --READS SQL DATA 
    AS
 BEGIN
 
@@ -12,32 +12,26 @@ BEGIN
 
     DECLARE EXIT HANDLER FOR sqlexception
         INSERT INTO XT_ReplicationTrace
-         VALUES(CURRENT_TIMESTAMP, 'FullPullAdminAccess', ::SQL_ERROR_CODE, ::SQL_ERROR_MESSAGE);
-    
+            VALUES(CURRENT_TIMESTAMP, 'DeltaPullCompletions', ::SQL_ERROR_CODE, ::SQL_ERROR_MESSAGE);
+
     /**Start of process**/
     DeltaPullStartTime = NOW();
     
     SELECT MIN("READY_TO_REPLICATE") INTO ReadyToReplicate
         FROM "StagingReadiness"
-        WHERE ("EXTRACTION_CATEGORY" = 'Admin');
-
+        WHERE ("EXTRACTION_CATEGORY" = 'Completion');
+                
     IF ReadyToReplicate > 0 THEN
         /**Stage**/
-        CALL "PROC_STAGE_ADMIN_ACCESS"();
+        CALL "PROC_STAGE_COMPLETIONS"('F');
         /**Compress and put in final table **/
-        CALL "PROC_COMPRESS_ADMIN_ACCESS"();
+        CALL "PROC_COMPRESS_COMPLETIONS"();
 
         /** Update timestamp **/
         UPDATE CT_ExtractionStatus
             SET "DELTAPULLTIME" = CURRENT_TIMESTAMP
-            WHERE ("EXTRACTIONTYPE" = 'Admin');
+            WHERE ("EXTRACTIONTYPE" = 'Completion');
         COMMIT;
-        
-        /**
-        * Post-processing to calculate Admin access
-        */
-        CALL "PROC_ADMIN_ACCESS_DOMAINS"();
-        
     END IF;
 
     /**End of process**/
@@ -47,16 +41,14 @@ BEGIN
     ("EXTRACTIONTYPE", "DELTAPULLSTART", "DELTAPULLEND", "REPLICATIONSTART", "REPLICATIONEND", "DELTAPULLTIME", "REPLICATED", "RECORDS")
     SELECT 
         Extraction."EXTRACTIONTYPE",
-        :DeltaPullStartTime AS "DELTAPULLSTART",
-        :DeltaPullEndTime AS "DELTAPULLEND",
+        DeltaPullStartTime AS "DELTAPULLSTART",
+        DeltaPullEndTime AS "DELTAPULLEND",
         Extraction."REPLICATIONSTART",
         Extraction."REPLICATIONEND",
         Extraction."DELTAPULLTIME",
         CASE WHEN ReadyToReplicate > 0 THEN 1 ELSE 0 END AS "REPLICATED",
         Extraction."RECORDS"
     FROM CT_EXTRACTIONSTATUS AS Extraction
-    WHERE "EXTRACTIONTYPE" = 'Admin';
+    WHERE "EXTRACTIONTYPE" = 'Completion';
     COMMIT;
-
-
 END

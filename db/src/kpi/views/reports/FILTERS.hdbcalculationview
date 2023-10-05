@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="Filters" applyPrivilegeType="NONE" dataCategory="DIMENSION" dimensionType="STANDARD" schemaVersion="3.0" hierarchyGeneration="SQL" outputViewType="Projection" cacheInvalidationPeriod="NONE" enforceSqlExecution="true" runWithInvokerPrivileges="true">
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="FILTERS" applyPrivilegeType="NONE" dataCategory="DIMENSION" dimensionType="STANDARD" schemaVersion="3.0" hierarchyGeneration="SQL" outputViewType="Projection" cacheInvalidationPeriod="NONE" enforceSqlExecution="true" runWithInvokerPrivileges="true">
 <descriptions defaultDescription="Filters"/>
 <localVariables/>
 <variableMappings/>
@@ -211,47 +211,47 @@
 <layout>
   <shapes>
     <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
-      <upperLeftCorner x="328.6900820831794" y="112"/>
+      <upperLeftCorner x="328" y="112"/>
     
       <rectangleSize width="160"/>
     </shape>
     
   
     <shape expanded="true" modelObjectName="AuthUsers" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="92" y="496.9999976158142"/>
+      <upperLeftCorner x="92" y="496"/>
       <rectangleSize height="30" width="160"/>
     </shape>
     <shape expanded="true" modelObjectName="Users" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="302" y="496.9999976158142"/>
+      <upperLeftCorner x="302" y="496"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="Competencies" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="395" y="356"/>
       <rectangleSize height="30" width="160"/>
     </shape>
     <shape expanded="true" modelObjectName="UserData" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="118.66666666666663" y="356.9999988079071"/>
+      <upperLeftCorner x="118" y="356"/>
       <rectangleSize height="30" width="160"/>
     </shape>
     <shape modelObjectName="AuthUsers" modelObjectNameSpace="UserData" modelObjectType="JoinNodeInput">
       <upperLeftCorner x="20" y="30"/>
-      <rectangleSize width="175.2353515625"/>
+      <rectangleSize width="175"/>
     </shape>
     <shape modelObjectName="Users" modelObjectNameSpace="UserData" modelObjectType="JoinNodeInput">
       <upperLeftCorner x="320" y="30"/>
-      <rectangleSize width="199.0615234375"/>
-    </shape>
-    <shape expanded="true" modelObjectName="Competencies" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="395.83468516943316" y="356.9999988079071"/>
-      <rectangleSize height="30" width="160"/>
+      <rectangleSize width="199"/>
     </shape>
     <shape expanded="true" modelObjectName="WithCompetency" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="328.6900820831794" y="217"/>
+      <upperLeftCorner x="328" y="217"/>
       <rectangleSize height="30" width="160"/>
     </shape>
     <shape modelObjectName="UserData" modelObjectNameSpace="WithCompetency" modelObjectType="JoinNodeInput">
       <upperLeftCorner x="20" y="30"/>
-      <rectangleSize width="199.0615234375"/>
+      <rectangleSize width="199"/>
     </shape>
     <shape modelObjectName="Competencies" modelObjectNameSpace="WithCompetency" modelObjectType="JoinNodeInput">
       <upperLeftCorner x="320" y="30"/>
-      <rectangleSize width="244.9091796875"/>
+      <rectangleSize width="244"/>
     </shape>
   </shapes>
 </layout>

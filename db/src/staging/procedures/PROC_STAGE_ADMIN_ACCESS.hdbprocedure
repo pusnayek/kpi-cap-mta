@@ -10,7 +10,7 @@ BEGIN
     * Set processing status to 'P' - in process for all records; 
     * this will avoid conflicts with records which are inserted after this processing starts and can be deleted safely
     */
-    UPDATE ET_AdminAccess SET PROCESSINGSTATUS = 'P';
+    UPDATE ET_AdminAccess SET "PROCESSINGSTATUS" = 'P';
     COMMIT;
 
     /**
@@ -33,7 +33,7 @@ BEGIN
     /**
     * Delete all records with status 'P' from extraction table
     */
-    DELETE FROM ET_AdminAccess WHERE PROCESSINGSTATUS = 'P';
+    -- DELETE FROM ET_AdminAccess WHERE "PROCESSINGSTATUS" = 'P';
     COMMIT;
 
 END

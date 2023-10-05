@@ -39,6 +39,8 @@
       <viewAttribute id="HAS_CURRENT_ASSIGNMENT"/>
       <viewAttribute id="HAS_EXPIRY"/>
       <viewAttribute id="EXPIRATION_DATE"/>
+    
+      <viewAttribute id="LAST_ITEM_ASSIGNED_BY"/>
     </viewAttributes>
     <calculatedViewAttributes/>
     <input node="UserCompetency"/>
@@ -90,6 +92,7 @@
       <viewAttribute id="HAS_EXPIRY"/>
       <viewAttribute id="EXPIRATION_DATE"/>
       <viewAttribute id="CC_EXCLUDE_COMPETENCY"/>
+      <viewAttribute id="LAST_ITEM_ASSIGNED_BY"/>
       <viewAttribute hidden="true" id="JOIN$USERID$USERID"/>
       <viewAttribute hidden="true" id="JOIN$COMPETENCY_ID$COMPETENCY_ID"/>
     </viewAttributes>
@@ -116,6 +119,7 @@
       <mapping xsi:type="Calculation:AttributeMapping" target="HAS_CURRENT_ASSIGNMENT" source="HAS_CURRENT_ASSIGNMENT"/>
       <mapping xsi:type="Calculation:AttributeMapping" target="HAS_EXPIRY" source="HAS_EXPIRY"/>
       <mapping xsi:type="Calculation:AttributeMapping" target="EXPIRATION_DATE" source="EXPIRATION_DATE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="LAST_ITEM_ASSIGNED_BY" source="LAST_ITEM_ASSIGNED_BY"/>
       <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$USERID$USERID" source="USERID"/>
       <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$COMPETENCY_ID$COMPETENCY_ID" source="COMPETENCY_ID"/>
     </input>
@@ -151,6 +155,8 @@
       <viewAttribute id="HAS_EXPIRY"/>
       <viewAttribute id="EXPIRATION_DATE"/>
       <viewAttribute id="CC_EXCLUDE_COMPETENCY"/>
+    
+      <viewAttribute id="LAST_ITEM_ASSIGNED_BY"/>
     </viewAttributes>
     <calculatedViewAttributes/>
     <input node="WithExclusions"/>
@@ -180,6 +186,7 @@
       <viewAttribute id="HAS_EXPIRY"/>
       <viewAttribute id="EXPIRATION_DATE"/>
       <viewAttribute id="CC_EXCLUDE_COMPETENCY"/>
+      <viewAttribute id="LAST_ITEM_ASSIGNED_BY"/>
       <viewAttribute hidden="true" id="JOIN$USERID$USERID"/>
     </viewAttributes>
     <calculatedViewAttributes/>
@@ -206,6 +213,7 @@
       <mapping xsi:type="Calculation:AttributeMapping" target="HAS_EXPIRY" source="HAS_EXPIRY"/>
       <mapping xsi:type="Calculation:AttributeMapping" target="EXPIRATION_DATE" source="EXPIRATION_DATE"/>
       <mapping xsi:type="Calculation:AttributeMapping" target="CC_EXCLUDE_COMPETENCY" source="CC_EXCLUDE_COMPETENCY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="LAST_ITEM_ASSIGNED_BY" source="LAST_ITEM_ASSIGNED_BY"/>
       <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$USERID$USERID" source="USERID"/>
     </input>
     <input node="DeltaUpdates">
@@ -305,6 +313,11 @@
       <descriptions defaultDescription="CC_EXCLUDE_COMPETENCY"/>
       <keyMapping columnObjectName="Deltas" columnName="CC_EXCLUDE_COMPETENCY"/>
     </attribute>
+  
+    <attribute id="LAST_ITEM_ASSIGNED_BY" order="23" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="LAST_ITEM_ASSIGNED_BY"/>
+      <keyMapping columnObjectName="Deltas" columnName="LAST_ITEM_ASSIGNED_BY"/>
+    </attribute>
   </attributes>
   <calculatedAttributes/>
   <baseMeasures/>
@@ -314,49 +327,49 @@
 <layout>
   <shapes>
     <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
-      <upperLeftCorner x="230.3756005781384" y="112"/>
+      <upperLeftCorner x="230" y="112"/>
     
       <rectangleSize width="160"/>
     </shape>
     <shape expanded="true" modelObjectName="CompetencyData" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="113.15763653649651" y="641.9999964237213"/>
+      <upperLeftCorner x="113" y="641"/>
       <rectangleSize height="30" width="160"/>
     </shape>
     <shape expanded="true" modelObjectName="Exclusions" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="323.1576365364965" y="641.9999964237213"/>
+      <upperLeftCorner x="323" y="641"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="DeltaUpdates" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="92" y="356"/>
       <rectangleSize height="30" width="160"/>
     </shape>
     <shape expanded="true" modelObjectName="WithExclusions" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="232.57144122642916" y="501.9999976158142"/>
+      <upperLeftCorner x="232" y="501"/>
       <rectangleSize height="30" width="160"/>
     </shape>
     <shape modelObjectName="CompetencyData" modelObjectNameSpace="WithExclusions" modelObjectType="JoinNodeInput">
       <upperLeftCorner x="20" y="30"/>
-      <rectangleSize width="286.66943359375"/>
+      <rectangleSize width="286"/>
     </shape>
     <shape modelObjectName="Exclusions" modelObjectNameSpace="WithExclusions" modelObjectType="JoinNodeInput">
       <upperLeftCorner x="376" y="30"/>
-      <rectangleSize width="180.7353515625"/>
+      <rectangleSize width="180"/>
     </shape>
     <shape expanded="true" modelObjectName="Exclude" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="302" y="356.9999988079071"/>
-      <rectangleSize height="30" width="160"/>
-    </shape>
-    <shape expanded="true" modelObjectName="DeltaUpdates" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="92" y="356.9999988079071"/>
+      <upperLeftCorner x="302" y="356"/>
       <rectangleSize height="30" width="160"/>
     </shape>
     <shape expanded="true" modelObjectName="Deltas" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="230.3756005781384" y="217"/>
+      <upperLeftCorner x="230" y="217"/>
       <rectangleSize height="30" width="160"/>
     </shape>
     <shape modelObjectName="Exclude" modelObjectNameSpace="Deltas" modelObjectType="JoinNodeInput">
       <upperLeftCorner x="20" y="30"/>
-      <rectangleSize width="286.66943359375"/>
+      <rectangleSize width="286"/>
     </shape>
     <shape modelObjectName="DeltaUpdates" modelObjectNameSpace="Deltas" modelObjectType="JoinNodeInput">
       <upperLeftCorner x="320" y="30"/>
-      <rectangleSize width="201.10791015625"/>
+      <rectangleSize width="201"/>
     </shape>
   </shapes>
 </layout>

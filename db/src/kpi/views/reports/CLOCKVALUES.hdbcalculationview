@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="ClockValues" applyPrivilegeType="NONE" dataCategory="CUBE" schemaVersion="3.0" hierarchyGeneration="SQL" outputViewType="Aggregation" cacheInvalidationPeriod="NONE" enforceSqlExecution="true" runWithInvokerPrivileges="true">
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="CLOCKVALUES" applyPrivilegeType="NONE" dataCategory="CUBE" schemaVersion="3.0" hierarchyGeneration="SQL" outputViewType="Aggregation" cacheInvalidationPeriod="NONE" enforceSqlExecution="true" runWithInvokerPrivileges="true">
 <descriptions defaultDescription="ClockValues"/>
 <localVariables/>
 <variableMappings/>
 <dataSources>
-  <DataSource id="EmployeeCompetency">
-    <resourceUri>EmployeeCompetency</resourceUri>
+  <DataSource id="EMPLOYEECOMPETENCY">
+    <resourceUri>EMPLOYEECOMPETENCY</resourceUri>
   </DataSource>
 </dataSources>
 <snapshotProcedures/>
@@ -25,7 +25,7 @@
       </calculatedViewAttribute>
     </calculatedViewAttributes>
     <restrictedViewAttributes/>
-    <input node="EmployeeCompetency">
+    <input node="EMPLOYEECOMPETENCY">
       <mapping xsi:type="Calculation:AttributeMapping" target="GENERAL_COMPETENCY" source="TOTAL_COMPETENCY_PERCENTAGE"/>
     </input>
   </calculationView>
@@ -47,12 +47,12 @@
       <keyCalculation datatype="VARCHAR" expressionLanguage="COLUMN_ENGINE" length="1">
         <formula>if(&quot;EMPLOYEE_CLOCK_VALUE&quot;&lt;50,'R',if(&quot;EMPLOYEE_CLOCK_VALUE&quot;&lt;95,'Y','G'))</formula>
       </keyCalculation>
-      </calculatedAttribute>
+    </calculatedAttribute>
     <calculatedAttribute id="MANAGER_CLOCK_STATUS" order="4" semanticType="empty" displayAttribute="false" attributeHierarchyActive="false">
       <keyCalculation datatype="VARCHAR" expressionLanguage="COLUMN_ENGINE" length="1">
         <formula>if(&quot;MANAGER_CLOCK_VALUE&quot;&lt;50,'R',if(&quot;MANAGER_CLOCK_VALUE&quot;&lt;95,'Y','G'))</formula>
       </keyCalculation>
-      </calculatedAttribute>
+    </calculatedAttribute>
   </calculatedAttributes>
   <baseMeasures>
     <measure id="EMPLOYEE_CLOCK_VALUE" order="5" aggregationType="sum" measureType="simple" restrictionExpressionLanguage="SQL">

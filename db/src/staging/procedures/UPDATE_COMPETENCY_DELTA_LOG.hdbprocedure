@@ -1,0 +1,23 @@
+PROCEDURE UPDATE_COMPETENCY_DELTA_LOG( )
+   LANGUAGE SQLSCRIPT
+   SQL SECURITY INVOKER
+   --DEFAULT SCHEMA <default_schema_name>
+   -- READS SQL DATA 
+   AS
+BEGIN
+
+    DECLARE EXIT HANDLER FOR sqlexception
+        INSERT INTO XT_ReplicationTrace
+         VALUES(CURRENT_TIMESTAMP, 'UpdateCompetencyDeltaLog', ::SQL_ERROR_CODE, ::SQL_ERROR_MESSAGE);
+
+    /**
+    * Transfer delta log table
+    */
+    UPSERT ST_COMPTENCYDELTAS(
+        "USERID", "COMPETENCYID", "ACTION"
+    ) 
+    SELECT "USERID", "COMPETENCY_ID", "CC_ACTION" AS "ACTION"
+    FROM "CompetencyDeltas";
+    COMMIT;
+
+END

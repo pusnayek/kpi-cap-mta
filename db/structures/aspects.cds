@@ -30,7 +30,7 @@ context Structures {
 
     type _ItemId       : String(50);
     type _ItemType     : String(50);
-    type _ItemTitle    : String(50);
+    type _ItemTitle    : String(500);
 
     /*Delta extraction attributes */
     type DeltaKeys {
