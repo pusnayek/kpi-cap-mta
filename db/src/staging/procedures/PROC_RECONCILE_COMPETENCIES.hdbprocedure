@@ -1,0 +1,25 @@
+PROCEDURE "PROC_RECONCILE_COMPETENCIES"( )
+   LANGUAGE SQLSCRIPT
+   SQL SECURITY INVOKER
+   --DEFAULT SCHEMA <default_schema_name>
+   --READS SQL DATA 
+   AS
+BEGIN
+
+	/**Update the log by all competencies of users**/
+    UPSERT ST_COMPTENCYDELTAS (
+        "USERID", "COMPETENCYID", "ACTION"
+    ) 
+	SELECT
+	 "USERID",
+	 "COMPETENCY_ID" AS "COMPETENCYID",
+	 'M' AS "ACTION"
+	FROM "UserCompetency" ;
+	
+	/**clear the calculation table**/
+	DELETE FROM FT_Competencies;
+	COMMIT;
+	/**refill**/
+	CALL "UPDATE_COMPETENCY_DELTAS" ( );
+
+END

@@ -253,6 +253,7 @@
       <viewAttribute id="LAST_ASSIGNED_ITEMTYPE"/>
       <viewAttribute id="LATEST_ITEM_ASSIGNMENTDATE"/>
       <viewAttribute id="LAST_ASSIGNED_ITEMTITLE"/>
+      <viewAttribute id="LAST_ITEM_ASSIGNED_BY"/>
       <viewAttribute hidden="true" id="JOIN$USERID$USERID"/>
       <viewAttribute hidden="true" id="JOIN$COMPETENCY_ID$COMPETENCY_ID"/>
     </viewAttributes>
@@ -280,6 +281,7 @@
       <mapping xsi:type="Calculation:AttributeMapping" target="LAST_ASSIGNED_ITEMTYPE" source="LAST_ASSIGNED_ITEMTYPE"/>
       <mapping xsi:type="Calculation:AttributeMapping" target="LATEST_ITEM_ASSIGNMENTDATE" source="LATEST_ITEM_ASSIGNMENTDATE"/>
       <mapping xsi:type="Calculation:AttributeMapping" target="LAST_ASSIGNED_ITEMTITLE" source="LAST_ASSIGNED_ITEMTITLE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="LAST_ITEM_ASSIGNED_BY" source="LAST_ITEM_ASSIGNED_BY"/>
       <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$USERID$USERID" source="USERID"/>
       <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$COMPETENCY_ID$COMPETENCY_ID" source="COMPETENCY_ID"/>
     </input>
@@ -362,6 +364,11 @@
       <descriptions defaultDescription="ITEMTITLE"/>
       <keyMapping columnObjectName="WithLatestItem" columnName="LAST_ASSIGNED_ITEMTITLE"/>
     </attribute>
+  
+    <attribute id="LAST_ITEM_ASSIGNED_BY" order="22" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="LAST_ITEM_ASSIGNED_BY"/>
+      <keyMapping columnObjectName="WithLatestItem" columnName="LAST_ITEM_ASSIGNED_BY"/>
+    </attribute>
   </attributes>
   <calculatedAttributes>
     <calculatedAttribute id="HAS_CURRENT_ASSIGNMENT" order="19" semanticType="empty" displayAttribute="false" attributeHierarchyActive="false">
@@ -369,19 +376,19 @@
       <keyCalculation datatype="NVARCHAR" expressionLanguage="COLUMN_ENGINE" length="1">
         <formula>if(isnull(&quot;LAST_ASSIGNED_ITEMID&quot;),'','X')</formula>
       </keyCalculation>
-    </calculatedAttribute>
+      </calculatedAttribute>
     <calculatedAttribute id="HAS_EXPIRY" order="20" semanticType="empty" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="Has Expiry"/>
       <keyCalculation datatype="NVARCHAR" expressionLanguage="COLUMN_ENGINE" length="1">
         <formula>if(isnull(&quot;RETAININGNUMER&quot;),'','X')</formula>
       </keyCalculation>
-    </calculatedAttribute>
+      </calculatedAttribute>
     <calculatedAttribute id="EXPIRATION_DATE" order="21" semanticType="empty" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="Expiration Date"/>
       <keyCalculation datatype="SECONDDATE" expressionLanguage="COLUMN_ENGINE">
         <formula>adddays(&quot;COMPLETIONDATE&quot;,&quot;RETAININGNUMER&quot;)</formula>
       </keyCalculation>
-    </calculatedAttribute>
+      </calculatedAttribute>
   </calculatedAttributes>
   <baseMeasures/>
   <calculatedMeasures/>
