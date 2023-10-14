@@ -14,19 +14,13 @@
     <viewAttributes>
       <viewAttribute id="ACTING_USERID"/>
       <viewAttribute id="ACTOR_TYPE"/>
-      <viewAttribute id="GENERAL_COMPETENCY"/>
+      <viewAttribute id="TOTAL_COMPETENCY_PERCENTAGE"/>
+      <viewAttribute id="PROFESSIONAL_COMPETENCY_PERCENTAGE"/>
+      <viewAttribute id="REGULATION_COMPETENCY_PERCENTAGE"/>
     </viewAttributes>
-    <calculatedViewAttributes>
-      <calculatedViewAttribute id="EMPLOYEE_CLOCK_VALUE" datatype="INTEGER" expressionLanguage="COLUMN_ENGINE">
-        <formula>if(&quot;ACTOR_TYPE&quot;='RE',&quot;GENERAL_COMPETENCY&quot;,0)</formula>
-      </calculatedViewAttribute>
-      <calculatedViewAttribute id="MANAGER_CLOCK_VALUE" datatype="INTEGER" expressionLanguage="COLUMN_ENGINE">
-        <formula>if(&quot;ACTOR_TYPE&quot;='RM',&quot;GENERAL_COMPETENCY&quot;,0)</formula>
-      </calculatedViewAttribute>
-    </calculatedViewAttributes>
+    <calculatedViewAttributes/>
     <restrictedViewAttributes/>
     <input node="EMPLOYEECOMPETENCY">
-      <mapping xsi:type="Calculation:AttributeMapping" target="GENERAL_COMPETENCY" source="TOTAL_COMPETENCY_PERCENTAGE"/>
     
       <mapping xsi:type="Calculation:AttributeMapping" target="ACTOR_TYPE" source="ACTOR"/>
     </input>
@@ -44,27 +38,21 @@
       <keyMapping columnObjectName="Competencies" columnName="ACTOR_TYPE"/>
     </attribute>
   </attributes>
-  <calculatedAttributes>
-    <calculatedAttribute id="EMPLOYEE_CLOCK_STATUS" order="3" semanticType="empty" displayAttribute="false" attributeHierarchyActive="false">
-      <keyCalculation datatype="VARCHAR" expressionLanguage="COLUMN_ENGINE" length="1">
-        <formula>if(&quot;EMPLOYEE_CLOCK_VALUE&quot;&lt;50,'R',if(&quot;EMPLOYEE_CLOCK_VALUE&quot;&lt;95,'Y','G'))</formula>
-      </keyCalculation>
-    </calculatedAttribute>
-    <calculatedAttribute id="MANAGER_CLOCK_STATUS" order="4" semanticType="empty" displayAttribute="false" attributeHierarchyActive="false">
-      <keyCalculation datatype="VARCHAR" expressionLanguage="COLUMN_ENGINE" length="1">
-        <formula>if(&quot;MANAGER_CLOCK_VALUE&quot;&lt;50,'R',if(&quot;MANAGER_CLOCK_VALUE&quot;&lt;95,'Y','G'))</formula>
-      </keyCalculation>
-    </calculatedAttribute>
-  </calculatedAttributes>
+  <calculatedAttributes/>
   <baseMeasures>
-    <measure id="EMPLOYEE_CLOCK_VALUE" order="5" aggregationType="sum" measureType="simple" restrictionExpressionLanguage="SQL">
-      <descriptions defaultDescription="EMPLOYEE_CLOCK_VALUE"/>
-      <measureMapping columnObjectName="Competencies" columnName="EMPLOYEE_CLOCK_VALUE"/>
+    <measure id="TOTAL_COMPETENCY_PERCENTAGE" order="3" aggregationType="sum" measureType="simple">
+      <descriptions defaultDescription="TOTAL_COMPETENCY_PERCENTAGE"/>
+      <measureMapping columnObjectName="Competencies" columnName="TOTAL_COMPETENCY_PERCENTAGE"/>
       <exceptionAggregationMetadata/>
     </measure>
-    <measure id="MANAGER_CLOCK_VALUE" order="6" aggregationType="sum" measureType="simple" restrictionExpressionLanguage="SQL">
-      <descriptions defaultDescription="MANAGER_CLOCK_VALUE"/>
-      <measureMapping columnObjectName="Competencies" columnName="MANAGER_CLOCK_VALUE"/>
+    <measure id="PROFESSIONAL_COMPETENCY_PERCENTAGE" order="4" aggregationType="sum" measureType="simple">
+      <descriptions defaultDescription="PROFESSIONAL_COMPETENCY_PERCENTAGE"/>
+      <measureMapping columnObjectName="Competencies" columnName="PROFESSIONAL_COMPETENCY_PERCENTAGE"/>
+      <exceptionAggregationMetadata/>
+    </measure>
+    <measure id="REGULATION_COMPETENCY_PERCENTAGE" order="5" aggregationType="sum" measureType="simple">
+      <descriptions defaultDescription="REGULATION_COMPETENCY_PERCENTAGE"/>
+      <measureMapping columnObjectName="Competencies" columnName="REGULATION_COMPETENCY_PERCENTAGE"/>
       <exceptionAggregationMetadata/>
     </measure>
   </baseMeasures>

@@ -66,20 +66,20 @@
 				<ColumnListItem>
 					<cells>
 						<ObjectIdentifier titleActive="true" titlePress="handleUserPopover"
-							title="{UserID}"
-							text="{FirstName} {LastName}"/>
+							title="{USERID}"
+							text="{FIRSTNAME} {LASTNAME}"/>
 						<ObjectIdentifier titleActive="true" titlePress="handleItemCompetencyPopover"
-							title="{CompetencyId}"
-							text="{CompetencyName}"/>
+							title="{COMPETENCY_ID}"
+							text="{COMPETENCY_NAME}"/>
 						<ObjectIdentifier titleActive="true" titlePress="handleLatestItemPopover"
-							title="{LastAssignedItemID}"/>
-						<Text text="{CompetencyDescription}"/>	
-						<CheckBox selected="{path: 'IsQualified', formatter: '.formatter.isQualified'}" displayOnly="true"/>
+							title="{LASTASSIGNEDITEMID}"/>
+						<Text text="{COMPETENCY_DESCRIPTION}"/>	
+						<CheckBox selected="{path: 'QUALIFIED', formatter: '.formatter.isQualified'}" displayOnly="true"/>
 						<!--<cust:ColorCircle value="100"/>-->
-						<Text text="{path : 'LastAccumulationDate', type : 'sap.ui.model.type.Date',
+						<Text text="{path : 'LASTACCUMULATIONDATE', type : 'sap.ui.model.type.Date',
             					formatOptions: { style : 'medium'}}"/>	
-						<Text text="{TimeToExpiration}"/>	
-						<Text text="{path : 'ExpirationDate', type : 'sap.ui.model.type.Date',
+						<Text text="{TIME_TO_EXPIRATION}"/>	
+						<Text text="{path : 'EXPIRATIONDATE', type : 'sap.ui.model.type.Date',
             					formatOptions: { style : 'medium'}}"/>	
 					</cells>
 				</ColumnListItem>

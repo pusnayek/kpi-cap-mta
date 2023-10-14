@@ -99,17 +99,17 @@ sap.ui.define([
 		loadClockValues: function(oController, filters) {
 			var lock = $.Deferred();
 
-			oController.getView().getModel().read("/EmployeeCompetencies", {
-				urlParameters:{"$select" : "ProfessionalCompetencyPercentage,RegulationCompetencyPercentage,TotalCompetencyPercentage"},
+			oController.getView().getModel().read("/ClockValues", {
+				urlParameters:{"$select" : "PROFESSIONAL_COMPETENCY_PERCENTAGE,REGULATION_COMPETENCY_PERCENTAGE,TOTAL_COMPETENCY_PERCENTAGE"},
 				filters: filters,
 				success: function(oData) {
 					//process data
 					if(oData.results && oData.results.length > 0) {
 						var $result = oData.results[0];
 						lock.resolve({
-							"Professional" : $result.ProfessionalCompetencyPercentage,
-							"Regulation" : $result.RegulationCompetencyPercentage,
-							"Total" : $result.TotalCompetencyPercentage
+							"Professional" : $result.PROFESSIONAL_COMPETENCY_PERCENTAGE,
+							"Regulation" : $result.REGULATION_COMPETENCY_PERCENTAGE,
+							"Total" : $result.TOTAL_COMPETENCY_PERCENTAGE
 						});
 					} else {
 						lock.resolve({
