@@ -1,0 +1,92 @@
+[
+	{
+		"Table": "CompetencyStatus",
+		"Actor": "RE",
+		"Filter": ["Domain", "Division", "GroupBU", "Department", "JobGroup", "JobCode", "JobLocation", "EmployeeGroup", "EmpCustomStatus", "CompetencyArea", "CompetencyId"] 
+	},
+	{
+		"Table": "CompetencyStatus",
+		"Actor": "RM",
+		"Filter": ["Domain", "Division", "GroupBU", "Department", "JobGroup", "JobCode", "JobLocation", "EmployeeGroup", "EmpCustomStatus", "CompetencyArea", "CompetencyId"] 
+	},
+	{
+		"Table": "CompetencyStatus",
+		"Actor": "RH",
+		"Filter": ["Domain", "Division", "GroupBU", "Department", "JobGroup", "JobCode", "JobLocation", "EmployeeGroup", "EmpCustomStatus", "CompetencyArea", "CompetencyId"] 
+	},
+	{
+		"Table": "CompetencyGaps",
+		"Actor": "RE",
+		"Filter": ["Domain", "Division", "GroupBU", "Department", "JobGroup", "JobCode", "JobLocation", "EmployeeGroup", "EmpCustomStatus", "CompetencyArea", "CompetencyId"] 
+	},
+	{
+		"Table": "CompetencyGaps",
+		"Actor": "RM",
+		"Filter": ["Domain", "Division", "GroupBU", "Department", "JobGroup", "JobCode", "JobLocation", "EmployeeGroup", "EmpCustomStatus", "CompetencyArea", "CompetencyId"] 
+	},
+	{
+		"Table": "CompetencyGaps",
+		"Actor": "RH",
+		"Filter": ["Domain", "Division", "GroupBU", "Department", "JobGroup", "JobCode", "JobLocation", "EmployeeGroup", "EmpCustomStatus", "CompetencyArea", "CompetencyId"] 
+	},
+	{
+		"Table": "ByEmployees",
+		"Actor": "RM",
+		"Filter": ["Domain", "Division", "GroupBU", "Department", "JobGroup", "JobCode", "JobLocation", "EmployeeGroup", "EmpCustomStatus", "CompetencyArea", "CompetencyId"] 
+	},
+	{
+		"Table": "ByEmployees",
+		"Actor": "RH",
+		"Filter": ["Domain", "Division", "GroupBU", "Department", "JobGroup", "JobCode", "JobLocation", "EmployeeGroup", "EmpCustomStatus", "CompetencyArea", "CompetencyId"] 
+	},
+	{
+		"Table": "ByCompetencies",
+		"Actor": "RM",
+		"Filter": ["Domain", "Division", "GroupBU", "Department", "JobGroup", "JobCode", "JobLocation", "EmployeeGroup", "EmpCustomStatus", "CompetencyArea", "CompetencyId"] 
+	},
+	{
+		"Table": "ByCompetencies",
+		"Actor": "RH",
+		"Filter": ["Domain", "Division", "GroupBU", "Department", "JobGroup", "JobCode", "JobLocation", "EmployeeGroup", "EmpCustomStatus", "CompetencyArea", "CompetencyId"] 
+	},
+	{
+		"Table": "ByManagers",
+		"Actor": "RM",
+		"Filter": ["Domain", "Division", "GroupBU", "Department", "JobGroup", "JobCode", "JobLocation", "EmployeeGroup", "EmpCustomStatus", "CompetencyArea", "CompetencyId"] 
+	},
+	{
+		"Table": "ByManagers",
+		"Actor": "RH",
+		"Filter": ["Domain", "Division", "GroupBU", "Department", "JobGroup", "JobCode", "JobLocation", "EmployeeGroup", "EmpCustomStatus", "CompetencyArea", "CompetencyId"] 
+	},
+	{
+		"Table": "ByCompanies",
+		"Actor": "RM",
+		"Filter": ["Domain", "Division", "GroupBU", "Department", "JobGroup", "JobCode", "JobLocation", "EmployeeGroup", "EmpCustomStatus", "CompetencyArea", "CompetencyId"] 
+	},
+	{
+		"Table": "ByCompanies",
+		"Actor": "RH",
+		"Filter": ["Domain", "Division", "GroupBU", "Department", "JobGroup", "JobCode", "JobLocation", "EmployeeGroup", "EmpCustomStatus", "CompetencyArea", "CompetencyId"] 
+	},
+	{
+		"Table": "ByDivisions",
+		"Actor": "RM",
+		"Filter": ["Domain", "Division", "GroupBU", "Department", "JobGroup", "JobCode", "JobLocation", "EmployeeGroup", "EmpCustomStatus", "CompetencyArea", "CompetencyId"] 
+	},
+	{
+		"Table": "ByDivisions",
+		"Actor": "RH",
+		"Filter": ["Domain", "Division", "GroupBU", "Department", "JobGroup", "JobCode", "JobLocation", "EmployeeGroup", "EmpCustomStatus", "CompetencyArea", "CompetencyId"] 
+	},
+	{
+		"Table": "ByDepartments",
+		"Actor": "RM",
+		"Filter": ["Domain", "Division", "GroupBU", "Department", "JobGroup", "JobCode", "JobLocation", "EmployeeGroup", "EmpCustomStatus", "CompetencyArea", "CompetencyId"] 
+	},
+	{
+		"Table": "ByDepartments",
+		"Actor": "RH",
+		"Filter": ["Domain", "Division", "GroupBU", "Department", "JobGroup", "JobCode", "JobLocation", "EmployeeGroup", "EmpCustomStatus", "CompetencyArea", "CompetencyId"] 
+	}
+]

@@ -56,7 +56,9 @@
     </viewAttributes>
     <calculatedViewAttributes/>
     <restrictedViewAttributes/>
-    <input node="EMPLOYEECOMPETENCY"/>
+    <input node="EMPLOYEECOMPETENCY">
+      <mapping xsi:type="Calculation:AttributeMapping" target="ACTOR_TYPE" source="ACTOR"/>
+    </input>
   </calculationView>
   <calculationView xsi:type="Calculation:ProjectionView" id="EmployeeData">
     <viewAttributes>

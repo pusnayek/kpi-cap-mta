@@ -161,13 +161,13 @@
       <descriptions defaultDescription="USERID"/>
       <keyMapping columnObjectName="WithUserInfo" columnName="ACTING_USERID"/>
     </attribute>
-    <attribute id="USERID" order="2" displayAttribute="false" attributeHierarchyActive="false">
-      <descriptions defaultDescription="USERID"/>
-      <keyMapping columnObjectName="WithUserInfo" columnName="USERID"/>
-    </attribute>
-    <attribute id="ACTOR" order="3" displayAttribute="false" attributeHierarchyActive="false">
+    <attribute id="ACTOR" order="2" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="ACTOR"/>
       <keyMapping columnObjectName="WithUserInfo" columnName="ACTOR"/>
+    </attribute>
+    <attribute id="USERID" order="3" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="USERID"/>
+      <keyMapping columnObjectName="WithUserInfo" columnName="USERID"/>
     </attribute>
     <attribute id="ITEMID" order="4" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="ITEMID"/>

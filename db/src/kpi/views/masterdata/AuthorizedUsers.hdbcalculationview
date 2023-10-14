@@ -88,20 +88,20 @@
       <viewAttribute datatype="VARCHAR" length="2" id="ACTOR"/>
     </viewAttributes>
     <calculatedViewAttributes/>
-    <input node="AggrEmployees">
+    <input node="AggrEmployees" emptyUnionBehavior="NO_ROW">
       <mapping xsi:type="Calculation:AttributeMapping" target="ACTING_USERID" source="ADMIN_USERID"/>
       <mapping xsi:type="Calculation:AttributeMapping" target="USERID" source="USERID"/>
-      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="ACTOR" null="false" value="RE"/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="ACTOR" null="false" value="RH"/>
     </input>
-    <input node="Managers">
+    <input node="Managers" emptyUnionBehavior="NO_ROW">
       <mapping xsi:type="Calculation:AttributeMapping" target="ACTING_USERID" source="MANAGERUSERID"/>
       <mapping xsi:type="Calculation:AttributeMapping" target="USERID" source="USERID"/>
       <mapping xsi:type="Calculation:ConstantAttributeMapping" target="ACTOR" null="false" value="RM"/>
     </input>
-    <input node="Users">
+    <input node="Users" emptyUnionBehavior="NO_ROW">
       <mapping xsi:type="Calculation:AttributeMapping" target="ACTING_USERID" source="ACTING_USERID"/>
       <mapping xsi:type="Calculation:AttributeMapping" target="USERID" source="USERID"/>
-      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="ACTOR" null="false" value="RH"/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="ACTOR" null="false" value="RE"/>
     </input>
   </calculationView>
 </calculationViews>
@@ -129,22 +129,30 @@
 <layout>
   <shapes>
     <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
-      <upperLeftCorner x="321.38509534882553" y="112"/>
+      <upperLeftCorner x="321" y="112"/>
     
       <rectangleSize width="160"/>
     </shape>
     
   
     <shape expanded="true" modelObjectName="TrAdmins" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="295.01122382702187" y="656.9999952316284"/>
+      <upperLeftCorner x="295" y="656"/>
       <rectangleSize height="30" width="160"/>
     </shape>
     <shape expanded="true" modelObjectName="HRSubordEmpl" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="505.0112238270218" y="656.9999952316284"/>
+      <upperLeftCorner x="505" y="656"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="Managers" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="91" y="391"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="Users" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="301" y="391"/>
       <rectangleSize height="30" width="160"/>
     </shape>
     <shape expanded="true" modelObjectName="EmpByDomains" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="419.49385520965143" y="516.9999964237213"/>
+      <upperLeftCorner x="419" y="516"/>
       <rectangleSize height="30" width="160"/>
     </shape>
     <shape modelObjectName="TrAdmins" modelObjectNameSpace="EmpByDomains" modelObjectType="JoinNodeInput">
@@ -153,22 +161,14 @@
     </shape>
     <shape modelObjectName="HRSubordEmpl" modelObjectNameSpace="EmpByDomains" modelObjectType="JoinNodeInput">
       <upperLeftCorner x="320" y="30"/>
-      <rectangleSize width="152.6640625"/>
+      <rectangleSize width="152"/>
     </shape>
     <shape expanded="true" modelObjectName="AggrEmployees" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="511.9999999999999" y="391.9999976158142"/>
-      <rectangleSize height="30" width="160"/>
-    </shape>
-    <shape expanded="true" modelObjectName="Managers" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="91.99999999999993" y="391.9999976158142"/>
-      <rectangleSize height="30" width="160"/>
-    </shape>
-    <shape expanded="true" modelObjectName="Users" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="301.9999999999999" y="391.9999976158142"/>
+      <upperLeftCorner x="511" y="391"/>
       <rectangleSize height="30" width="160"/>
     </shape>
     <shape expanded="true" modelObjectName="Combine" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="301.9999999999999" y="236.9999988079071"/>
+      <upperLeftCorner x="301" y="236"/>
       <rectangleSize height="30" width="160"/>
     </shape>
   </shapes>

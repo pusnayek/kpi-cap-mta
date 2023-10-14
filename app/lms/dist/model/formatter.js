@@ -1,0 +1,2 @@
+sap.ui.define([],function(){"use strict";return{numberUnit:function(e){if(!e){return""}return parseFloat(e).toFixed(2)},isQualified:function(e){return e&&e===1?true:false}}});
+//# sourceMappingURL=formatter.js.map

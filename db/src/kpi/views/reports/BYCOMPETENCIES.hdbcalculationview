@@ -48,7 +48,7 @@
       <descriptions defaultDescription="ACTING_USERID"/>
       <keyMapping columnObjectName="CompetencyCounts" columnName="ACTING_USERID"/>
     </attribute>
-    <attribute id="ACTOR_TYPE" order="2" displayAttribute="false" attributeHierarchyActive="false">
+    <attribute id="ACTOR" order="2" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="ACTOR"/>
       <keyMapping columnObjectName="CompetencyCounts" columnName="ACTOR_TYPE"/>
     </attribute>

@@ -1,0 +1,39 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+	<ResponsivePopover
+		title="{LastItemAssignmentCard>LastAssignedItemType}"
+		class="sapUiPopupWithPadding"
+		placement="HorizontalPreferredRight" >
+		<content>
+			<Panel width="auto" height="100%">
+				<QuickViewCard>
+					<QuickViewPage
+							header="{i18n>CompetencyId}"
+							icon="sap-icon://course-program"
+							title="{LastItemAssignmentCard>LastAssignedItemType}"
+							description="{LastItemAssignmentCard>LastAssignedItemID}">
+						<QuickViewGroup heading="{i18n>itemDetails}">
+							<QuickViewGroupElement
+									label="{i18n>hasExpiry}" value="{path: 'LastItemAssignmentCard>HasExpiry', formatter: '.getBoolean'}" type="text">
+							</QuickViewGroupElement>
+							<QuickViewGroupElement
+									label="{i18n>isCurrentlyAssigned}" value="{path: 'LastItemAssignmentCard>HasCurrentAssignment', formatter: '.getBoolean'}" type="text">
+							</QuickViewGroupElement>
+							<QuickViewGroupElement
+									label="{i18n>assignedBy}" value="{path: 'LastItemAssignmentCard>LastItemAssignedBy'}" type="text">
+							</QuickViewGroupElement>
+							<QuickViewGroupElement
+									label="{i18n>assignmentDate}" value="{path : 'LastItemAssignmentCard>LatestItemAssignmentDate', 
+										type : 'sap.ui.model.type.Date', formatOptions: { style : 'medium'}}" type="text">
+							</QuickViewGroupElement>
+							<QuickViewGroupElement
+									label="{i18n>assignedItemItitle}" value="{LastItemAssignmentCard>LastAssignedItemTitle}" type="text">
+							</QuickViewGroupElement>
+						</QuickViewGroup>
+					</QuickViewPage>
+				</QuickViewCard>
+			</Panel>
+		</content>
+	</ResponsivePopover>
+</core:FragmentDefinition>
