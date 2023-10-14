@@ -1,0 +1,64 @@
+<core:FragmentDefinition 
+	xmlns="sap.m"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:semantic="sap.m.semantic"
+	xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:l="sap.ui.layout" 	
+	xmlns:core="sap.ui.core"
+	xmlns:cust="ui.lms.controls"
+	xmlns:custdata="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+	
+
+	<l:VerticalLayout>
+		<Table
+			id="ByDepartments"
+			growing="true"
+    		growingThreshold="100"
+    		growingScrollToLoad="false"
+			width="auto"
+			updateFinished="scroll"
+			items="{ path: '/EmployeeCompetencies',
+				parameters: { 
+					select: 'Department,ProfessionalCompetencyPercentage,RegulationCompetencyPercentage,TotalCompetencyPercentage' 
+				}
+			}"
+			noDataText="{i18n>detailLineItemTableNoDataText}"
+			class="sapUiResponsiveMargin">
+			<headerToolbar>
+				<OverflowToolbar>
+					<ToolbarSpacer/>
+					<Button icon="sap-icon://excel-attachment"  text="{i18n>exportToExcel}" custdata:table="ByDepartments" press="exportExcel" >
+						<layoutData>
+							<OverflowToolbarLayoutData priority="NeverOverflow" />
+						</layoutData>
+					</Button>
+				</OverflowToolbar>
+			</headerToolbar>
+			<columns>
+				<Column>
+					<Text text="{i18n>department}"/>
+				</Column>
+				<Column minScreenWidth="Tablet" demandPopin="true"  hAlign="Right">
+					<Text text="{i18n>totalCompetencyPercentage}"/>
+				</Column>
+				<Column minScreenWidth="Tablet" demandPopin="true" hAlign="Right">
+					<Text text="{i18n>profCompetencyPercentage}"/>
+				</Column>
+				<Column minScreenWidth="Tablet" demandPopin="true" hAlign="Right">
+					<Text text="{i18n>regulCompetencyPercentage}"/>
+				</Column>
+			</columns>
+			<items>
+				<ColumnListItem>
+					<cells>
+						<Text text="{Department}"/>	
+						<Text text="{path: 'TotalCompetencyPercentage', formatter: '.isCompetencyApplicable'}"/>	
+						<Text text="{path: 'ProfessionalCompetencyPercentage', formatter: '.isCompetencyApplicable'}"/>	
+						<Text text="{path: 'RegulationCompetencyPercentage', formatter: '.isCompetencyApplicable'}"/>	
+					</cells>
+				</ColumnListItem>
+			</items>
+		</Table>
+	</l:VerticalLayout>
+
+</core:FragmentDefinition>

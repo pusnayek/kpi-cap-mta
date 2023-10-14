@@ -5,6 +5,7 @@ using COMPETENCYGAPS from '../db/kpi-views';
 using EMPLOYEECOMPETENCY from '../db/kpi-views';
 using BYCOMPETENCIES from '../db/kpi-views';
 using BYMANAGERS from '../db/kpi-views';
+using CLOCKVALUES from '../db/kpi-views';
 
 @requires: 'authenticated-user'
 service KpiService {
@@ -22,5 +23,7 @@ service KpiService {
     entity ByCompetencies as projection on BYCOMPETENCIES;
 
     entity ByManagers as projection on BYMANAGERS;
+
+    entity ClockValues as projection on CLOCKVALUES;
 
 }

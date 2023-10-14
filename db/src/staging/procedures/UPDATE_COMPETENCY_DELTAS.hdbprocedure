@@ -123,7 +123,7 @@ BEGIN
     /**
     * Delete all records with status 'P' from extraction table
     */
-    DELETE FROM ST_COMPTENCYDELTAS WHERE "PROCESSINGSTATUS" = 'P';
+    -- DELETE FROM ST_COMPTENCYDELTAS WHERE "PROCESSINGSTATUS" = 'P';
     COMMIT;
 
 END

@@ -138,7 +138,7 @@
       <descriptions defaultDescription="ACTING_USERID"/>
       <keyMapping columnObjectName="WithEmployeeData" columnName="ACTING_USERID"/>
     </attribute>
-    <attribute id="ACTOR_TYPE" order="2" displayAttribute="false" attributeHierarchyActive="false">
+    <attribute id="ACTOR" order="2" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="ACTOR"/>
       <keyMapping columnObjectName="WithEmployeeData" columnName="ACTOR_TYPE"/>
     </attribute>
@@ -228,11 +228,16 @@
     </attribute>
   </attributes>
   <calculatedAttributes>
+  
     <calculatedAttribute id="PROFESSIONAL_COMPETENCY_PERCENTAGE" order="31" semanticType="empty" displayAttribute="false" attributeHierarchyActive="false">
+  
       <keyCalculation datatype="DECIMAL" expressionLanguage="COLUMN_ENGINE" length="3" scale="0">
+  
         <formula>if(&quot;PROFESSIONAL_COMPETENCY&quot; = 0,0,
 decfloat(&quot;PROFESSIONAL_QUALIFIED_COMPETENCY&quot;) * 100 / decfloat(&quot;PROFESSIONAL_COMPETENCY&quot;))</formula>
+  
       </keyCalculation>
+  
     </calculatedAttribute>
     <calculatedAttribute id="REGULATION_COMPETENCY_PERCENTAGE" order="32" semanticType="empty" displayAttribute="false" attributeHierarchyActive="false">
       <keyCalculation datatype="DECIMAL" expressionLanguage="COLUMN_ENGINE" length="3" scale="0">
@@ -245,8 +250,7 @@ decfloat(&quot;REGULATION_QUALIFIED_COMPETENCY&quot;) * 100 / decfloat(&quot;REG
         <formula>if(&quot;TOTAL_COMPETENCY&quot; = 0,0,
 decfloat(&quot;TOTAL_QUALIFIED_COMPETENCY&quot;) * 100 / decfloat(&quot;TOTAL_COMPETENCY&quot;))</formula>
       </keyCalculation>
-    </calculatedAttribute>
-  </calculatedAttributes>
+    </calculatedAttribute></calculatedAttributes>
   <baseMeasures>
     <measure id="RETAININGNUMER" order="24" aggregationType="sum" measureType="simple" restrictionExpressionLanguage="SQL">
       <descriptions defaultDescription="RETAININGNUMER"/>

@@ -87,8 +87,8 @@
 
 <logicalModel id="Combine">
   <attributes>
-    <attribute id="USERID" order="1" displayAttribute="false" attributeHierarchyActive="false">
-      <descriptions defaultDescription="USERID"/>
+    <attribute id="ACTING_USERID" order="1" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="ACTING_USERID"/>
       <keyMapping columnObjectName="Combine" columnName="USERID"/>
     </attribute>
     <attribute id="ACTOR" order="2" displayAttribute="false" attributeHierarchyActive="false">

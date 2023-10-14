@@ -4,7 +4,7 @@ context Structures {
     
     /* Competency details */
     type CompetencyType {
-        Id                   : String(50);
+        Id                   : String(100);
         Name                 : String(100);
         Area                 : String(100);
         Description          : String(500);
@@ -37,6 +37,11 @@ context Structures {
         Action          : String(1);
         LastUpdateTime  : Timestamp;
         Record          : Integer64;
+    };    
+
+    type _DeltaKeys {
+        Action          : String(1);
+        LastUpdateTime  : Timestamp;
     };    
 
     type DeltaAction    : String(1);

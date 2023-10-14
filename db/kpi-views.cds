@@ -1,7 +1,7 @@
 @cds.persistence.exists 
 @cds.persistence.calcview 
 Entity POPULATIONS {
-key     USERID: String(50)  @title: 'USERID: USERID' ; 
+key     ACTING_USERID: String(50)  @title: 'USERID: USERID' ; 
 key     ACTOR: String(2)  @title: 'ACTOR: ACTOR' ; 
         INDEX_OF_POPULATION: UInt8  @title: 'INDEX_OF_POPULATION: INDEX_OF_POPULATION' ; 
 }
@@ -111,7 +111,7 @@ key     ITEMTYPE: String(50)  @title: 'ITEMTYPE: ITEMTYPE' ;
 @cds.persistence.calcview 
 Entity EMPLOYEECOMPETENCY {
 key     ACTING_USERID: String(50)  @title: 'ACTING_USERID: ACTING_USERID' ; 
-key     ACTOR_TYPE: String(2)  @title: 'ACTOR_TYPE: ACTOR' ; 
+key     ACTOR: String(2)  @title: 'ACTOR_TYPE: ACTOR' ; 
 key     USERID: String(50)  @title: 'USERID: USERID' ; 
 key     COMPETENCY_ID: String(50)  @title: 'COMPETENCY_ID: COMPETENCY_ID' ; 
         EMPLOYEEID: String(50)  @title: 'EMPLOYEEID: EMPLOYEEID' ; 
@@ -149,7 +149,7 @@ key     COMPETENCY_ID: String(50)  @title: 'COMPETENCY_ID: COMPETENCY_ID' ;
 @cds.persistence.calcview 
 Entity BYCOMPETENCIES {
 key     ACTING_USERID: String(50)  @title: 'ACTING_USERID: ACTING_USERID' ; 
-key     ACTOR_TYPE: String(2)  @title: 'ACTOR_TYPE: ACTOR' ; 
+key     ACTOR: String(2)  @title: 'ACTOR_TYPE: ACTOR' ; 
 key     COMPETENCY_ID: String(50)  @title: 'COMPETENCY_ID: COMPETENCY_ID' ; 
         COMPETENCY_NAME: String(100)  @title: 'COMPETENCY_NAME: COMPETENCY_NAME' ; 
         COMPETENCY_AREA: String(100)  @title: 'COMPETENCY_AREA: COMPETENCY_AREA' ; 
@@ -205,4 +205,13 @@ key     COMPETENCY_ID: String(50)  @title: 'COMPETENCY_ID: COMPETENCY_ID' ;
         TOTAL_COMPETENCY_PERCENTAGE: Decimal(3)  @title: 'TOTAL_COMPETENCY_PERCENTAGE: TOTAL_COMPETENCY_PERCENTAGE' ; 
 }
 
-
+@cds.persistence.exists 
+@cds.persistence.calcview 
+Entity CLOCKVALUES {
+key     ACTING_USERID: String(50)  @title: 'ACTING_USERID: ACTING_USERID' ; 
+key     ACTOR: String(2)  @title: 'ACTOR_TYPE: ACTOR' ; 
+key     EMPLOYEE_CLOCK_STATUS: String(1)  @title: 'EMPLOYEE_CLOCK_STATUS: EMPLOYEE_CLOCK_STATUS' ; 
+key     MANAGER_CLOCK_STATUS: String(1)  @title: 'MANAGER_CLOCK_STATUS: MANAGER_CLOCK_STATUS' ; 
+        EMPLOYEE_CLOCK_VALUE: Integer  @title: 'EMPLOYEE_CLOCK_VALUE: EMPLOYEE_CLOCK_VALUE' ; 
+        MANAGER_CLOCK_VALUE: Integer  @title: 'MANAGER_CLOCK_VALUE: MANAGER_CLOCK_VALUE' ; 
+}

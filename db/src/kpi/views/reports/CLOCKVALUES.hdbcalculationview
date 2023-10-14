@@ -27,6 +27,8 @@
     <restrictedViewAttributes/>
     <input node="EMPLOYEECOMPETENCY">
       <mapping xsi:type="Calculation:AttributeMapping" target="GENERAL_COMPETENCY" source="TOTAL_COMPETENCY_PERCENTAGE"/>
+    
+      <mapping xsi:type="Calculation:AttributeMapping" target="ACTOR_TYPE" source="ACTOR"/>
     </input>
   </calculationView>
 </calculationViews>
@@ -37,7 +39,7 @@
       <descriptions defaultDescription="ACTING_USERID"/>
       <keyMapping columnObjectName="Competencies" columnName="ACTING_USERID"/>
     </attribute>
-    <attribute id="ACTOR_TYPE" order="2" displayAttribute="false" attributeHierarchyActive="false">
+    <attribute id="ACTOR" order="2" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="ACTOR"/>
       <keyMapping columnObjectName="Competencies" columnName="ACTOR_TYPE"/>
     </attribute>

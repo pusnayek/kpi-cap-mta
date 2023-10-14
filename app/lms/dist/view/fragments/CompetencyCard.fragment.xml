@@ -1,0 +1,41 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+	<ResponsivePopover
+		title="{CompetencyCard>CompetencyName}"
+		class="sapUiPopupWithPadding"
+		placement="HorizontalPreferredRight" >
+		<content>
+			<Panel width="auto" height="100%">
+				<QuickViewCard>
+					<QuickViewPage
+							header="{i18n>CompetencyId}"
+							icon="sap-icon://course-program"
+							title="{CompetencyCard>CompetencyName}"
+							description="{CompetencyCard>CompetencyId}">
+						<QuickViewGroup heading="{i18n>competencyDetails}">
+							<QuickViewGroupElement
+									label="{i18n>type}" value="{path: 'CompetencyCard>CompetencyType', formatter: '.getCompetencyType'}" type="text">
+							</QuickViewGroupElement>
+							<!--<QuickViewGroupElement-->
+							<!--		label="{i18n>type}" value="{CompetencyCard>CompetencyType}" type="text">-->
+							<!--</QuickViewGroupElement>-->
+							<QuickViewGroupElement
+									label="{i18n>area}" value="{CompetencyCard>CompetencyDescription}" type="text">
+							</QuickViewGroupElement>
+							<QuickViewGroupElement
+									label="{i18n>grantsCertificate}" value="{path: 'CompetencyCard>CompetencyGrantsCertificate', formatter: '.getGrantsCertificate'}" type="text">
+							</QuickViewGroupElement>
+							<!--<QuickViewGroupElement-->
+							<!--		label="{i18n>grantsCertificate}" value="{CompetencyCard>CompetencyGrantsCertificate}" type="text">-->
+							<!--</QuickViewGroupElement>-->
+							<QuickViewGroupElement
+									label="{i18n>retrainingNumber}" value="{CompetencyCard>retrainingNumber}" type="text">
+							</QuickViewGroupElement>
+						</QuickViewGroup>
+					</QuickViewPage>
+				</QuickViewCard>
+			</Panel>
+		</content>
+	</ResponsivePopover>
+</core:FragmentDefinition>

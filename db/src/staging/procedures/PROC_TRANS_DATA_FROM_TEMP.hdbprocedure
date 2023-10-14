@@ -1,0 +1,68 @@
+PROCEDURE PROC_TRANS_DATA_FROM_TEMP( )
+   LANGUAGE SQLSCRIPT
+   SQL SECURITY INVOKER
+   --DEFAULT SCHEMA <default_schema_name>
+   -- READS SQL DATA 
+   AS
+BEGIN
+
+    DECLARE EXIT HANDLER FOR sqlexception
+        INSERT INTO XT_ReplicationTrace
+         VALUES(CURRENT_TIMESTAMP, 'TransferDataFromTemporaryStage', ::SQL_ERROR_CODE, ::SQL_ERROR_MESSAGE);
+
+    /**Start of process**/
+    -- delete from "ET_ADMINACCESS";
+    -- delete from "ET_EMPLOYEE";
+    -- delete from "ET_ITEM";
+    -- delete from "ET_ASSIGNMENT";
+    -- delete from "ET_COMPLETION";
+    
+    insert into "ET_ADMINACCESS"
+    select "USERID", "DOMAIN", '' as "SUBDOMAIN", '' as "ROLEASSIGNED", '' as "PROCESSINGSTATUS"
+    from "TT_ADMINACCESS";
+    
+    insert into "ET_EMPLOYEE"
+    select *, '' as "PROCESSINGSTATUS"
+    from "TT_EMPLOYEE";
+    
+    insert into "ET_ITEM"
+    select *, '' as "PROCESSINGSTATUS"
+    from "TT_ITEM";
+    
+    insert into "ET_COMPLETION"
+    select *, '' as "PROCESSINGSTATUS"
+    from "TT_COMPLETION";
+    
+    insert into "ET_ASSIGNMENT"
+    SELECT
+        "USERID",
+        "ITEMID",
+        "ITEMTYPE",
+        "DELTA_ACTION",
+        "DELTA_LASTUPDATETIME",
+        0 as "DELTA_RECORD",
+        "ASSIGNMENTDATE",
+        "ASSIGNEDBY",
+        '' as "PROCESSINGSTATUS"
+    FROM "TT_ASSIGNMENT"
+    COMMIT;
+
+    CALL "PROC_FULL_PULL_ADMIN_ACCESS"();
+    -- SELECT * FROM "FT_ADMINACCESS";
+    
+    CALL "PROC_DELTA_PULL_EMPLOYEES"();
+    -- SELECT * FROM "FT_EMPLOYEE";
+    
+    CALL "PROC_DELTA_PULL_ITEMS"();
+    -- SELECT * FROM "FT_ITEM";
+    
+    CALL "PROC_DELTA_PULL_COMPLETIONS"();
+    -- SELECT * FROM "FT_COMPLETION";
+    
+    CALL "PROC_DELTA_PULL_ASSIGNMENTS"();
+    -- SELECT * FROM "FT_ASSIGNMENT";
+    
+    SELECT * FROM "FT_COMPETENCIES";
+    
+
+END

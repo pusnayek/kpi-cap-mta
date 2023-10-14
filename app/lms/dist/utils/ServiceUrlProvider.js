@@ -1,0 +1,2 @@
+sap.ui.define(["sap/ui/model/json/JSONModel"],function(e){"use strict";return{User:"../sap/fiori/kpicompetency/TileService/user",Xls:"../sap/fiori/kpicompetency/TileService/xls",BigXls:"../sap/fiori/kpicompetency/TileService/bigxls",BigXlsCheck:"../sap/fiori/kpicompetency/TileService/bigxlscheck",TableConfig:"data/tablesConfig.json"}},false);
+//# sourceMappingURL=ServiceUrlProvider.js.map

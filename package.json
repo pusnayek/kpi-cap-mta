@@ -25,7 +25,7 @@
         "watch-lms": "cds watch --open ui.lms/index.html?sap-ui-xx-viewCache=false --livereload false",
         "undeploy": "cf undeploy kpi --delete-services --delete-service-keys --delete-service-brokers",
         "build": "rimraf resources mta_archives && mbt build --mtar archive",
-        "deploy": "cf deploy mta_archives/archive.mtar --retries 1"
+        "deploy": "cf deploy mta_archives/kpi_1.0.0.mtar --retries 1"
     },
     "cds": {
         "requires": {

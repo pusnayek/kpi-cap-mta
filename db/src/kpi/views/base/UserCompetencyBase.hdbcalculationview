@@ -233,7 +233,7 @@
     <joinAttribute name="JOIN$ITEMID$ITEMID"/>
     <joinAttribute name="JOIN$ITEMTYPE$ITEMTYPE"/>
   </calculationView>
-  <calculationView xsi:type="Calculation:JoinView" id="WithLatestItem" cardinality="CN_N" joinType="inner">
+  <calculationView xsi:type="Calculation:JoinView" id="WithLatestItem" cardinality="CN_N" joinType="leftOuter">
     <viewAttributes>
       <viewAttribute id="USERID"/>
       <viewAttribute id="ITEMID"/>
@@ -367,7 +367,9 @@
   
     <attribute id="LAST_ITEM_ASSIGNED_BY" order="22" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="LAST_ITEM_ASSIGNED_BY"/>
+  
       <keyMapping columnObjectName="WithLatestItem" columnName="LAST_ITEM_ASSIGNED_BY"/>
+  
     </attribute>
   </attributes>
   <calculatedAttributes>
@@ -376,19 +378,19 @@
       <keyCalculation datatype="NVARCHAR" expressionLanguage="COLUMN_ENGINE" length="1">
         <formula>if(isnull(&quot;LAST_ASSIGNED_ITEMID&quot;),'','X')</formula>
       </keyCalculation>
-      </calculatedAttribute>
+    </calculatedAttribute>
     <calculatedAttribute id="HAS_EXPIRY" order="20" semanticType="empty" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="Has Expiry"/>
       <keyCalculation datatype="NVARCHAR" expressionLanguage="COLUMN_ENGINE" length="1">
         <formula>if(isnull(&quot;RETAININGNUMER&quot;),'','X')</formula>
       </keyCalculation>
-      </calculatedAttribute>
+    </calculatedAttribute>
     <calculatedAttribute id="EXPIRATION_DATE" order="21" semanticType="empty" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="Expiration Date"/>
       <keyCalculation datatype="SECONDDATE" expressionLanguage="COLUMN_ENGINE">
         <formula>adddays(&quot;COMPLETIONDATE&quot;,&quot;RETAININGNUMER&quot;)</formula>
       </keyCalculation>
-      </calculatedAttribute>
+    </calculatedAttribute>
   </calculatedAttributes>
   <baseMeasures/>
   <calculatedMeasures/>
