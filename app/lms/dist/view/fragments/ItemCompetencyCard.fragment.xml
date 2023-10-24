@@ -2,7 +2,7 @@
 	xmlns="sap.m"
 	xmlns:core="sap.ui.core">
 	<ResponsivePopover
-		title="{CompetencyCard>CompetencyName}"
+		title="{CompetencyCard>COMPETENCY_NAME}"
 		class="sapUiPopupWithPadding"
 		placement="HorizontalPreferredRight" >
 		<content>
@@ -11,31 +11,25 @@
 					<QuickViewPage
 							header="{i18n>CompetencyId}"
 							icon="sap-icon://course-program"
-							title="{CompetencyCard>CompetencyName}"
-							description="{CompetencyCard>CompetencyId}">
+							title="{CompetencyCard>COMPETENCY_NAME}"
+							description="{CompetencyCard>COMPETENCY_ID}">
 						<QuickViewGroup heading="{i18n>competencyDetails}">
 							<QuickViewGroupElement
-									label="{i18n>type}" value="{path: 'CompetencyCard>CompetencyCompetencyType', formatter: '.getCompetencyType'}" type="text">
-							</QuickViewGroupElement>
-							<!--<QuickViewGroupElement-->
-							<!--		label="{i18n>type}" value="{CompetencyCard>CompetencyCompetencyType}" type="text">-->
-							<!--</QuickViewGroupElement>-->
-							<QuickViewGroupElement
-									label="{i18n>area}" value="{CompetencyCard>CompetencyDescription}" type="text">
+									label="{i18n>type}" value="{path: 'CompetencyCard>COMPETENCY_TYPE', formatter: '.getCompetencyType'}" type="text">
 							</QuickViewGroupElement>
 							<QuickViewGroupElement
-									label="{i18n>grantsCertificate}" value="{path: 'CompetencyCard>CompetencyGrantsCertificate', formatter: '.getGrantsCertificate'}" type="text">
+									label="{i18n>area}" value="{CompetencyCard>COMPETENCY_DESCRIPTION}" type="text">
 							</QuickViewGroupElement>
-							<!--<QuickViewGroupElement-->
-							<!--		label="{i18n>grantsCertificate}" value="{CompetencyCard>CompetencyGrantsCertificate}" type="text">-->
-							<!--</QuickViewGroupElement>-->
+							<QuickViewGroupElement
+									label="{i18n>grantsCertificate}" value="{path: 'CompetencyCard>COMPETENCY_GRANTSCERTIFICATE', formatter: '.getGrantsCertificate'}" type="text">
+							</QuickViewGroupElement>
 						</QuickViewGroup>
 						<QuickViewGroup heading="{i18n>itemDetails}">
 							<QuickViewGroupElement
-									label="{i18n>accumItemId}" value="{CompetencyCard>ItemID}" type="text">
+									label="{i18n>accumItemId}" value="{CompetencyCard>ITEMID}" type="text">
 							</QuickViewGroupElement>
 							<QuickViewGroupElement
-									label="{i18n>accumItemTitle}" value="{CompetencyCard>ItemTitle}" type="text">
+									label="{i18n>accumItemTitle}" value="{CompetencyCard>ITEMTITLE}" type="text">
 							</QuickViewGroupElement>
 						</QuickViewGroup>
 					</QuickViewPage>

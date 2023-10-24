@@ -17,11 +17,7 @@
     		growingScrollToLoad="false"
 			width="auto"
 			updateFinished="scroll"
-			items="{ path: '/EmployeeCompetencies',
-				parameters: { 
-					select: 'Division,ProfessionalCompetencyPercentage,RegulationCompetencyPercentage,TotalCompetencyPercentage' 
-				}
-			}"
+			items="{path: '/'}"
 			noDataText="{i18n>detailLineItemTableNoDataText}"
 			class="sapUiResponsiveMargin">
 			<headerToolbar>
@@ -51,10 +47,10 @@
 			<items>
 				<ColumnListItem>
 					<cells>
-						<Text text="{Division}"/>	
-						<Text text="{path: 'TotalCompetencyPercentage', formatter: '.isCompetencyApplicable'}"/>	
-						<Text text="{path: 'ProfessionalCompetencyPercentage', formatter: '.isCompetencyApplicable'}"/>	
-						<Text text="{path: 'RegulationCompetencyPercentage', formatter: '.isCompetencyApplicable'}"/>	
+						<Text text="{DIVISION}"/>	
+						<Text text="{path: 'Total', formatter: '.isCompetencyApplicable'}"/>	
+						<Text text="{path: 'Professional', formatter: '.isCompetencyApplicable'}"/>	
+						<Text text="{path: 'Regulation', formatter: '.isCompetencyApplicable'}"/>	
 					</cells>
 				</ColumnListItem>
 			</items>

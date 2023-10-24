@@ -263,7 +263,7 @@ sap.ui.define([
 		handleUserPopover: function(oEvent) {
 			var oButton = oEvent.getSource();
 			//-prepare json for card details
-			var $data = this.getView().getModel().getProperty(oButton.getBindingContext().sPath);
+			var $data = oButton.getBindingContext().getObject();
 			var $copy = $.extend({}, $data);
 			this.getView().setModel(new JSONModel({"details" : $copy}), "UserCard");
 			//-open popup with JSON element			
@@ -286,7 +286,7 @@ sap.ui.define([
 		handleItemCompetencyPopover: function(oEvent) {
 			var oButton = oEvent.getSource();
 			//-prepare json for card details
-			var $data = this.getView().getModel().getProperty(oButton.getBindingContext().sPath);
+			var $data = oButton.getBindingContext().getObject();
 			var $copy = $.extend({}, $data);
 			this.getView().setModel(new JSONModel({"details" : $copy}), "CompetencyCard");
 			//-open popover with JSON details data
@@ -309,7 +309,7 @@ sap.ui.define([
 		handleCompetencyPopover: function(oEvent) {
 			var oButton = oEvent.getSource();
 			//-prepare json for card details
-			var $data = this.getView().getModel().getProperty(oButton.getBindingContext().sPath);
+			var $data = oButton.getBindingContext().getObject();
 			var $copy = $.extend({}, $data);
 			this.getView().setModel(new JSONModel({"details" : $copy}), "CompetencyCard");
 			//-open popover with JSON details data

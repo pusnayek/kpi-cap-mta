@@ -24,6 +24,15 @@
                     "localUri": "localService/metadata.xml",
                     "odataVersion": "2.0"
                 }
+            },
+            "v4Service": {
+                "uri": "../kpi/",
+                "type": "OData",
+                "settings": {
+                    "annotations": [],
+                    "localUri": "localService/metadata.xml",
+                    "odataVersion": "4.0"
+                }
             }
         }
     },
@@ -71,6 +80,16 @@
             },
             "": {
                 "dataSource": "mainService",
+                "preload": true,
+                "settings": {
+                    "synchronizationMode": "None",
+                    "operationMode": "Server",
+                    "autoExpandSelect": true,
+                    "earlyRequests": true
+                }
+            },
+            "v4": {
+                "dataSource": "v4Service",
                 "preload": true,
                 "settings": {
                     "synchronizationMode": "None",

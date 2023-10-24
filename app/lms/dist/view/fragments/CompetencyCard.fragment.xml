@@ -2,7 +2,7 @@
 	xmlns="sap.m"
 	xmlns:core="sap.ui.core">
 	<ResponsivePopover
-		title="{CompetencyCard>CompetencyName}"
+		title="{CompetencyCard>/COMPETENCY_NAME}"
 		class="sapUiPopupWithPadding"
 		placement="HorizontalPreferredRight" >
 		<content>
@@ -11,26 +11,23 @@
 					<QuickViewPage
 							header="{i18n>CompetencyId}"
 							icon="sap-icon://course-program"
-							title="{CompetencyCard>CompetencyName}"
-							description="{CompetencyCard>CompetencyId}">
+							title="{CompetencyCard>COMPETENCY_NAME}"
+							description="{CompetencyCard>/COMPETENCY_ID}">
 						<QuickViewGroup heading="{i18n>competencyDetails}">
 							<QuickViewGroupElement
-									label="{i18n>type}" value="{path: 'CompetencyCard>CompetencyType', formatter: '.getCompetencyType'}" type="text">
+									label="{i18n>type}" value="{path: 'CompetencyCard>COMPETENCY_TYPE', formatter: '.getCompetencyType'}" type="text">
 							</QuickViewGroupElement>
 							<!--<QuickViewGroupElement-->
 							<!--		label="{i18n>type}" value="{CompetencyCard>CompetencyType}" type="text">-->
 							<!--</QuickViewGroupElement>-->
 							<QuickViewGroupElement
-									label="{i18n>area}" value="{CompetencyCard>CompetencyDescription}" type="text">
+									label="{i18n>area}" value="{CompetencyCard>COMPETENCY_DESCRIPTION}" type="text">
 							</QuickViewGroupElement>
 							<QuickViewGroupElement
-									label="{i18n>grantsCertificate}" value="{path: 'CompetencyCard>CompetencyGrantsCertificate', formatter: '.getGrantsCertificate'}" type="text">
+									label="{i18n>grantsCertificate}" value="{path: 'CompetencyCard>COMPETENCY_GRANTSCERTIFICATE', formatter: '.getGrantsCertificate'}" type="text">
 							</QuickViewGroupElement>
-							<!--<QuickViewGroupElement-->
-							<!--		label="{i18n>grantsCertificate}" value="{CompetencyCard>CompetencyGrantsCertificate}" type="text">-->
-							<!--</QuickViewGroupElement>-->
 							<QuickViewGroupElement
-									label="{i18n>retrainingNumber}" value="{CompetencyCard>retrainingNumber}" type="text">
+									label="{i18n>retrainingNumber}" value="{CompetencyCard>RETAININGNUMER}" type="text">
 							</QuickViewGroupElement>
 						</QuickViewGroup>
 					</QuickViewPage>

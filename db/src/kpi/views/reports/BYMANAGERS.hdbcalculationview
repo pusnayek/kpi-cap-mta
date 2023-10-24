@@ -13,8 +13,8 @@
   <DataSource id="EMPLOYEECOMPETENCY">
     <resourceUri>EMPLOYEECOMPETENCY</resourceUri>
   </DataSource>
-  <DataSource id="EmployeeData$$$$EMPLOYEECOMPETENCY$$">
-    <resourceUri>EMPLOYEECOMPETENCY</resourceUri>
+  <DataSource id="EmployeesMaster">
+    <resourceUri>EmployeesMaster</resourceUri>
   </DataSource>
 </dataSources>
 <snapshotProcedures/>
@@ -79,7 +79,7 @@
       <viewAttribute id="MANAGERNAME"/>
     </viewAttributes>
     <calculatedViewAttributes/>
-    <input node="EmployeeData$$$$EMPLOYEECOMPETENCY$$"/>
+    <input node="EmployeesMaster"/>
   </calculationView>
   <calculationView xsi:type="Calculation:JoinView" id="WithReportees" cardinality="CN_N" joinType="inner">
     <viewAttributes>
@@ -239,7 +239,7 @@
       <descriptions defaultDescription="USERID"/>
       <keyMapping columnObjectName="ManagerData" columnName="ACTING_USERID"/>
     </attribute>
-    <attribute id="ACTOR_TYPE" order="2" displayAttribute="false" attributeHierarchyActive="false">
+    <attribute id="ACTOR" order="2" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="ACTOR"/>
       <keyMapping columnObjectName="ManagerData" columnName="ACTOR_TYPE"/>
     </attribute>
