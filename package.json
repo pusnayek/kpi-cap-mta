@@ -1,39 +1,42 @@
 {
-    "name": "kpi",
-    "version": "1.0.0",
-    "description": "A simple CAP project.",
-    "repository": "<Add your repository here>",
-    "license": "UNLICENSED",
-    "private": true,
-    "dependencies": {
-        "@sap/cds": "^6.8.2",
-        "@sap/cds-odata-v2-adapter-proxy": "^1.9.21",
-        "express": "^4",
-        "hdb": "^0.19.0",
-        "@sap/xssec": "^3",
-        "@sap/xsenv": "^3",
-        "passport": "^0"
-    },
-    "devDependencies": {
-        "@sap/hdi-deploy": "^4.6.1",
-        "@sap/approuter": "^14.0.0",
-        "cds-plugin-ui5": "^0.1.4",
-        "rimraf": "^3.0.2"
-    },
-    "scripts": {
-        "start": "cds-serve",
-        "watch-lms": "cds watch --open ui.lms/index.html?sap-ui-xx-viewCache=false --livereload false",
-        "undeploy": "cf undeploy kpi --delete-services --delete-service-keys --delete-service-brokers",
-        "build": "rimraf resources mta_archives && mbt build --mtar archive",
-        "deploy": "cf deploy mta_archives/kpi_1.0.0.mtar --retries 1"
-    },
-    "cds": {
-        "requires": {
-            "db": "hana-cloud",
-            "auth": "xsuaa"
-        }
-    },
-    "workspaces": [
-        "app/*"
-    ]
+  "name": "kpi",
+  "version": "1.0.0",
+  "description": "A simple CAP project.",
+  "repository": "<Add your repository here>",
+  "license": "UNLICENSED",
+  "private": true,
+  "dependencies": {
+    "@sap/cds": "^6.8.2",
+    "@sap/cds-odata-v2-adapter-proxy": "^1.9.21",
+    "@sap/xsenv": "^3",
+    "@sap/xssec": "^3",
+    "express": "^4",
+    "hdb": "^0.19.0",
+    "passport": "^0"
+  },
+  "devDependencies": {
+    "@sap/approuter": "^14.0.0",
+    "@sap/hdi-deploy": "^4.6.1",
+    "cds-plugin-ui5": "^0.1.4",
+    "rimraf": "^3.0.2"
+  },
+  "scripts": {
+    "start": "cds-serve",
+    "watch-lms": "cds watch --open ui.lms/index.html?sap-ui-xx-viewCache=false --livereload false",
+    "undeploy": "cf undeploy kpi --delete-services --delete-service-keys --delete-service-brokers",
+    "build": "rimraf resources mta_archives && mbt build --mtar archive",
+    "deploy": "cf deploy mta_archives/kpi_1.0.0.mtar --retries 1"
+  },
+  "cds": {
+    "requires": {
+      "db": "hana-cloud",
+      "auth": "xsuaa",
+      "[hybrid]": {
+        "auth": "xsuaa"
+      }
+    }
+  },
+  "workspaces": [
+    "app/*"
+  ]
 }

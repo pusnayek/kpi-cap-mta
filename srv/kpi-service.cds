@@ -5,9 +5,8 @@ using COMPETENCYGAPS from '../db/kpi-views';
 using EMPLOYEECOMPETENCY from '../db/kpi-views';
 using BYCOMPETENCIES from '../db/kpi-views';
 using BYMANAGERS from '../db/kpi-views';
-using CLOCKVALUES from '../db/kpi-views';
 
-@requires: 'authenticated-user'
+// @requires: 'authenticated-user'
 service KpiService {
 
     entity Populations as projection on POPULATIONS;
@@ -24,6 +23,39 @@ service KpiService {
 
     entity ByManagers as projection on BYMANAGERS;
 
-    entity ClockValues as projection on CLOCKVALUES;
+    entity ClockValues as select from EMPLOYEECOMPETENCY {
+        key     ACTING_USERID, 
+        key     ACTOR,
+                USERID,
+                COMPETENCY_ID,
+                EMPLOYEEID,
+                DOMAIN,
+                JOBCODE,
+                DEPARTMENT,
+                DIVISION,
+                JOBGROUP,
+                JOBLOCATION,
+                GROUPBU,
+                EMPLOYEEGROUP,
+                EMPCUSTOMSTATUS,
+                COMPETENCY_AREA,
+                SUM(PROFESSIONAL_COMPETENCY_PERCENTAGE) as PROFESSIONAL_COMPETENCY_PERCENTAGE: Integer,
+                SUM(REGULATION_COMPETENCY_PERCENTAGE) as REGULATION_COMPETENCY_PERCENTAGE: Integer,
+                SUM(TOTAL_COMPETENCY_PERCENTAGE) as TOTAL_COMPETENCY_PERCENTAGE: Integer
+    } group by ACTING_USERID, 
+                ACTOR, 
+                USERID, 
+                COMPETENCY_ID,
+                EMPLOYEEID, 
+                DOMAIN, 
+                JOBCODE,
+                DEPARTMENT,
+                DIVISION,
+                JOBGROUP,
+                JOBLOCATION,
+                GROUPBU,
+                EMPLOYEEGROUP,
+                EMPCUSTOMSTATUS,
+                COMPETENCY_AREA;
 
 }

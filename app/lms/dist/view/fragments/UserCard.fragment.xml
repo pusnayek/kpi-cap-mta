@@ -2,7 +2,7 @@
 	xmlns="sap.m"
 	xmlns:core="sap.ui.core">
 	<ResponsivePopover
-		title="{UserCard>UserID}"
+		title="{UserCard>USERID}"
 		class="sapUiPopupWithPadding"
 		placement="HorizontalPreferredRight" >
 		<content>
@@ -11,43 +11,43 @@
 					<QuickViewPage
 							header="{i18n>UserID}"
 							icon="sap-icon://employee"
-							title="{UserCard>FirstName} {UserCard>LastName}"
-							description="{UserCard>EmployeeID}">
+							title="{UserCard>FIRSTNAME} {UserCard>LASTNAME}"
+							description="{UserCard>EMPLOYEEID}">
 						<QuickViewGroup>
 							<QuickViewGroupElement
-									label="{i18n>domain}" value="{UserCard>Domain}" type="text">
+									label="{i18n>domain}" value="{UserCard>DOMAIN}" type="text">
 							</QuickViewGroupElement>
 							<QuickViewGroupElement
-									label="{i18n>department}" value="{UserCard>Department}" type="text">
+									label="{i18n>department}" value="{UserCard>DEPARTMENT}" type="text">
 							</QuickViewGroupElement>
 							<QuickViewGroupElement
-									label="{i18n>division}" value="{UserCard>Division}" type="text">
+									label="{i18n>division}" value="{UserCard>DIVISION}" type="text">
 							</QuickViewGroupElement>
 							<QuickViewGroupElement
-									label="{i18n>jobGroup}" value="{UserCard>JobGroup}" type="text">
+									label="{i18n>jobGroup}" value="{UserCard>JOBGROUP}" type="text">
 							</QuickViewGroupElement>
 							<QuickViewGroupElement
-									label="{i18n>jobCode}" value="{UserCard>JobCode}" type="text">
+									label="{i18n>jobCode}" value="{UserCard>JOBCODE}" type="text">
 							</QuickViewGroupElement>
 							<QuickViewGroupElement
-									label="{i18n>jobLocation}" value="{UserCard>JobLocation}" type="text">
-							</QuickViewGroupElement>
-
-							<QuickViewGroupElement
-									label="{i18n>groupBU}" value="{UserCard>GroupBU}" type="text">
-							</QuickViewGroupElement>
-							<QuickViewGroupElement
-									label="{i18n>employeeGroup}" value="{UserCard>EmployeeGroup}" type="text">
-							</QuickViewGroupElement>
-							<QuickViewGroupElement
-									label="{i18n>empCustomStatus}" value="{UserCard>EmpCustomStatus}" type="text">
+									label="{i18n>jobLocation}" value="{UserCard>JOBLOCATION}" type="text">
 							</QuickViewGroupElement>
 
 							<QuickViewGroupElement
-									label="{i18n>managerUserID}" value="{UserCard>ManagerUserID}" type="text">
+									label="{i18n>groupBU}" value="{UserCard>GROUPBU}" type="text">
 							</QuickViewGroupElement>
 							<QuickViewGroupElement
-									label="{i18n>managerName}" value="{UserCard>ManagerName}" type="text">
+									label="{i18n>employeeGroup}" value="{UserCard>EMPLOYEEGROUP}" type="text">
+							</QuickViewGroupElement>
+							<QuickViewGroupElement
+									label="{i18n>empCustomStatus}" value="{UserCard>EMPCUSTOMSTATUS}" type="text">
+							</QuickViewGroupElement>
+
+							<QuickViewGroupElement
+									label="{i18n>managerUserID}" value="{UserCard>MANAGERUSERID}" type="text">
+							</QuickViewGroupElement>
+							<QuickViewGroupElement
+									label="{i18n>managerName}" value="{UserCard>MANAGERNAME}" type="text">
 							</QuickViewGroupElement>
 						</QuickViewGroup>
 					</QuickViewPage>

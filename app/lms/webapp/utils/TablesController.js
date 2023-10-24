@@ -64,12 +64,56 @@ sap.ui.define([
 			$.each($tables, function(indx, $config) {
 				var tableUi = oController.getView().byId($config.Table) || sap.ui.getCore().byId($config.Table);
 				if(tableUi) { 
-					var oBinding = tableUi.getBinding('items'); 
-					if(oBinding && oBinding.filter) { 
-						oBinding.filter(initialFilter); 
-					}	
+					if($config.Table === 'CompetencyStatus' || $config.Table === 'CompetencyGaps') {
+						var oBinding = tableUi.getBinding('items'); 
+						if(oBinding && oBinding.filter) { 
+							oBinding.filter(initialFilter); 
+						}	
+					} else {
+						$this.refreshAggregatedTables(oController, initialFilter, $config.Table, tableUi);
+					}
 				}
 			});
+		},
+
+		refreshAggregatedTables: function(oController, $filters, tableName, tableUi) {
+			if(tableName === 'ByCompanies') {
+				oController.dataManager.getCompentenciesByCompanies(oController, $filters).then(function(data) {
+					tableUi.setModel(new JSONModel(data));
+				}).catch(function(error) {
+
+				});
+			} else if(tableName === 'ByDepartments') {
+				oController.dataManager.getCompentenciesByDepartments(oController, $filters).then(function(data) {
+					tableUi.setModel(new JSONModel(data));
+				}).catch(function(error) {
+
+				});
+			} else if(tableName === 'ByDivisions') {
+				oController.dataManager.getCompentenciesByDivisions(oController, $filters).then(function(data) {
+					tableUi.setModel(new JSONModel(data));
+				}).catch(function(error) {
+
+				});
+			} else if(tableName === 'ByEmployees') {
+				oController.dataManager.getCompentenciesByEmployees(oController, $filters).then(function(data) {
+					tableUi.setModel(new JSONModel(data));
+				}).catch(function(error) {
+
+				});
+			} else if(tableName === 'ByManagers') {
+				oController.dataManager.getCompentenciesByManagers(oController, $filters).then(function(data) {
+					tableUi.setModel(new JSONModel(data));
+				}).catch(function(error) {
+
+				});
+			} else if(tableName === 'ByCompetencies') {
+				oController.dataManager.getCompentenciesByCompetencies(oController, $filters).then(function(data) {
+					tableUi.setModel(new JSONModel(data));
+				}).catch(function(error) {
+
+				});
+			}
 		},
 		
 		refreshFilters: function(oController) {
@@ -83,10 +127,14 @@ sap.ui.define([
 							.concat(oController.filterController.getAllFilters(oController, $config.Filter));
 				var tableUi = oController.getView().byId($config.Table) || sap.ui.getCore().byId($config.Table);
 				if(tableUi) { 
-					var oBinding = tableUi.getBinding('items'); 
-					if(oBinding && oBinding.filter) { 
-						oBinding.filter($filters); 
-					}	
+					if($config.Table === 'CompetencyStatus' || $config.Table === 'CompetencyGaps') {
+						var oBinding = tableUi.getBinding('items'); 
+						if(oBinding && oBinding.filter) { 
+							oBinding.filter($filters); 
+						}	
+					} else {
+						$this.refreshAggregatedTables(oController, $filters, $config.Table, tableUi);
+					}
 				}
 			});
 		},
@@ -105,10 +153,14 @@ sap.ui.define([
 				var tableUi = oController.getView().byId($config.Table) || sap.ui.getCore().byId($config.Table);
 				var $filter = initialFilter.concat(oController.filterController.getAllFilters(oController, $config.Filter));
 				if(tableUi) { 
-					var oBinding = tableUi.getBinding('items'); 
-					if(oBinding && oBinding.filter) { 
-						oBinding.filter($filter); 
-					}	
+					if(tableName === 'CompetencyStatus' || tableName === 'CompetencyGaps') {
+						var oBinding = tableUi.getBinding('items'); 
+						if(oBinding && oBinding.filter) { 
+							oBinding.filter($filter); 
+						}	
+					} else {
+						$this.refreshAggregatedTables(oController, $filter, tableName, tableUi);
+					}
 				}
 			});
 		}

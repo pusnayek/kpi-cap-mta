@@ -74,8 +74,7 @@
 						<ObjectIdentifier titleActive="true" titlePress="handleLatestItemPopover"
 							title="{LASTASSIGNEDITEMID}"/>
 						<Text text="{COMPETENCY_DESCRIPTION}"/>	
-						<CheckBox selected="{path: 'QUALIFIED', formatter: '.formatter.isQualified'}" displayOnly="true"/>
-						<!--<cust:ColorCircle value="100"/>-->
+						<CheckBox selected="{path: 'IS_QUALIFIED', formatter: '.formatter.isQualified'}" displayOnly="true"/>
 						<Text text="{path : 'LASTACCUMULATIONDATE', type : 'sap.ui.model.type.Date',
             					formatOptions: { style : 'medium'}}"/>	
 						<Text text="{TIME_TO_EXPIRATION}"/>	

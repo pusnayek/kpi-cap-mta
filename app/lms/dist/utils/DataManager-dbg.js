@@ -69,63 +69,209 @@ sap.ui.define([
 			return lock;
 		},
 
-		/**
-		 * Load clocks using xsjs service
-		 */ 
-		// loadClockValues: function(oController, datafilterValues) {
-		// 	var lock = $.Deferred();
 
-		// 	//-prepare url
-		// 	var $url = this.utils.prepareClockUrl(oController.userInfo.user, oController.mode, datafilterValues);
+		getFilterAsString: function(filters) {
+			return filters.map(item => {
+				return item.sPath.concat(" ").concat('eq').concat(" '").concat(item.oValue1).concat("'");
+			}).join(' and ');
+		},
 
-		// 	$.ajax({
-		// 		method: "GET",
-		// 		contentType: "application/json",
-		// 		url: $url,
-		// 		async: true,
-		// 		beforeSend: function (xhr) {}
-		// 	}).done(function (results) {
-		// 		lock.resolve(results);
-		// 	}).fail(function (oError) {
-		// 		lock.reject(oError);
+		loadClockValues: function(oController, filters) {
+			var filterAsString = this.getFilterAsString(filters);
+			var path = "/kpi/EmployeeCompetencies?$apply=filter(#)/groupby((ACTING_USERID,ACTOR),aggregate(PROFESSIONAL_QUALIFIED_COMPETENCY with sum as ProfessionalQaulifiedCompetency,PROFESSIONAL_COMPETENCY with sum as ProfessionalCompetency,REGULATION_QUALIFIED_COMPETENCY with sum as RegulationQaulifiedCompetency,REGULATION_COMPETENCY with sum as RegulationCompetency,TOTAL_QUALIFIED_COMPETENCY with sum as TotalQaulifiedCompetency,TOTAL_COMPETENCY with sum as TotalCompetency))"
+						.replace('#', filterAsString);
+			return new Promise((resolve, reject) => {
+				$.get({
+					url: path,
+					success: function(data) {
+						// your success logic
+						if(data.value.length > 0) {
+							var competency = data.value[0];
+							resolve({
+								"Professional" : (competency.ProfessionalCompetency === 0 ? 0 : (competency.ProfessionalQaulifiedCompetency * 100 / competency.ProfessionalCompetency)),
+								"Regulation" : (competency.RegulationCompetency === 0 ? 0 : (competency.RegulationQaulifiedCompetency * 100 / competency.RegulationCompetency)),
+								"Total" : (competency.TotalCompetency === 0 ? 0 : (competency.TotalQaulifiedCompetency * 100 / competency.TotalCompetency))
+							});	
+						} else {
+							resolve({
+								"Professional" : null,
+								"Regulation" : null,
+								"Total" : null
+							});	
+						}
+					},
+					error: function(error) {
+						// your error logic
+					}
+				});				
+			});
+		},
+
+		getCompentenciesByManagers: function(oController, filters) {
+			var filterAsString = this.getFilterAsString(filters);
+			var path="/kpi/ByManagers?$apply=filter(#)/groupby((USERID,EMPLOYEEID,FIRSTNAME,LASTNAME,DOMAIN,DEPARTMENT,DIVISION,JOBCODE,JOBGROUP,JOBLOCATION,GROUPBU,EMPLOYEEGROUP,EMPCUSTOMSTATUS,MANAGERUSERID,MANAGERNAME),aggregate(PROFESSIONAL_QUALIFIED_COMPETENCY with sum as ProfessionalQaulifiedCompetency,PROFESSIONAL_COMPETENCY with sum as ProfessionalCompetency,REGULATION_QUALIFIED_COMPETENCY with sum as RegulationQaulifiedCompetency,REGULATION_COMPETENCY with sum as RegulationCompetency,TOTAL_QUALIFIED_COMPETENCY with sum as TotalQaulifiedCompetency,TOTAL_COMPETENCY with sum as TotalCompetency))"
+						.replace('#', filterAsString);
+			return new Promise((resolve, reject) => {
+				$.get({
+					url: path,
+					success: function(data) {
+						// your success logic
+						var entries = data.value.map(function(competency) {
+							competency.Professional = (competency.ProfessionalCompetency === 0 ? 0 : (competency.ProfessionalQaulifiedCompetency * 100 / competency.ProfessionalCompetency));
+							competency.Regulation = (competency.RegulationCompetency === 0 ? 0 : (competency.RegulationQaulifiedCompetency * 100 / competency.RegulationCompetency));
+							competency.Total = (competency.TotalCompetency === 0 ? 0 : (competency.TotalQaulifiedCompetency * 100 / competency.TotalCompetency));
+							return competency;
+						});
+						resolve(entries);
+					},
+					error: function(error) {
+						// your error logic
+						reject(error);
+					}
+				});				
+			});
+		},
+
+		getCompentenciesByCompetencies: function(oController, filters) {
+			var filterAsString = this.getFilterAsString(filters);
+			var path="/kpi/ByCompetencies?$apply=filter(#)/groupby((COMPETENCY_ID,COMPETENCY_NAME,COMPETENCY_AREA,COMPETENCY_TYPE,COMPETENCY_DESCRIPTION,COMPETENCY_GRANTSCERTIFICATE,RETAININGNUMER),aggregate(NUMBER_OF_EMPLOYEES%20with%20sum%20as%20NumberOfEmployees,NUMBER_OF_QUALIFIED_EMPLOYEES%20with%20sum%20as%20NumberOfQualifiedEmployees))"
+						.replace('#', filterAsString);
+			return new Promise((resolve, reject) => {
+				$.get({
+					url: path,
+					success: function(data) {
+						// your success logic
+						var entries = data.value.map(function(competency) {
+							competency.QaulificationPercentage = (competency.NumberOfEmployees === 0 ? 0 : (competency.NumberOfQualifiedEmployees * 100 / competency.NumberOfEmployees));
+							return competency;
+						});
+						resolve(entries);
+					},
+					error: function(error) {
+						// your error logic
+						reject(error);
+					}
+				});				
+			});
+		},
+
+		getCompentenciesByEmployees: function(oController, filters) {
+			var filterAsString = this.getFilterAsString(filters);
+			var path="/kpi/EmployeeCompetencies?$apply=filter(#)/groupby((USERID,EMPLOYEEID,FIRSTNAME,LASTNAME,DOMAIN,DEPARTMENT,DIVISION,JOBCODE,JOBGROUP,JOBLOCATION,GROUPBU,EMPLOYEEGROUP,EMPCUSTOMSTATUS,MANAGERUSERID,MANAGERNAME),aggregate(PROFESSIONAL_QUALIFIED_COMPETENCY with sum as ProfessionalQaulifiedCompetency,PROFESSIONAL_COMPETENCY with sum as ProfessionalCompetency,REGULATION_QUALIFIED_COMPETENCY with sum as RegulationQaulifiedCompetency,REGULATION_COMPETENCY with sum as RegulationCompetency,TOTAL_QUALIFIED_COMPETENCY with sum as TotalQaulifiedCompetency,TOTAL_COMPETENCY with sum as TotalCompetency))"
+						.replace('#', filterAsString);
+			return new Promise((resolve, reject) => {
+				$.get({
+					url: path,
+					success: function(data) {
+						// your success logic
+						var entries = data.value.map(function(competency) {
+							competency.Professional = (competency.ProfessionalCompetency === 0 ? 0 : (competency.ProfessionalQaulifiedCompetency * 100 / competency.ProfessionalCompetency));
+							competency.Regulation = (competency.RegulationCompetency === 0 ? 0 : (competency.RegulationQaulifiedCompetency * 100 / competency.RegulationCompetency));
+							competency.Total = (competency.TotalCompetency === 0 ? 0 : (competency.TotalQaulifiedCompetency * 100 / competency.TotalCompetency));
+							return competency;
+						});
+						resolve(entries);
+					},
+					error: function(error) {
+						// your error logic
+						reject(error);
+					}
+				});				
+			});
+		},
+
+		getCompentenciesByCompanies: function(oController, filters) {
+			var filterAsString = this.getFilterAsString(filters);
+			var path="/kpi/EmployeeCompetencies?$apply=filter(#)/groupby((DOMAIN),aggregate(PROFESSIONAL_QUALIFIED_COMPETENCY with sum as ProfessionalQaulifiedCompetency,PROFESSIONAL_COMPETENCY with sum as ProfessionalCompetency,REGULATION_QUALIFIED_COMPETENCY with sum as RegulationQaulifiedCompetency,REGULATION_COMPETENCY with sum as RegulationCompetency,TOTAL_QUALIFIED_COMPETENCY with sum as TotalQaulifiedCompetency,TOTAL_COMPETENCY with sum as TotalCompetency))"
+						.replace('#', filterAsString);
+			return new Promise((resolve, reject) => {
+				$.get({
+					url: path,
+					success: function(data) {
+						// your success logic
+						var entries = data.value.map(function(competency) {
+							competency.Professional = (competency.ProfessionalCompetency === 0 ? 0 : (competency.ProfessionalQaulifiedCompetency * 100 / competency.ProfessionalCompetency));
+							competency.Regulation = (competency.RegulationCompetency === 0 ? 0 : (competency.RegulationQaulifiedCompetency * 100 / competency.RegulationCompetency));
+							competency.Total = (competency.TotalCompetency === 0 ? 0 : (competency.TotalQaulifiedCompetency * 100 / competency.TotalCompetency));
+							return competency;
+						});
+						resolve(entries);
+					},
+					error: function(error) {
+						// your error logic
+						reject(error);
+					}
+				});				
+			});
+		},
+
+		getCompentenciesByDivisions: function(oController, filters) {
+			var filterAsString = this.getFilterAsString(filters);
+			var path="/kpi/EmployeeCompetencies?$apply=filter(#)/groupby((DIVISION),aggregate(PROFESSIONAL_QUALIFIED_COMPETENCY with sum as ProfessionalQaulifiedCompetency,PROFESSIONAL_COMPETENCY with sum as ProfessionalCompetency,REGULATION_QUALIFIED_COMPETENCY with sum as RegulationQaulifiedCompetency,REGULATION_COMPETENCY with sum as RegulationCompetency,TOTAL_QUALIFIED_COMPETENCY with sum as TotalQaulifiedCompetency,TOTAL_COMPETENCY with sum as TotalCompetency))"
+						.replace('#', filterAsString);
+			return new Promise((resolve, reject) => {
+				$.get({
+					url: path,
+					success: function(data) {
+						// your success logic
+						var entries = data.value.map(function(competency) {
+							competency.Professional = (competency.ProfessionalCompetency === 0 ? 0 : (competency.ProfessionalQaulifiedCompetency * 100 / competency.ProfessionalCompetency));
+							competency.Regulation = (competency.RegulationCompetency === 0 ? 0 : (competency.RegulationQaulifiedCompetency * 100 / competency.RegulationCompetency));
+							competency.Total = (competency.TotalCompetency === 0 ? 0 : (competency.TotalQaulifiedCompetency * 100 / competency.TotalCompetency));
+							return competency;
+						});
+						resolve(entries);
+					},
+					error: function(error) {
+						// your error logic
+						reject(error);
+					}
+				});				
+			});
+		},
+
+		getCompentenciesByDepartments: function(oController, filters) {
+			var filterAsString = this.getFilterAsString(filters);
+			var path="/kpi/EmployeeCompetencies?$apply=filter(#)/groupby((DEPARTMENT),aggregate(PROFESSIONAL_QUALIFIED_COMPETENCY with sum as ProfessionalQaulifiedCompetency,PROFESSIONAL_COMPETENCY with sum as ProfessionalCompetency,REGULATION_QUALIFIED_COMPETENCY with sum as RegulationQaulifiedCompetency,REGULATION_COMPETENCY with sum as RegulationCompetency,TOTAL_QUALIFIED_COMPETENCY with sum as TotalQaulifiedCompetency,TOTAL_COMPETENCY with sum as TotalCompetency))"
+						.replace('#', filterAsString);
+			return new Promise((resolve, reject) => {
+				$.get({
+					url: path,
+					success: function(data) {
+						// your success logic
+						var entries = data.value.map(function(competency) {
+							competency.Professional = (competency.ProfessionalCompetency === 0 ? 0 : (competency.ProfessionalQaulifiedCompetency * 100 / competency.ProfessionalCompetency));
+							competency.Regulation = (competency.RegulationCompetency === 0 ? 0 : (competency.RegulationQaulifiedCompetency * 100 / competency.RegulationCompetency));
+							competency.Total = (competency.TotalCompetency === 0 ? 0 : (competency.TotalQaulifiedCompetency * 100 / competency.TotalCompetency));
+							return competency;
+						});
+						resolve(entries);
+					},
+					error: function(error) {
+						// your error logic
+						reject(error);
+					}
+				});				
+			});
+		},
+
+		// loadClockValues: function(oController, filters) {			
+		// 	return new Promise((resolve, reject) => {
+		// 		var clockValues = oController.getView().getModel("v4").bindList("/ClockValues",null,[],filters,{$$getKeepAliveContext:true});
+		// 		clockValues.requestContexts()
+		// 		.then(function(data, response) {
+		// 			resolve({
+		// 				"Professional" : null,
+		// 				"Regulation" : null,
+		// 				"Total" : null
+		// 			});
+		// 		})
+		// 		.catch(function(oError) {
+
+		// 		})
 		// 	});
-
-		// 	return lock;
 		// },
 
-		/**
-		 * Load clocks using xsodata call
-		 */ 
-		loadClockValues: function(oController, filters) {
-			var lock = $.Deferred();
-
-			oController.getView().getModel().read("/ClockValues", {
-				urlParameters:{"$select" : "PROFESSIONAL_COMPETENCY_PERCENTAGE,REGULATION_COMPETENCY_PERCENTAGE,TOTAL_COMPETENCY_PERCENTAGE"},
-				filters: filters,
-				success: function(oData) {
-					//process data
-					if(oData.results && oData.results.length > 0) {
-						var $result = oData.results[0];
-						lock.resolve({
-							"Professional" : $result.PROFESSIONAL_COMPETENCY_PERCENTAGE,
-							"Regulation" : $result.REGULATION_COMPETENCY_PERCENTAGE,
-							"Total" : $result.TOTAL_COMPETENCY_PERCENTAGE
-						});
-					} else {
-						lock.resolve({
-							"Professional" : null,
-							"Regulation" : null,
-							"Total" : null
-						});
-					}
-				},
-				error: function(oError) {
-					lock.reject(oError);
-				}
-			});
-
-			return lock;
-		},
 		
 		/**
 		 * Download xls

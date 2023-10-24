@@ -17,11 +17,7 @@
     		growingScrollToLoad="false"
 			width="auto"
 			updateFinished="scroll"
-			items="{ path: '/ByCompetencies',
-				parameters: { 
-					select: 'CompetencyId,CompetencyName,CompetencyArea,CompetencyType,CompetencyDescription,CompetencyGrantsCertificate,RetainingNumer,NumOfEmployees,NumOfQualifiedEmployees,QualificationPercentage'
-				}
-			}"
+			items="{path: '/'}"
 			noDataText="{i18n>detailLineItemTableNoDataText}"
 			class="sapUiResponsiveMargin">
 			<headerToolbar>
@@ -55,12 +51,12 @@
 				<ColumnListItem>
 					<cells>
 						<ObjectIdentifier titleActive="true" titlePress="handleCompetencyPopover"
-							title="{CompetencyId}"
-							text="{CompetencyName}"/>
-						<Text text="{CompetencyDescription}"/>	
-						<Text text="{NumOfEmployees}"/>	
-						<Text text="{NumOfQualifiedEmployees}"/>	
-						<Text text="{QualificationPercentage}"/>	
+							title="{COMPETENCY_ID}"
+							text="{COMPETENCY_NAME}"/>
+						<Text text="{COMPETENCY_DESCRIPTION}"/>	
+						<Text text="{NumberOfEmployees}"/>	
+						<Text text="{NumberOfQualifiedEmployees}"/>	
+						<Text text="{QaulificationPercentage}"/>	
 					</cells>
 				</ColumnListItem>
 			</items>

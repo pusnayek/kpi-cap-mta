@@ -17,11 +17,7 @@
     		growingScrollToLoad="false"
 			width="auto"
 			updateFinished="scroll"
-			items="{ path: '/EmployeeCompetencies',
-				parameters: { 
-					select: 'UserID,EmployeeID,FirstName,LastName,Domain,Department,Division,JobCode,JobGroup,JobLocation,GroupBU,EmployeeGroup,EmpCustomStatus,ManagerUserID,ManagerName,ProfessionalCompetencyPercentage,RegulationCompetencyPercentage,TotalCompetencyPercentage' 
-				}
-			}"
+			items="{path: '/'}"
 			noDataText="{i18n>detailLineItemTableNoDataText}"
 			class="sapUiResponsiveMargin">
 			<headerToolbar>
@@ -55,12 +51,12 @@
 				<ColumnListItem>
 					<cells>
 						<ObjectIdentifier titleActive="true" titlePress="handleUserPopover"
-							title="{UserID}"
-							text="{FirstName} {LastName}"/>
-						<Text text="{Domain}"/>	
-						<Text text="{path: 'TotalCompetencyPercentage', formatter: '.isCompetencyApplicable'}"/>	
-						<Text text="{path: 'ProfessionalCompetencyPercentage', formatter: '.isCompetencyApplicable'}"/>	
-						<Text text="{path: 'RegulationCompetencyPercentage', formatter: '.isCompetencyApplicable'}"/>	
+							title="{USERID}"
+							text="{FIRSTNAME} {LASTNAME}"/>
+						<Text text="{DOMAIN}"/>	
+						<Text text="{path: 'Total', formatter: '.isCompetencyApplicable'}"/>	
+						<Text text="{path: 'Professional', formatter: '.isCompetencyApplicable'}"/>	
+						<Text text="{path: 'Regulation', formatter: '.isCompetencyApplicable'}"/>	
 					</cells>
 				</ColumnListItem>
 			</items>

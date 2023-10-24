@@ -54,15 +54,15 @@
 				<ColumnListItem>
 					<cells>
 						<ObjectIdentifier titleActive="true" titlePress="handleUserPopover"
-							title="{UserID}"
-							text="{FirstName} {LastName}"/>
+							title="{USERID}"
+							text="{FIRSTNAME} {LASTNAME}"/>
 						<ObjectIdentifier titleActive="true" titlePress="handleItemCompetencyPopover"
-							title="{CompetencyId}"
-							text="{CompetencyName}"/>
+							title="{COMPETENCY_ID}"
+							text="{COMPETENCY_NAME}"/>
 						<Text text="{CompetencyDescription}"/>	
-						<CheckBox selected="{path: 'IsQualified', formatter: '.formatter.isQualified'}" displayOnly="true"/>
-						<Text text="{DaysIncomplete}"/>	
-						<Text text="{path : 'AssignmentDate', type : 'sap.ui.model.type.Date',
+						<CheckBox selected="{path: 'IS_QUALIFIED', formatter: '.formatter.isQualified'}" displayOnly="true"/>
+						<Text text="{DAYS_INCOMPLETE}"/>	
+						<Text text="{path : 'ASSIGNMENTDATE', type : 'sap.ui.model.type.Date',
             					formatOptions: { style : 'medium'}}"/>	
 					</cells>
 				</ColumnListItem>
