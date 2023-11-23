@@ -17,11 +17,11 @@ BEGIN
     /**Start of process**/
     DeltaPullStartTime = NOW();
     
-    SELECT MIN("READY_TO_REPLICATE") INTO ReadyToReplicate
-        FROM "StagingReadiness"
-        WHERE ("EXTRACTION_CATEGORY" = 'Item');
+    -- SELECT MIN("READY_TO_REPLICATE") INTO ReadyToReplicate
+    --     FROM "StagingReadiness"
+    --     WHERE ("EXTRACTION_CATEGORY" = 'Item');
                 
-    IF ReadyToReplicate > 0 THEN
+    -- IF ReadyToReplicate > 0 THEN
         /**Stage**/
         CALL "PROC_STAGE_ITEMS"();
         /**Compress and put in final table **/
@@ -32,7 +32,7 @@ BEGIN
             SET "DELTAPULLTIME" = CURRENT_TIMESTAMP
             WHERE ("EXTRACTIONTYPE" = 'Item');
         COMMIT;
-    END IF;
+    -- END IF;
 
     /**End of process**/
     DeltaPullEndTime = NOW();

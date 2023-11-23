@@ -86,94 +86,96 @@
 
 <logicalModel id="LatestCompletions">
   <attributes>
-    <attribute id="USERID" order="1" displayAttribute="false" attributeHierarchyActive="false">
+    <attribute id="USERID" order="1" displayAttribute="false" attributeHierarchyActive="false" semanticType="empty" descriptionColumnName="USERID">
       <descriptions defaultDescription="USERID"/>
       <keyMapping columnObjectName="LatestCompletions" columnName="USERID"/>
     </attribute>
-    <attribute id="ITEMID" order="2" displayAttribute="false" attributeHierarchyActive="false">
+    <attribute id="ITEMID" order="2" displayAttribute="false" attributeHierarchyActive="false" semanticType="empty" descriptionColumnName="ITEMID">
       <descriptions defaultDescription="ITEMID"/>
       <keyMapping columnObjectName="LatestCompletions" columnName="ITEMID"/>
     </attribute>
-    <attribute id="ITEMTYPE" order="3" displayAttribute="false" attributeHierarchyActive="false">
+    <attribute id="ITEMTYPE" order="3" displayAttribute="false" attributeHierarchyActive="false" semanticType="empty" descriptionColumnName="ITEMTYPE">
       <descriptions defaultDescription="ITEMTYPE"/>
       <keyMapping columnObjectName="LatestCompletions" columnName="ITEMTYPE"/>
     </attribute>
-    <attribute id="ASSIGNMENTDATE" order="4" displayAttribute="false" attributeHierarchyActive="false">
+    <attribute id="ASSIGNMENTDATE" order="4" displayAttribute="false" attributeHierarchyActive="false" semanticType="empty" descriptionColumnName="ASSIGNMENTDATE">
       <descriptions defaultDescription="ASSIGNMENTDATE"/>
       <keyMapping columnObjectName="LatestCompletions" columnName="ASSIGNMENTDATE"/>
     </attribute>
-    <attribute id="COMPLETIONSTATUS" order="5" displayAttribute="false" attributeHierarchyActive="false">
+    <attribute id="COMPLETIONSTATUS" order="5" displayAttribute="false" attributeHierarchyActive="false" semanticType="empty" descriptionColumnName="COMPLETIONSTATUS">
       <descriptions defaultDescription="COMPLETIONSTATUS"/>
       <keyMapping columnObjectName="LatestCompletions" columnName="COMPLETIONSTATUS"/>
     </attribute>
-    <attribute id="COMPLETIONDATE" order="6" displayAttribute="false" attributeHierarchyActive="false">
+    <attribute id="COMPLETIONDATE" order="6" displayAttribute="false" attributeHierarchyActive="false" semanticType="empty" descriptionColumnName="COMPLETIONDATE">
       <descriptions defaultDescription="COMPLETIONDATE"/>
       <keyMapping columnObjectName="LatestCompletions" columnName="COMPLETIONDATE"/>
     </attribute>
-    <attribute id="ITEMTITLE" order="7" displayAttribute="false" attributeHierarchyActive="false">
+    <attribute id="ITEMTITLE" order="7" displayAttribute="false" attributeHierarchyActive="false" semanticType="empty" descriptionColumnName="ITEMTITLE">
       <descriptions defaultDescription="ITEMTITLE"/>
       <keyMapping columnObjectName="LatestCompletions" columnName="ITEMTITLE"/>
     </attribute>
-    <attribute id="COMPETENCY_ID" order="8" displayAttribute="false" attributeHierarchyActive="false">
+    <attribute id="COMPETENCY_ID" order="8" displayAttribute="false" attributeHierarchyActive="false" semanticType="empty" descriptionColumnName="COMPETENCY_ID">
       <descriptions defaultDescription="COMPETENCY_ID"/>
       <keyMapping columnObjectName="LatestCompletions" columnName="COMPETENCY_ID"/>
     </attribute>
-    <attribute id="COMPETENCY_NAME" order="9" displayAttribute="false" attributeHierarchyActive="false">
+    <attribute id="COMPETENCY_NAME" order="9" displayAttribute="false" attributeHierarchyActive="false" semanticType="empty" descriptionColumnName="COMPETENCY_NAME">
       <descriptions defaultDescription="COMPETENCY_NAME"/>
       <keyMapping columnObjectName="LatestCompletions" columnName="COMPETENCY_NAME"/>
     </attribute>
-    <attribute id="COMPETENCY_AREA" order="10" displayAttribute="false" attributeHierarchyActive="false">
+    <attribute id="COMPETENCY_AREA" order="10" displayAttribute="false" attributeHierarchyActive="false" semanticType="empty" descriptionColumnName="COMPETENCY_AREA">
       <descriptions defaultDescription="COMPETENCY_AREA"/>
       <keyMapping columnObjectName="LatestCompletions" columnName="COMPETENCY_AREA"/>
     </attribute>
-    <attribute id="COMPETENCY_DESCRIPTION" order="11" displayAttribute="false" attributeHierarchyActive="false">
+    <attribute id="COMPETENCY_DESCRIPTION" order="11" displayAttribute="false" attributeHierarchyActive="false" semanticType="empty" descriptionColumnName="COMPETENCY_DESCRIPTION">
       <descriptions defaultDescription="COMPETENCY_DESCRIPTION"/>
       <keyMapping columnObjectName="LatestCompletions" columnName="COMPETENCY_DESCRIPTION"/>
     </attribute>
-    <attribute id="COMPETENCY_COMPETENCYTYPE" order="12" displayAttribute="false" attributeHierarchyActive="false">
+    <attribute id="COMPETENCY_COMPETENCYTYPE" order="12" displayAttribute="false" attributeHierarchyActive="false" semanticType="empty" descriptionColumnName="COMPETENCY_COMPETENCYTYPE">
       <descriptions defaultDescription="COMPETENCY_COMPETENCYTYPE"/>
       <keyMapping columnObjectName="LatestCompletions" columnName="COMPETENCY_COMPETENCYTYPE"/>
     </attribute>
-    <attribute id="COMPETENCY_GRANTSCERTIFICATE" order="13" displayAttribute="false" attributeHierarchyActive="false">
+    <attribute id="COMPETENCY_GRANTSCERTIFICATE" order="13" displayAttribute="false" attributeHierarchyActive="false" semanticType="empty" descriptionColumnName="COMPETENCY_GRANTSCERTIFICATE">
       <descriptions defaultDescription="COMPETENCY_GRANTSCERTIFICATE"/>
       <keyMapping columnObjectName="LatestCompletions" columnName="COMPETENCY_GRANTSCERTIFICATE"/>
     </attribute>
-    <attribute id="RETAININGNUMER" order="14" displayAttribute="false" attributeHierarchyActive="false">
+    <attribute id="RETAININGNUMER" order="14" displayAttribute="false" attributeHierarchyActive="false" semanticType="empty" descriptionColumnName="RETAININGNUMER">
       <descriptions defaultDescription="RETAININGNUMER"/>
       <keyMapping columnObjectName="LatestCompletions" columnName="RETAININGNUMER"/>
     </attribute>
-    <attribute id="LAST_ASSIGNED_ITEMID" order="15" displayAttribute="false" attributeHierarchyActive="false">
+    <attribute id="LAST_ASSIGNED_ITEMID" order="15" displayAttribute="false" attributeHierarchyActive="false" semanticType="empty" descriptionColumnName="LAST_ASSIGNED_ITEMID">
       <descriptions defaultDescription="ITEMID"/>
       <keyMapping columnObjectName="LatestCompletions" columnName="LAST_ASSIGNED_ITEMID"/>
     </attribute>
-    <attribute id="LAST_ASSIGNED_ITEMTYPE" order="16" displayAttribute="false" attributeHierarchyActive="false">
+    <attribute id="LAST_ASSIGNED_ITEMTYPE" order="16" displayAttribute="false" attributeHierarchyActive="false" semanticType="empty" descriptionColumnName="LAST_ASSIGNED_ITEMTYPE">
       <descriptions defaultDescription="ITEMTYPE"/>
       <keyMapping columnObjectName="LatestCompletions" columnName="LAST_ASSIGNED_ITEMTYPE"/>
     </attribute>
-    <attribute id="LATEST_ITEM_ASSIGNMENTDATE" order="17" displayAttribute="false" attributeHierarchyActive="false">
+    <attribute id="LATEST_ITEM_ASSIGNMENTDATE" order="17" displayAttribute="false" attributeHierarchyActive="false" semanticType="empty" descriptionColumnName="LATEST_ITEM_ASSIGNMENTDATE">
       <descriptions defaultDescription="ASSIGNMENTDATE"/>
       <keyMapping columnObjectName="LatestCompletions" columnName="LATEST_ITEM_ASSIGNMENTDATE"/>
     </attribute>
-    <attribute id="LAST_ASSIGNED_ITEMTITLE" order="18" displayAttribute="false" attributeHierarchyActive="false">
+    <attribute id="LAST_ASSIGNED_ITEMTITLE" order="18" displayAttribute="false" attributeHierarchyActive="false" semanticType="empty" descriptionColumnName="LAST_ASSIGNED_ITEMTITLE">
       <descriptions defaultDescription="ITEMTITLE"/>
       <keyMapping columnObjectName="LatestCompletions" columnName="LAST_ASSIGNED_ITEMTITLE"/>
     </attribute>
-    <attribute id="HAS_CURRENT_ASSIGNMENT" order="19" displayAttribute="false" attributeHierarchyActive="false">
+    <attribute id="HAS_CURRENT_ASSIGNMENT" order="19" displayAttribute="false" attributeHierarchyActive="false" semanticType="empty" descriptionColumnName="HAS_CURRENT_ASSIGNMENT">
       <descriptions defaultDescription="Currently Assigned? (Y/N)"/>
       <keyMapping columnObjectName="LatestCompletions" columnName="HAS_CURRENT_ASSIGNMENT"/>
     </attribute>
-    <attribute id="HAS_EXPIRY" order="20" displayAttribute="false" attributeHierarchyActive="false">
+    <attribute id="HAS_EXPIRY" order="20" displayAttribute="false" attributeHierarchyActive="false" semanticType="empty" descriptionColumnName="HAS_EXPIRY">
       <descriptions defaultDescription="Has Expiry"/>
       <keyMapping columnObjectName="LatestCompletions" columnName="HAS_EXPIRY"/>
     </attribute>
-    <attribute id="EXPIRATION_DATE" order="21" displayAttribute="false" attributeHierarchyActive="false">
+    <attribute id="EXPIRATION_DATE" order="21" displayAttribute="false" attributeHierarchyActive="false" semanticType="empty" descriptionColumnName="EXPIRATION_DATE">
       <descriptions defaultDescription="Expiration Date"/>
       <keyMapping columnObjectName="LatestCompletions" columnName="EXPIRATION_DATE"/>
     </attribute>
   
-    <attribute id="LAST_ITEM_ASSIGNED_BY" order="22" displayAttribute="false" attributeHierarchyActive="false">
+    <attribute id="LAST_ITEM_ASSIGNED_BY" order="22" displayAttribute="false" attributeHierarchyActive="false" semanticType="empty" descriptionColumnName="LAST_ITEM_ASSIGNED_BY">
       <descriptions defaultDescription="LAST_ITEM_ASSIGNED_BY"/>
+  
       <keyMapping columnObjectName="LatestCompletions" columnName="LAST_ITEM_ASSIGNED_BY"/>
+  
     </attribute>
   </attributes>
   <calculatedAttributes/>

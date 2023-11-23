@@ -64,7 +64,7 @@ BEGIN
     /**
     * Delete all records with status 'P' from extraction table
     */
-    -- DELETE FROM ET_ASSIGNMENT WHERE "PROCESSINGSTATUS" = 'P';
+    DELETE FROM ET_ASSIGNMENT WHERE "PROCESSINGSTATUS" = 'P';
     COMMIT;
 
     IF IN_MODE = 'D' THEN

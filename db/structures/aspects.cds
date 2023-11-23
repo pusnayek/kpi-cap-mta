@@ -12,7 +12,7 @@ context Structures {
         GrantsCertificate    : String(5);
     };
 
-    type CompetencyId        : String(50);
+    type CompetencyId        : String(100);
 
     /* Competency details */
     type CompetencyValues {
@@ -25,7 +25,7 @@ context Structures {
     type ItemType {
         ID            : String(50);
         Type          : String(50);
-        Title         : String(255);
+        Title         : String(500);
     };    
 
     type _ItemId       : String(50);
@@ -44,8 +44,9 @@ context Structures {
         LastUpdateTime  : Timestamp;
     };    
 
-    type DeltaAction    : String(1);
-    type DeltaRecord    : Integer64;
+    type DeltaAction            : String(1);
+    type DeltaLastUpdateTime    : String(1);
+    type DeltaRecord            : Integer64;
         
     type UserID          : String(50);
      /*Name of the employee*/

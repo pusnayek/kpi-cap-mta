@@ -88,9 +88,9 @@ sap.ui.define([
 						if(data.value.length > 0) {
 							var competency = data.value[0];
 							resolve({
-								"Professional" : (competency.ProfessionalCompetency === 0 ? 0 : (competency.ProfessionalQaulifiedCompetency * 100 / competency.ProfessionalCompetency)),
-								"Regulation" : (competency.RegulationCompetency === 0 ? 0 : (competency.RegulationQaulifiedCompetency * 100 / competency.RegulationCompetency)),
-								"Total" : (competency.TotalCompetency === 0 ? 0 : (competency.TotalQaulifiedCompetency * 100 / competency.TotalCompetency))
+								"Professional" : (competency.ProfessionalCompetency === 0 ? 0 : (competency.ProfessionalQaulifiedCompetency * 100 / competency.ProfessionalCompetency)).toFixed(0),
+								"Regulation" : (competency.RegulationCompetency === 0 ? 0 : (competency.RegulationQaulifiedCompetency * 100 / competency.RegulationCompetency)).toFixed(0),
+								"Total" : (competency.TotalCompetency === 0 ? 0 : (competency.TotalQaulifiedCompetency * 100 / competency.TotalCompetency)).toFixed(0)
 							});	
 						} else {
 							resolve({
@@ -117,9 +117,9 @@ sap.ui.define([
 					success: function(data) {
 						// your success logic
 						var entries = data.value.map(function(competency) {
-							competency.Professional = (competency.ProfessionalCompetency === 0 ? 0 : (competency.ProfessionalQaulifiedCompetency * 100 / competency.ProfessionalCompetency));
-							competency.Regulation = (competency.RegulationCompetency === 0 ? 0 : (competency.RegulationQaulifiedCompetency * 100 / competency.RegulationCompetency));
-							competency.Total = (competency.TotalCompetency === 0 ? 0 : (competency.TotalQaulifiedCompetency * 100 / competency.TotalCompetency));
+							competency.Professional = (competency.ProfessionalCompetency === 0 ? 0 : (competency.ProfessionalQaulifiedCompetency * 100 / competency.ProfessionalCompetency)).toFixed(0);
+							competency.Regulation = (competency.RegulationCompetency === 0 ? 0 : (competency.RegulationQaulifiedCompetency * 100 / competency.RegulationCompetency)).toFixed(0);
+							competency.Total = (competency.TotalCompetency === 0 ? 0 : (competency.TotalQaulifiedCompetency * 100 / competency.TotalCompetency)).toFixed(0);
 							return competency;
 						});
 						resolve(entries);
@@ -142,7 +142,7 @@ sap.ui.define([
 					success: function(data) {
 						// your success logic
 						var entries = data.value.map(function(competency) {
-							competency.QaulificationPercentage = (competency.NumberOfEmployees === 0 ? 0 : (competency.NumberOfQualifiedEmployees * 100 / competency.NumberOfEmployees));
+							competency.QaulificationPercentage = (competency.NumberOfEmployees === 0 ? 0 : (competency.NumberOfQualifiedEmployees * 100 / competency.NumberOfEmployees)).toFixed(0);
 							return competency;
 						});
 						resolve(entries);
@@ -165,9 +165,9 @@ sap.ui.define([
 					success: function(data) {
 						// your success logic
 						var entries = data.value.map(function(competency) {
-							competency.Professional = (competency.ProfessionalCompetency === 0 ? 0 : (competency.ProfessionalQaulifiedCompetency * 100 / competency.ProfessionalCompetency));
-							competency.Regulation = (competency.RegulationCompetency === 0 ? 0 : (competency.RegulationQaulifiedCompetency * 100 / competency.RegulationCompetency));
-							competency.Total = (competency.TotalCompetency === 0 ? 0 : (competency.TotalQaulifiedCompetency * 100 / competency.TotalCompetency));
+							competency.Professional = (competency.ProfessionalCompetency === 0 ? 0 : (competency.ProfessionalQaulifiedCompetency * 100 / competency.ProfessionalCompetency)).toFixed(0);
+							competency.Regulation = (competency.RegulationCompetency === 0 ? 0 : (competency.RegulationQaulifiedCompetency * 100 / competency.RegulationCompetency)).toFixed(0);
+							competency.Total = (competency.TotalCompetency === 0 ? 0 : (competency.TotalQaulifiedCompetency * 100 / competency.TotalCompetency)).toFixed(0);
 							return competency;
 						});
 						resolve(entries);
@@ -190,9 +190,9 @@ sap.ui.define([
 					success: function(data) {
 						// your success logic
 						var entries = data.value.map(function(competency) {
-							competency.Professional = (competency.ProfessionalCompetency === 0 ? 0 : (competency.ProfessionalQaulifiedCompetency * 100 / competency.ProfessionalCompetency));
-							competency.Regulation = (competency.RegulationCompetency === 0 ? 0 : (competency.RegulationQaulifiedCompetency * 100 / competency.RegulationCompetency));
-							competency.Total = (competency.TotalCompetency === 0 ? 0 : (competency.TotalQaulifiedCompetency * 100 / competency.TotalCompetency));
+							competency.Professional = (competency.ProfessionalCompetency === 0 ? 0 : (competency.ProfessionalQaulifiedCompetency * 100 / competency.ProfessionalCompetency)).toFixed(0);
+							competency.Regulation = (competency.RegulationCompetency === 0 ? 0 : (competency.RegulationQaulifiedCompetency * 100 / competency.RegulationCompetency)).toFixed(0);
+							competency.Total = (competency.TotalCompetency === 0 ? 0 : (competency.TotalQaulifiedCompetency * 100 / competency.TotalCompetency)).toFixed(0);
 							return competency;
 						});
 						resolve(entries);
@@ -215,9 +215,9 @@ sap.ui.define([
 					success: function(data) {
 						// your success logic
 						var entries = data.value.map(function(competency) {
-							competency.Professional = (competency.ProfessionalCompetency === 0 ? 0 : (competency.ProfessionalQaulifiedCompetency * 100 / competency.ProfessionalCompetency));
-							competency.Regulation = (competency.RegulationCompetency === 0 ? 0 : (competency.RegulationQaulifiedCompetency * 100 / competency.RegulationCompetency));
-							competency.Total = (competency.TotalCompetency === 0 ? 0 : (competency.TotalQaulifiedCompetency * 100 / competency.TotalCompetency));
+							competency.Professional = (competency.ProfessionalCompetency === 0 ? 0 : (competency.ProfessionalQaulifiedCompetency * 100 / competency.ProfessionalCompetency)).toFixed(0);
+							competency.Regulation = (competency.RegulationCompetency === 0 ? 0 : (competency.RegulationQaulifiedCompetency * 100 / competency.RegulationCompetency)).toFixed(0);
+							competency.Total = (competency.TotalCompetency === 0 ? 0 : (competency.TotalQaulifiedCompetency * 100 / competency.TotalCompetency)).toFixed(0);
 							return competency;
 						});
 						resolve(entries);
@@ -240,9 +240,9 @@ sap.ui.define([
 					success: function(data) {
 						// your success logic
 						var entries = data.value.map(function(competency) {
-							competency.Professional = (competency.ProfessionalCompetency === 0 ? 0 : (competency.ProfessionalQaulifiedCompetency * 100 / competency.ProfessionalCompetency));
-							competency.Regulation = (competency.RegulationCompetency === 0 ? 0 : (competency.RegulationQaulifiedCompetency * 100 / competency.RegulationCompetency));
-							competency.Total = (competency.TotalCompetency === 0 ? 0 : (competency.TotalQaulifiedCompetency * 100 / competency.TotalCompetency));
+							competency.Professional = (competency.ProfessionalCompetency === 0 ? 0 : (competency.ProfessionalQaulifiedCompetency * 100 / competency.ProfessionalCompetency)).toFixed(0);
+							competency.Regulation = (competency.RegulationCompetency === 0 ? 0 : (competency.RegulationQaulifiedCompetency * 100 / competency.RegulationCompetency)).toFixed(0);
+							competency.Total = (competency.TotalCompetency === 0 ? 0 : (competency.TotalQaulifiedCompetency * 100 / competency.TotalCompetency)).toFixed(0);
 							return competency;
 						});
 						resolve(entries);
