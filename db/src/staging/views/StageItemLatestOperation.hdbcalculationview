@@ -51,7 +51,7 @@
       <viewAttribute id="ITEMID"/>
       <viewAttribute id="ITEMTYPE"/>
       <viewAttribute id="DELTA_ACTION"/>
-      <viewAttribute id="DELTA_LASTUPDATETIME" aggregationType="min"/>
+      <viewAttribute id="DELTA_LASTUPDATETIME" aggregationType="max"/>
       <viewAttribute id="ITEMTITLE"/>
       <viewAttribute id="COMPETENCY_ID"/>
       <viewAttribute id="COMPETENCY_NAME"/>
@@ -158,7 +158,7 @@
       <mapping xsi:type="Calculation:AttributeMapping" target="DELTA_ACTION" source="OPERATION"/>
     </input>
   </calculationView>
-  <calculationView xsi:type="Calculation:JoinView" id="LatestActionData" cardinality="CN_N" joinType="inner">
+  <calculationView xsi:type="Calculation:JoinView" id="LatestActionData" cardinality="CN_N" joinType="inner" filterExpressionLanguage="SQL">
     <viewAttributes>
       <viewAttribute id="ITEMID"/>
       <viewAttribute id="ITEMTYPE"/>

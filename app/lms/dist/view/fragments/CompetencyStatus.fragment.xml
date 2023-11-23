@@ -72,7 +72,8 @@
 							title="{COMPETENCY_ID}"
 							text="{COMPETENCY_NAME}"/>
 						<ObjectIdentifier titleActive="true" titlePress="handleLatestItemPopover"
-							title="{LASTASSIGNEDITEMID}"/>
+							title="{LASTASSIGNEDITEMID}"
+							text="{LASTASSIGNEDITEMTITLE}"/>
 						<Text text="{COMPETENCY_DESCRIPTION}"/>	
 						<CheckBox selected="{path: 'IS_QUALIFIED', formatter: '.formatter.isQualified'}" displayOnly="true"/>
 						<Text text="{path : 'LASTACCUMULATIONDATE', type : 'sap.ui.model.type.Date',

@@ -67,11 +67,24 @@ sap.ui.define([
 			// }, $this));
 
 			this.tablesController.init().then(function() {
-				//-hardcode user			
-				$this.userInfo.user = "adminPN";
-				$this.afterRendering();
-				$this.init($this.mode);
+				//-hardcode user	
+				// var user = new URLSearchParams(window.location.search).getAll("uid")[0];		
+				// $this.userInfo.user = user ? user : "adminPN";
+				$this.getUser().then(function(user) {
+					$this.userInfo.user = user ? user : "adminPN";
+					$this.afterRendering();
+					$this.init($this.mode);
+				});
 			});
+		},
+
+		getUser: function() {
+			var $this = this;
+			return new Promise(function(resolve, reject) {
+				$.getJSON("/user-api/currentUser", function(json) {
+					resolve(json.name);
+				});
+			});			
 		},
 
 		

@@ -77,7 +77,7 @@ BEGIN
     /**
     * Delete all records with status 'P' from extraction table
     */
-    -- DELETE FROM ET_EMPLOYEE WHERE "PROCESSINGSTATUS" = 'P';
+    DELETE FROM ET_EMPLOYEE WHERE "PROCESSINGSTATUS" = 'P';
     COMMIT;
     
 END

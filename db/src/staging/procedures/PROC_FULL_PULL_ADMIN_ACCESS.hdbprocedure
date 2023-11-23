@@ -17,11 +17,11 @@ BEGIN
     /**Start of process**/
     DeltaPullStartTime = NOW();
     
-    SELECT MIN("READY_TO_REPLICATE") INTO ReadyToReplicate
-        FROM "StagingReadiness"
-        WHERE ("EXTRACTION_CATEGORY" = 'Admin');
+    -- SELECT MIN("READY_TO_REPLICATE") INTO ReadyToReplicate
+    --     FROM "StagingReadiness"
+    --     WHERE ("EXTRACTION_CATEGORY" = 'Admin');
 
-    IF ReadyToReplicate > 0 THEN
+    -- IF ReadyToReplicate > 0 THEN
         /**Stage**/
         CALL "PROC_STAGE_ADMIN_ACCESS"();
         /**Compress and put in final table **/
@@ -38,7 +38,7 @@ BEGIN
         */
         CALL "PROC_ADMIN_ACCESS_DOMAINS"();
         
-    END IF;
+    -- END IF;
 
     /**End of process**/
     DeltaPullEndTime = NOW();
