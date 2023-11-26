@@ -10,6 +10,13 @@
       "service": "sap-approuter-userapi"
     },
     {
+      "source": "^/excel/(.*)$",
+      "target": "/excel/$1",
+      "destination": "py-utils",
+      "authenticationType": "none",
+      "csrfProtection": false
+    },
+    {
       "source": "^/(.*)$",
       "target": "$1",
       "destination": "srv-api",

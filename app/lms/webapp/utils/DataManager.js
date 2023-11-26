@@ -304,6 +304,38 @@ sap.ui.define([
 
 			return lock;
 		},
+
+		downloadXls: function(oController, scenario, datafilterValues) {
+			var lock = $.Deferred();
+			var $this = this;
+			//-prepare url
+			var $url = "/excel/download";
+
+			var oPayload = {
+				"user": oController.userInfo.user,
+				"mode": oController.mode,
+				"scenario": scenario,
+				"filters": datafilterValues
+			};
+
+			$.ajax({
+				method: "POST",
+				contentType: "application/json",
+				url: $url,
+				data: JSON.stringify(oPayload),
+				async: true,
+				xhrFields: {
+					responseType: 'blob'
+				},
+				beforeSend: function (xhr) {}
+			}).done(function (content, status, xhr) {
+				var filename = xhr.getResponseHeader('content-disposition').split('=')[1];
+				lock.resolve({"content" : content, "filename" : filename});
+			}).fail(function (oError) {
+				lock.reject(oError);
+			});
+			return lock;
+		},
 		
 		/**
 		 * Download big xls
