@@ -35,6 +35,10 @@
       "auth": "xsuaa",
       "[hybrid]": {
         "auth": "xsuaa"
+      },
+      "PLTUserManagement": {
+        "kind": "odata-v2",
+        "model": "srv/external/PLTUserManagement"
       }
     }
   },

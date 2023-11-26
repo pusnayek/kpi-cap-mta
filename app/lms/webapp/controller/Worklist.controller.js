@@ -70,6 +70,7 @@ sap.ui.define([
 				//-hardcode user	
 				// var user = new URLSearchParams(window.location.search).getAll("uid")[0];		
 				// $this.userInfo.user = user ? user : "adminPN";
+
 				$this.getUser().then(function(user) {
 					$this.userInfo.user = user ? user : "adminPN";
 					$this.afterRendering();
@@ -250,6 +251,11 @@ sap.ui.define([
 		},
 		
 		exportExcel: function(oEvent) {
+		//-prepare url
+		// var $filtersValues = this.filterController.getAllFilterValues(this);
+		// var $url = "https://kpi-delta-feed-optimistic-dugong-vp.cfapps.eu10-004.hana.ondemand.com/download";
+		// window.open($url);
+
 			var $this = this;
 			this.getView().setBusy(true);
 			var scenario = oEvent.getSource().data("table");
@@ -258,7 +264,7 @@ sap.ui.define([
 			var $filtersValues = $this.filterController.getAllFilterValues($this);
 			//-get export data
 			// $.when($this.dataManager.downloadXlsContent($this, scenario, $filtersValues))	
-			$.when($this.dataManager.downloadBigXlsContent($this, scenario, $filtersValues))	
+			$.when($this.dataManager.downloadXls($this, scenario, $filtersValues))	
 			.done(function($response) {
 				$this.getView().setBusy(false);
 				var blob = new Blob([$response.content]);
