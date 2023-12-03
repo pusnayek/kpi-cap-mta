@@ -52,6 +52,8 @@
       <viewAttribute id="REGULATION_COMPETENCY" aggregationType="sum"/>
       <viewAttribute id="TOTAL_QUALIFIED_COMPETENCY" aggregationType="sum"/>
       <viewAttribute id="TOTAL_COMPETENCY" aggregationType="sum"/>
+    
+      <viewAttribute id="QUALIFIED"/>
     </viewAttributes>
     <calculatedViewAttributes/>
     <restrictedViewAttributes/>
@@ -89,6 +91,7 @@
       <viewAttribute id="REGULATION_COMPETENCY" aggregationType="sum"/>
       <viewAttribute id="TOTAL_QUALIFIED_COMPETENCY" aggregationType="sum"/>
       <viewAttribute id="TOTAL_COMPETENCY" aggregationType="sum"/>
+      <viewAttribute id="QUALIFIED" aggregationType="sum"/>
       <viewAttribute hidden="true" id="JOIN$USERID$USERID"/>
     </viewAttributes>
     <calculatedViewAttributes/>
@@ -126,6 +129,7 @@
       <mapping xsi:type="Calculation:AttributeMapping" target="REGULATION_COMPETENCY" source="REGULATION_COMPETENCY"/>
       <mapping xsi:type="Calculation:AttributeMapping" target="TOTAL_QUALIFIED_COMPETENCY" source="TOTAL_QUALIFIED_COMPETENCY"/>
       <mapping xsi:type="Calculation:AttributeMapping" target="TOTAL_COMPETENCY" source="TOTAL_COMPETENCY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="QUALIFIED" source="QUALIFIED"/>
       <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$USERID$USERID" source="USERID"/>
     </input>
     <joinAttribute name="JOIN$USERID$USERID"/>
@@ -238,19 +242,19 @@ decfloat(&quot;PROFESSIONAL_QUALIFIED_COMPETENCY&quot;) * 100 / decfloat(&quot;P
   
       </keyCalculation>
   
-    </calculatedAttribute>
+      </calculatedAttribute>
     <calculatedAttribute id="REGULATION_COMPETENCY_PERCENTAGE" order="32" semanticType="empty" displayAttribute="false" attributeHierarchyActive="false">
       <keyCalculation datatype="DECIMAL" expressionLanguage="COLUMN_ENGINE" length="3" scale="0">
         <formula>if(&quot;REGULATION_COMPETENCY&quot; = 0,0,
 decfloat(&quot;REGULATION_QUALIFIED_COMPETENCY&quot;) * 100 / decfloat(&quot;REGULATION_COMPETENCY&quot;))</formula>
       </keyCalculation>
-    </calculatedAttribute>
+      </calculatedAttribute>
     <calculatedAttribute id="TOTAL_COMPETENCY_PERCENTAGE" order="33" semanticType="empty" displayAttribute="false" attributeHierarchyActive="false">
       <keyCalculation datatype="DECIMAL" expressionLanguage="COLUMN_ENGINE" length="3" scale="0">
         <formula>if(&quot;TOTAL_COMPETENCY&quot; = 0,0,
 decfloat(&quot;TOTAL_QUALIFIED_COMPETENCY&quot;) * 100 / decfloat(&quot;TOTAL_COMPETENCY&quot;))</formula>
       </keyCalculation>
-    </calculatedAttribute></calculatedAttributes>
+      </calculatedAttribute></calculatedAttributes>
   <baseMeasures>
     <measure id="RETAININGNUMER" order="24" aggregationType="sum" measureType="simple" restrictionExpressionLanguage="SQL">
       <descriptions defaultDescription="RETAININGNUMER"/>
@@ -285,6 +289,12 @@ decfloat(&quot;TOTAL_QUALIFIED_COMPETENCY&quot;) * 100 / decfloat(&quot;TOTAL_CO
     <measure id="TOTAL_COMPETENCY" order="30" aggregationType="sum" measureType="simple" restrictionExpressionLanguage="SQL">
       <descriptions defaultDescription="TOTAL_COMPETENCY"/>
       <measureMapping columnObjectName="WithEmployeeData" columnName="TOTAL_COMPETENCY"/>
+      <exceptionAggregationMetadata/>
+    </measure>
+  
+    <measure id="QUALIFIED" order="34" aggregationType="sum" measureType="simple">
+      <descriptions defaultDescription="QUALIFIED"/>
+      <measureMapping columnObjectName="WithEmployeeData" columnName="QUALIFIED"/>
       <exceptionAggregationMetadata/>
     </measure>
   </baseMeasures>

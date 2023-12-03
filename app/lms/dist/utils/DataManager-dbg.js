@@ -69,10 +69,20 @@ sap.ui.define([
 			return lock;
 		},
 
-
-		getFilterAsString: function(filters) {
+		getFilterMultipleValuesAsString: function(filters) {
 			return filters.map(item => {
 				return item.sPath.concat(" ").concat('eq').concat(" '").concat(item.oValue1).concat("'");
+			}).join(' or ');
+		},
+
+		getFilterAsString: function(filters) {
+			var $this = this;
+			return filters.map(item => {
+				if(item.sPath) {
+					return item.sPath.concat(" ").concat('eq').concat(" '").concat(item.oValue1).concat("'");
+				} else {
+					return "(".concat($this.getFilterMultipleValuesAsString(item.aFilters)).concat(")");
+				}
 			}).join(' and ');
 		},
 
@@ -314,6 +324,7 @@ sap.ui.define([
 			var oPayload = {
 				"user": oController.userInfo.user,
 				"mode": oController.mode,
+				"langu": sap.ui.getCore().getConfiguration().getLanguage().substring(0,2),
 				"scenario": scenario,
 				"filters": datafilterValues
 			};
