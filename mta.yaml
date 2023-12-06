@@ -9,6 +9,7 @@ modules:
     requires:
       - name: kpi-db
       - name: kpi-auth
+      - name: kpi-destination-service
     provides:
       - name: srv-api
         properties:
