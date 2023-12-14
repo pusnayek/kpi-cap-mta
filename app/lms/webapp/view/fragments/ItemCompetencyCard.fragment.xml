@@ -15,7 +15,7 @@
 							description="{CompetencyCard>COMPETENCY_ID}">
 						<QuickViewGroup heading="{i18n>competencyDetails}">
 							<QuickViewGroupElement
-									label="{i18n>type}" value="{path: 'CompetencyCard>COMPETENCY_TYPE', formatter: '.getCompetencyType'}" type="text">
+									label="{i18n>type}" value="{path: 'CompetencyCard>COMPETENCY_COMPETENCYTYPE', formatter: '.getCompetencyType'}" type="text">
 							</QuickViewGroupElement>
 							<QuickViewGroupElement
 									label="{i18n>area}" value="{CompetencyCard>COMPETENCY_DESCRIPTION}" type="text">
