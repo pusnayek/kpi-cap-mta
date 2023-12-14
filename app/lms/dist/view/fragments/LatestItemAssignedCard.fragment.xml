@@ -2,7 +2,7 @@
 	xmlns="sap.m"
 	xmlns:core="sap.ui.core">
 	<ResponsivePopover
-		title="{LastItemAssignmentCard>LastAssignedItemType}"
+		title="{LastItemAssignmentCard>LASTASSIGNEDITEMTYPE}"
 		class="sapUiPopupWithPadding"
 		placement="HorizontalPreferredRight" >
 		<content>
@@ -11,24 +11,24 @@
 					<QuickViewPage
 							header="{i18n>CompetencyId}"
 							icon="sap-icon://course-program"
-							title="{LastItemAssignmentCard>LastAssignedItemType}"
-							description="{LastItemAssignmentCard>LastAssignedItemID}">
+							title="{LastItemAssignmentCard>LASTASSIGNEDITEMTYPE}"
+							description="{LastItemAssignmentCard>LASTASSIGNEDITEMID}">
 						<QuickViewGroup heading="{i18n>itemDetails}">
 							<QuickViewGroupElement
-									label="{i18n>hasExpiry}" value="{path: 'LastItemAssignmentCard>HasExpiry', formatter: '.getBoolean'}" type="text">
+									label="{i18n>hasExpiry}" value="{path: 'LastItemAssignmentCard>HASEXPIRY', formatter: '.getBoolean'}" type="text">
 							</QuickViewGroupElement>
 							<QuickViewGroupElement
-									label="{i18n>isCurrentlyAssigned}" value="{path: 'LastItemAssignmentCard>HasCurrentAssignment', formatter: '.getBoolean'}" type="text">
+									label="{i18n>isCurrentlyAssigned}" value="{path: 'LastItemAssignmentCard>HASCURRENTASSIGNMENT', formatter: '.getBoolean'}" type="text">
 							</QuickViewGroupElement>
 							<QuickViewGroupElement
-									label="{i18n>assignedBy}" value="{path: 'LastItemAssignmentCard>LastItemAssignedBy'}" type="text">
+									label="{i18n>assignedBy}" value="{path: 'LastItemAssignmentCard>LASTITEMASSIGNEDBY'}" type="text">
 							</QuickViewGroupElement>
 							<QuickViewGroupElement
-									label="{i18n>assignmentDate}" value="{path : 'LastItemAssignmentCard>LatestItemAssignmentDate', 
+									label="{i18n>assignmentDate}" value="{path : 'LastItemAssignmentCard>LATESTITEMASSIGNMENTDATE', 
 										type : 'sap.ui.model.type.Date', formatOptions: { style : 'medium'}}" type="text">
 							</QuickViewGroupElement>
 							<QuickViewGroupElement
-									label="{i18n>assignedItemItitle}" value="{LastItemAssignmentCard>LastAssignedItemTitle}" type="text">
+									label="{i18n>assignedItemItitle}" value="{LastItemAssignmentCard>LASTASSIGNEDITEMTITLE}" type="text">
 							</QuickViewGroupElement>
 						</QuickViewGroup>
 					</QuickViewPage>

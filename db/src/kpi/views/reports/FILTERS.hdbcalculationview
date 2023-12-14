@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="FILTERS" applyPrivilegeType="NONE" dataCategory="DIMENSION" dimensionType="STANDARD" schemaVersion="3.0" hierarchyGeneration="SQL" outputViewType="Projection" cacheInvalidationPeriod="NONE" enforceSqlExecution="true" runWithInvokerPrivileges="true">
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="FILTERS" applyPrivilegeType="NONE" dataCategory="DIMENSION" dimensionType="STANDARD" schemaVersion="3.0" hierarchyGeneration="SQL" outputViewType="Aggregation" cacheInvalidationPeriod="NONE" enforceSqlExecution="true" runWithInvokerPrivileges="true">
 <descriptions defaultDescription="Filters"/>
 <localVariables/>
 <variableMappings/>
@@ -142,63 +142,59 @@
       <descriptions defaultDescription="USERID"/>
       <keyMapping columnObjectName="WithCompetency" columnName="ACTING_USERID"/>
     </attribute>
-    <attribute id="USERID" order="2" displayAttribute="false" attributeHierarchyActive="false">
-      <descriptions defaultDescription="USERID"/>
-      <keyMapping columnObjectName="WithCompetency" columnName="USERID"/>
-    </attribute>
-    <attribute id="ACTOR" order="3" displayAttribute="false" attributeHierarchyActive="false">
+    <attribute id="ACTOR" order="2" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="ACTOR"/>
       <keyMapping columnObjectName="WithCompetency" columnName="ACTOR"/>
     </attribute>
-    <attribute id="DOMAIN" order="4" displayAttribute="false" attributeHierarchyActive="false">
+    <attribute id="DOMAIN" order="3" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="DOMAIN"/>
       <keyMapping columnObjectName="WithCompetency" columnName="DOMAIN"/>
     </attribute>
-    <attribute id="DEPARTMENT" order="5" displayAttribute="false" attributeHierarchyActive="false">
+    <attribute id="DEPARTMENT" order="4" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="DEPARTMENT"/>
       <keyMapping columnObjectName="WithCompetency" columnName="DEPARTMENT"/>
     </attribute>
-    <attribute id="DIVISION" order="6" displayAttribute="false" attributeHierarchyActive="false">
+    <attribute id="DIVISION" order="5" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="DIVISION"/>
       <keyMapping columnObjectName="WithCompetency" columnName="DIVISION"/>
     </attribute>
-    <attribute id="JOBGROUP" order="7" displayAttribute="false" attributeHierarchyActive="false">
+    <attribute id="JOBGROUP" order="6" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="JOBGROUP"/>
       <keyMapping columnObjectName="WithCompetency" columnName="JOBGROUP"/>
     </attribute>
-    <attribute id="JOBCODE" order="8" displayAttribute="false" attributeHierarchyActive="false">
+    <attribute id="JOBCODE" order="7" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="JOBCODE"/>
       <keyMapping columnObjectName="WithCompetency" columnName="JOBCODE"/>
     </attribute>
-    <attribute id="JOBLOCATION" order="9" displayAttribute="false" attributeHierarchyActive="false">
+    <attribute id="JOBLOCATION" order="8" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="JOBLOCATION"/>
       <keyMapping columnObjectName="WithCompetency" columnName="JOBLOCATION"/>
     </attribute>
-    <attribute id="GROUPBU" order="10" displayAttribute="false" attributeHierarchyActive="false">
+    <attribute id="GROUPBU" order="9" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="GROUPBU"/>
       <keyMapping columnObjectName="WithCompetency" columnName="GROUPBU"/>
     </attribute>
-    <attribute id="EMPLOYEEGROUP" order="11" displayAttribute="false" attributeHierarchyActive="false">
+    <attribute id="EMPLOYEEGROUP" order="10" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="EMPLOYEEGROUP"/>
       <keyMapping columnObjectName="WithCompetency" columnName="EMPLOYEEGROUP"/>
     </attribute>
-    <attribute id="EMPCUSTOMSTATUS" order="12" displayAttribute="false" attributeHierarchyActive="false">
+    <attribute id="EMPCUSTOMSTATUS" order="11" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="EMPCUSTOMSTATUS"/>
       <keyMapping columnObjectName="WithCompetency" columnName="EMPCUSTOMSTATUS"/>
     </attribute>
-    <attribute id="COMPETENCY_ID" order="13" displayAttribute="false" attributeHierarchyActive="false">
+    <attribute id="COMPETENCY_ID" order="12" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="COMPETENCY_ID"/>
       <keyMapping columnObjectName="WithCompetency" columnName="COMPETENCY_ID"/>
     </attribute>
-    <attribute id="COMPETENCY_NAME" order="14" displayAttribute="false" attributeHierarchyActive="false">
+    <attribute id="COMPETENCY_NAME" order="13" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="COMPETENCY_NAME"/>
       <keyMapping columnObjectName="WithCompetency" columnName="COMPETENCY_NAME"/>
     </attribute>
-    <attribute id="COMPETENCY_AREA" order="15" displayAttribute="false" attributeHierarchyActive="false">
+    <attribute id="COMPETENCY_AREA" order="14" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="COMPETENCY_AREA"/>
       <keyMapping columnObjectName="WithCompetency" columnName="COMPETENCY_AREA"/>
     </attribute>
-    <attribute id="COMPETENCY_DESCRIPTION" order="16" displayAttribute="false" attributeHierarchyActive="false">
+    <attribute id="COMPETENCY_DESCRIPTION" order="15" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="COMPETENCY_DESCRIPTION"/>
       <keyMapping columnObjectName="WithCompetency" columnName="COMPETENCY_DESCRIPTION"/>
     </attribute>

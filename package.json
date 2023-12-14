@@ -43,6 +43,8 @@
       "PLTUserManagement": {
         "kind": "odata-v2",
         "model": "srv/external/PLTUserManagement",
+        "csrf": true,
+        "csrfInBatch": true,
         "credentials": {
           "destination": "sap_hcmcloud_core_odata"
         }

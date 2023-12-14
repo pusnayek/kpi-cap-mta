@@ -11,19 +11,18 @@ key     ACTOR: String(2)  @title: 'ACTOR: ACTOR' ;
 Entity FILTERS {
 key     ACTING_USERID: String(50)  @title: 'ACTING_USERID: USERID' ; 
 key     ACTOR: String(2)  @title: 'ACTOR: ACTOR' ; 
-key     USERID: String(50)  @title: 'USERID: USERID' ; 
-        DOMAIN: String(100)  @title: 'DOMAIN: DOMAIN' ; 
-        DEPARTMENT: String(100)  @title: 'DEPARTMENT: DEPARTMENT' ; 
-        DIVISION: String(100)  @title: 'DIVISION: DIVISION' ; 
-        JOBGROUP: String(100)  @title: 'JOBGROUP: JOBGROUP' ; 
-        JOBCODE: String(100)  @title: 'JOBCODE: JOBCODE' ; 
-        JOBLOCATION: String(100)  @title: 'JOBLOCATION: JOBLOCATION' ; 
-        GROUPBU: String(100)  @title: 'GROUPBU: GROUPBU' ; 
-        EMPLOYEEGROUP: String(100)  @title: 'EMPLOYEEGROUP: EMPLOYEEGROUP' ; 
-        EMPCUSTOMSTATUS: String(100)  @title: 'EMPCUSTOMSTATUS: EMPCUSTOMSTATUS' ; 
-        COMPETENCY_ID: String(50)  @title: 'COMPETENCY_ID: COMPETENCY_ID' ; 
-        COMPETENCY_NAME: String(100)  @title: 'COMPETENCY_NAME: COMPETENCY_NAME' ; 
-        COMPETENCY_AREA: String(100)  @title: 'COMPETENCY_AREA: COMPETENCY_AREA' ; 
+key     DOMAIN: String(100)  @title: 'DOMAIN: DOMAIN' ; 
+key     DEPARTMENT: String(100)  @title: 'DEPARTMENT: DEPARTMENT' ; 
+key     DIVISION: String(100)  @title: 'DIVISION: DIVISION' ; 
+key     JOBGROUP: String(100)  @title: 'JOBGROUP: JOBGROUP' ; 
+key     JOBCODE: String(100)  @title: 'JOBCODE: JOBCODE' ; 
+key     JOBLOCATION: String(100)  @title: 'JOBLOCATION: JOBLOCATION' ; 
+key     GROUPBU: String(100)  @title: 'GROUPBU: GROUPBU' ; 
+key     EMPLOYEEGROUP: String(100)  @title: 'EMPLOYEEGROUP: EMPLOYEEGROUP' ; 
+key     EMPCUSTOMSTATUS: String(100)  @title: 'EMPCUSTOMSTATUS: EMPCUSTOMSTATUS' ; 
+key     COMPETENCY_ID: String(50)  @title: 'COMPETENCY_ID: COMPETENCY_ID' ; 
+key     COMPETENCY_NAME: String(100)  @title: 'COMPETENCY_NAME: COMPETENCY_NAME' ; 
+key     COMPETENCY_AREA: String(100)  @title: 'COMPETENCY_AREA: COMPETENCY_AREA' ; 
         COMPETENCY_DESCRIPTION: String(500)  @title: 'COMPETENCY_DESCRIPTION: COMPETENCY_DESCRIPTION' ; 
 }
 

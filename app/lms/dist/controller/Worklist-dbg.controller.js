@@ -72,7 +72,7 @@ sap.ui.define([
 				// $this.userInfo.user = user ? user : "adminPN";
 
 				$this.getUser().then(function(user) {
-					$this.userInfo.user = user ? user : "";
+					$this.userInfo.user = user ? user : "adminPN";
 					$this.afterRendering();
 					$this.init($this.mode);
 				});
