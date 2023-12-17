@@ -56,17 +56,39 @@ sap.ui.define([
 					oController.filterController.prepareModeFilter(mode)
 				];
 
-			oController.getView().getModel().read("/Filters", {
-				filters: filters,
-				success: function(oData) {
-					//process data
-					lock.resolve(oData.results);
-				},
-				error: function(oError) {
-					lock.reject(oError);
+			this.loadFilterPages(oController, filters, 37000, [], lock);
+			return lock;
+		},
+
+		loadFilterPages: function(oController, filters, skiptoken, data, lock) {
+			var _this = this;
+			this.loadFiltersSkipToken(oController, filters, skiptoken).then(function(oData) {
+				data = data.concat(oData.results);
+				if(oData.__next) {
+					var newSkipToken = +oData.__next.split('?')[1].split('&').filter(item => item.startsWith('$skiptoken'))[0].split('=')[1];
+					_this.loadFilterPages(oController, filters, newSkipToken, data, lock);
+				} else {
+					lock.resolve(data);
 				}
 			});
-			return lock;
+		},
+
+		loadFiltersSkipToken: function(oController, filters, skiptoken) {
+			return new Promise(function(resolve, reject) {
+				oController.getView().getModel().read("/Filters", {
+					filters: filters,
+					urlParameters: {
+						$skiptoken: skiptoken
+					},
+					success: function(oData) {
+						resolve(oData);
+					},
+					error: function(oError) {
+						reject(oError);
+					}
+				});
+	
+			});
 		},
 
 		getFilterMultipleValuesAsString: function(filters) {

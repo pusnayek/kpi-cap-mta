@@ -71,8 +71,12 @@ sap.ui.define([
 				// var user = new URLSearchParams(window.location.search).getAll("uid")[0];		
 				// $this.userInfo.user = user ? user : "adminPN";
 
+				// $this.userInfo.user = "adminPN";
+				// $this.afterRendering();
+				// $this.init($this.mode);
+
 				$this.getUser().then(function(user) {
-					$this.userInfo.user = user ? user : "adminPN";
+					$this.userInfo.user = user ? user : "";
 					$this.afterRendering();
 					$this.init($this.mode);
 				});

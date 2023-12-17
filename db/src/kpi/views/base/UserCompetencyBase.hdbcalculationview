@@ -155,9 +155,9 @@
       <viewAttribute id="USERID"/>
       <viewAttribute id="ITEMID"/>
       <viewAttribute id="ITEMTYPE"/>
-      <viewAttribute id="ASSIGNMENTDATE"/>
-      <viewAttribute id="COMPLETIONSTATUS"/>
-      <viewAttribute id="COMPLETIONDATE"/>
+      <viewAttribute id="ASSIGNMENTDATE" aggregationType="max"/>
+      <viewAttribute id="COMPLETIONSTATUS" aggregationType="max"/>
+      <viewAttribute id="COMPLETIONDATE" aggregationType="max"/>
     </viewAttributes>
     <calculatedViewAttributes/>
     <restrictedViewAttributes/>

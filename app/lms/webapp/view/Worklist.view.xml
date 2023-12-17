@@ -29,33 +29,6 @@
 					</l:Grid>
 				</l:VerticalLayout>
 
-				<!--<l:VerticalLayout width="100%">-->
-				<!--	<l:Grid class="sapUiSmallMarginTop"  hSpacing="20" defaultSpan="XL12 L12 M12 S12" width="100%">-->
-				<!--		<l:content>-->
-				<!--			<cust:Donut id="genrCompetency" text="{graphModel>/general/text}" value="{graphModel>/general/value}" title="{graphModel>/general/title}"-->
-				<!--					innerRadius="30" outerRadius="50">-->
-				<!--				<cust:layoutData>-->
-				<!--					<l:GridData span="XL6 L6 M6 S6" linebreakL="false" linebreakM="false" linebreakS="false" />-->
-				<!--				</cust:layoutData>								-->
-				<!--			</cust:Donut>-->
-							
-				<!--			<cust:Donut id="profCompetency" text="{graphModel>/professional/text}" value="{graphModel>/professional/value}" title="{graphModel>/professional/title}"-->
-				<!--					innerRadius="40" outerRadius="50">-->
-				<!--				<cust:layoutData>-->
-				<!--					<l:GridData span="XL3 L3 M3 S3" linebreakL="false" linebreakM="false" linebreakS="false" />-->
-				<!--				</cust:layoutData>								-->
-				<!--			</cust:Donut>-->
-							
-				<!--			<cust:Donut id="reguCompetency" text="{graphModel>/regulation/text}" value="{graphModel>/regulation/value}" title="{graphModel>/regulation/title}"-->
-				<!--					innerRadius="40" outerRadius="50">-->
-				<!--				<cust:layoutData>-->
-				<!--					<l:GridData span="XL3 L3 M3 S3" linebreakL="false" linebreakM="false" linebreakS="false" />-->
-				<!--				</cust:layoutData>								-->
-				<!--			</cust:Donut>		-->
-				<!--		</l:content>								-->
-				<!--	</l:Grid>-->
-				<!--</l:VerticalLayout>-->
-
 				<IconTabBar
 					id="idIconTabBar" expanded="{device>/isNoPhone}" class="sapUiResponsiveContentPadding" select="selectTable">
 					<items>
