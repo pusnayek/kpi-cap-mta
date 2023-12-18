@@ -56,7 +56,7 @@ sap.ui.define([
 					oController.filterController.prepareModeFilter(mode)
 				];
 
-			this.loadFilterPages(oController, filters, 37000, [], lock);
+			this.loadFilterPages(oController, filters, 0, [], lock);
 			return lock;
 		},
 
@@ -353,6 +353,7 @@ sap.ui.define([
 
 			$.ajax({
 				method: "POST",
+				timeout: 60000,
 				contentType: "application/json",
 				url: $url,
 				data: JSON.stringify(oPayload),

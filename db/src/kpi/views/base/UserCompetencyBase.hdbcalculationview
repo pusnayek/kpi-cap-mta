@@ -382,7 +382,7 @@
     <calculatedAttribute id="HAS_EXPIRY" order="20" semanticType="empty" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="Has Expiry"/>
       <keyCalculation datatype="NVARCHAR" expressionLanguage="COLUMN_ENGINE" length="1">
-        <formula>if(isnull(&quot;RETAININGNUMER&quot;),'','X')</formula>
+        <formula>if(isnull(&quot;RETAININGNUMER&quot;) or &quot;RETAININGNUMER&quot;=0,'','X')</formula>
       </keyCalculation>
     </calculatedAttribute>
     <calculatedAttribute id="EXPIRATION_DATE" order="21" semanticType="empty" displayAttribute="false" attributeHierarchyActive="false">

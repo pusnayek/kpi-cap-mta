@@ -14,11 +14,25 @@ module.exports = (async function() {
         return userapi.run(req.query)
     })
 
+    // this.on('getUser', (req, res) => {
+    //     console.log('Passing request to remote system')    
+    //     let user =  req.user.id
+    //     console.log(user)    
+    //     return userapi.run(SELECT.from('User', b => { b.userId, b.defaultLocale, b.ethnicity }).where({userId: user}))
+    // }) 
+
     this.on('getUser', (req, res) => {
         console.log('Passing request to remote system')    
         let user =  req.user.id
         console.log(user)    
-        return userapi.run(SELECT.from('User', b => { b.userId, b.defaultLocale, b.ethnicity }).where({userId: user}))
+        return userapi.run(SELECT.from('User', b => { b.userId, b.defaultLocale, b.ethnicity, b.proxy, b.userPermissionsNav }).where({userId: user}))
+    }) 
+
+    this.on('getProxyUser', (req, res) => {
+        console.log('Passing request to remote system')    
+        let user =  req.user.id
+        console.log(user)    
+        return userapi.run(SELECT.from('User', b => { b.userId, b.defaultLocale, b.ethnicity, b.proxy }).where({userId: user}))
     }) 
 
     this.on('updateClockValues', async (req, res) => {

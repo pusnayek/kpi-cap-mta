@@ -7,10 +7,13 @@ service SFService {
     entity Users as projection on external.User {
         key userId,
         defaultLocale,
-        ethnicity
+        ethnicity,
+        proxy
     };
 
     function getUser() returns String;
+
+    function getProxyUser() returns String;
 
     function updateClockValues() returns String;
 

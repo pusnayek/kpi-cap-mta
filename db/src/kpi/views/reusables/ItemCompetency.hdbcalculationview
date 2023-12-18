@@ -219,23 +219,23 @@
       <keyCalculation datatype="BIGINT" expressionLanguage="COLUMN_ENGINE">
         <formula>if(isNull(&quot;COMPLETIONSTATUS&quot;) or isNull(&quot;LASTACCUMULATIONDATE&quot;),0,
 if(&quot;COMPLETIONSTATUS&quot;='Complete',
-if(isNull(&quot;RETAININGNUMER&quot;) or daysbetween(&quot;LASTACCUMULATIONDATE&quot;,now()) &lt; &quot;RETAININGNUMER&quot;, 1, 0),0))</formula>
+if(isNull(&quot;RETAININGNUMER&quot;) or (&quot;RETAININGNUMER&quot;=0) or daysbetween(&quot;LASTACCUMULATIONDATE&quot;,now()) &lt; &quot;RETAININGNUMER&quot;, 1, 0),0))</formula>
       </keyCalculation>
-      </calculatedAttribute>
+    </calculatedAttribute>
     <calculatedAttribute id="TIME_TO_EXPIRATION" order="26" semanticType="empty" displayAttribute="false" attributeHierarchyActive="false">
       <keyCalculation datatype="INTEGER" expressionLanguage="COLUMN_ENGINE">
         <formula>if(isNull(&quot;LASTACCUMULATIONDATE&quot;) or isNull(&quot;RETAININGNUMER&quot;),
 int(null),
 &quot;RETAININGNUMER&quot; - daysbetween(&quot;LASTACCUMULATIONDATE&quot;,now()))</formula>
       </keyCalculation>
-      </calculatedAttribute>
+    </calculatedAttribute>
     <calculatedAttribute id="DAYS_INCOMPLETE" order="27" semanticType="empty" displayAttribute="false" attributeHierarchyActive="false">
       <keyCalculation datatype="INTEGER" expressionLanguage="COLUMN_ENGINE">
         <formula>if(isNull(&quot;COMPLETIONSTATUS&quot;) or isNull(&quot;LASTACCUMULATIONDATE&quot;) or isNull(&quot;RETAININGNUMER&quot;), int(null),
 if(&quot;COMPLETIONSTATUS&quot;='Complete',
 (daysbetween(&quot;LASTACCUMULATIONDATE&quot;,now()) - &quot;RETAININGNUMER&quot;),int(null)))</formula>
       </keyCalculation>
-      </calculatedAttribute>
+    </calculatedAttribute>
   </calculatedAttributes>
   <baseMeasures/>
   <calculatedMeasures/>
@@ -244,31 +244,31 @@ if(&quot;COMPLETIONSTATUS&quot;='Complete',
 <layout>
   <shapes>
     <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
-      <upperLeftCorner x="221.11302679000914" y="112"/>
+      <upperLeftCorner x="221" y="112"/>
     
       <rectangleSize width="160"/>
     </shape>
     
   
     <shape expanded="true" modelObjectName="AuthUsers" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="92.00000000000001" y="356.9999988079071"/>
+      <upperLeftCorner x="92" y="356"/>
       <rectangleSize height="30" width="160"/>
     </shape>
     <shape expanded="true" modelObjectName="Competencies" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="302.00000000000006" y="356.9999988079071"/>
+      <upperLeftCorner x="302" y="356"/>
       <rectangleSize height="30" width="160"/>
     </shape>
     <shape expanded="true" modelObjectName="UserCompetencies" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="221.11302679000914" y="217"/>
+      <upperLeftCorner x="221" y="217"/>
       <rectangleSize height="30" width="160"/>
     </shape>
     <shape modelObjectName="AuthUsers" modelObjectNameSpace="UserCompetencies" modelObjectType="JoinNodeInput">
       <upperLeftCorner x="20" y="30"/>
-      <rectangleSize width="175.2353515625"/>
+      <rectangleSize width="175"/>
     </shape>
     <shape modelObjectName="Competencies" modelObjectNameSpace="UserCompetencies" modelObjectType="JoinNodeInput">
       <upperLeftCorner x="320" y="30"/>
-      <rectangleSize width="286.66943359375"/>
+      <rectangleSize width="286"/>
     </shape>
   </shapes>
 </layout>
