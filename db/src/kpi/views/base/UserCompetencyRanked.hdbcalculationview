@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="UserCompetencyBase" applyPrivilegeType="NONE" dataCategory="DIMENSION" dimensionType="STANDARD" schemaVersion="3.0" hierarchyGeneration="SQL" outputViewType="Aggregation" cacheInvalidationPeriod="NONE" enforceSqlExecution="true" runWithInvokerPrivileges="true">
-<descriptions defaultDescription="UserCompetencyBase"/>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="UserCompetencyRanked" applyPrivilegeType="NONE" dataCategory="DIMENSION" dimensionType="STANDARD" schemaVersion="3.0" hierarchyGeneration="SQL" outputViewType="Aggregation" cacheInvalidationPeriod="NONE" enforceSqlExecution="true" runWithInvokerPrivileges="true">
+<descriptions defaultDescription="UserCompetencyRanked"/>
 <localVariables/>
 <variableMappings/>
 <dataSources>
@@ -132,7 +132,13 @@
       <viewAttribute id="COMPLETIONSTATUS"/>
       <viewAttribute id="COMPLETIONDATE"/>
     </viewAttributes>
-    <calculatedViewAttributes/>
+    <calculatedViewAttributes>
+      <calculatedViewAttribute id="CC_RANK" datatype="DATE" expressionLanguage="COLUMN_ENGINE">
+        <formula>if(&quot;COMPLETIONSTATUS&quot;='Complete',
+if(not(isnull(&quot;COMPLETIONDATE&quot;)),adddays(&quot;COMPLETIONDATE&quot;,99999),&quot;COMPLETIONDATE&quot;),
+&quot;ASSIGNMENTDATE&quot;)</formula>
+      </calculatedViewAttribute>
+    </calculatedViewAttributes>
     <input node="AssignmentData" emptyUnionBehavior="NO_ROW">
       <mapping xsi:type="Calculation:AttributeMapping" target="USERID" source="USERID"/>
       <mapping xsi:type="Calculation:AttributeMapping" target="ITEMID" source="ITEMID"/>
@@ -378,34 +384,19 @@
       <keyCalculation datatype="NVARCHAR" expressionLanguage="COLUMN_ENGINE" length="1">
         <formula>if(isnull(&quot;LAST_ASSIGNED_ITEMID&quot;),'','X')</formula>
       </keyCalculation>
-    </calculatedAttribute>
+      </calculatedAttribute>
     <calculatedAttribute id="HAS_EXPIRY" order="20" semanticType="empty" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="Has Expiry"/>
       <keyCalculation datatype="NVARCHAR" expressionLanguage="COLUMN_ENGINE" length="1">
         <formula>if(isnull(&quot;RETAININGNUMER&quot;) or &quot;RETAININGNUMER&quot;=0,'','X')</formula>
       </keyCalculation>
-    </calculatedAttribute>
+      </calculatedAttribute>
     <calculatedAttribute id="EXPIRATION_DATE" order="21" semanticType="empty" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="Expiration Date"/>
       <keyCalculation datatype="SECONDDATE" expressionLanguage="COLUMN_ENGINE">
-        <formula>if(isNull(&quot;COMPLETIONDATE&quot;) or &quot;RETAININGNUMER&quot;=0,seconddate(0),adddays(&quot;COMPLETIONDATE&quot;,&quot;RETAININGNUMER&quot;))</formula>
+        <formula>adddays(&quot;COMPLETIONDATE&quot;,&quot;RETAININGNUMER&quot;)</formula>
       </keyCalculation>
-    </calculatedAttribute>
-  
-    <calculatedAttribute id="CC_RANKDATE" order="23" semanticType="empty" displayAttribute="false" attributeHierarchyActive="false">
-  
-      <keyCalculation datatype="SECONDDATE" expressionLanguage="COLUMN_ENGINE">
-  
-        <formula>if(isNull(&quot;COMPLETIONSTATUS&quot;),if(not(isnull(&quot;ASSIGNMENTDATE&quot;)),&quot;ASSIGNMENTDATE&quot;,now()),
-if(&quot;COMPLETIONSTATUS&quot;='Complete',
-if(not(isnull(&quot;COMPLETIONDATE&quot;)),adddays(&quot;COMPLETIONDATE&quot;,
-9999+if(not(isnull(&quot;ASSIGNMENTDATE&quot;)),daysbetween(now(),&quot;ASSIGNMENTDATE&quot;),0))
-,if(not(isnull(&quot;ASSIGNMENTDATE&quot;)),&quot;ASSIGNMENTDATE&quot;,now())),
-if(not(isnull(&quot;ASSIGNMENTDATE&quot;)),&quot;ASSIGNMENTDATE&quot;,now())))</formula>
-  
-      </keyCalculation>
-  
-    </calculatedAttribute>
+      </calculatedAttribute>
   </calculatedAttributes>
   <baseMeasures/>
   <calculatedMeasures/>
@@ -414,49 +405,49 @@ if(not(isnull(&quot;ASSIGNMENTDATE&quot;)),&quot;ASSIGNMENTDATE&quot;,now())))</
 <layout>
   <shapes>
     <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
-      <upperLeftCorner x="362" y="112"/>
+      <upperLeftCorner x="362.90723402423095" y="112"/>
     
       <rectangleSize width="160"/>
     </shape>
     <shape expanded="true" modelObjectName="Assignments" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="91" y="1031"/>
+      <upperLeftCorner x="91.99999999999996" y="1086.9999940395355"/>
       <rectangleSize height="30" width="160"/>
     </shape>
     <shape expanded="true" modelObjectName="InCompletions" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="301" y="1031"/>
+      <upperLeftCorner x="301.99999999999994" y="1086.9999940395355"/>
       <rectangleSize height="30" width="160"/>
     </shape>
     <shape expanded="true" modelObjectName="Completions" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="402" y="886"/>
+      <upperLeftCorner x="402.60220545045246" y="941.9999952316284"/>
       <rectangleSize height="30" width="160"/>
     </shape>
     <shape expanded="true" modelObjectName="Users" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="616" y="641"/>
+      <upperLeftCorner x="616.5534595034314" y="696.9999964237213"/>
       <rectangleSize height="30" width="160"/>
     </shape>
     <shape expanded="true" modelObjectName="Items" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="369" y="496"/>
+      <upperLeftCorner x="369.2716848682104" y="536.9999976158142"/>
       <rectangleSize height="30" width="160"/>
     </shape>
     <shape expanded="true" modelObjectName="LatestAssignmentData" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="279" y="356"/>
+      <upperLeftCorner x="279.0528565664796" y="376.9999988079071"/>
       <rectangleSize height="30" width="160"/>
     </shape>
   
     <shape expanded="true" modelObjectName="AssignmentData" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="118" y="890"/>
+      <upperLeftCorner x="118.66666666666657" y="945.3333285649618"/>
       <rectangleSize height="30" width="160"/>
     </shape>
     <shape expanded="true" modelObjectName="LatestCompletions" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="375" y="746"/>
+      <upperLeftCorner x="375.9355387837858" y="801.9999964237213"/>
       <rectangleSize height="30" width="160"/>
     </shape>
     <shape expanded="true" modelObjectName="LatestData" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="375" y="641"/>
+      <upperLeftCorner x="375.9355387837858" y="696.9999964237213"/>
       <rectangleSize height="30" width="160"/>
     </shape>
     <shape expanded="true" modelObjectName="ActiveUsers" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="579" y="500"/>
+      <upperLeftCorner x="579.2716848682104" y="536.9999976158142"/>
       <rectangleSize height="30" width="160"/>
     </shape>
     <shape modelObjectName="LatestData" modelObjectNameSpace="ActiveUsers" modelObjectType="JoinNodeInput">
@@ -468,7 +459,7 @@ if(not(isnull(&quot;ASSIGNMENTDATE&quot;)),&quot;ASSIGNMENTDATE&quot;,now())))</
       <rectangleSize width="127"/>
     </shape>
     <shape expanded="true" modelObjectName="UserByCompetency" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="489" y="356"/>
+      <upperLeftCorner x="489.0528565664796" y="376.9999988079071"/>
       <rectangleSize height="30" width="160"/>
     </shape>
     <shape modelObjectName="ActiveUsers" modelObjectNameSpace="UserByCompetency" modelObjectType="JoinNodeInput">
@@ -480,7 +471,7 @@ if(not(isnull(&quot;ASSIGNMENTDATE&quot;)),&quot;ASSIGNMENTDATE&quot;,now())))</
       <rectangleSize width="286"/>
     </shape>
     <shape expanded="true" modelObjectName="WithLatestItem" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="362" y="217"/>
+      <upperLeftCorner x="362.90723402423095" y="217"/>
       <rectangleSize height="30" width="160"/>
     </shape>
     <shape modelObjectName="UserByCompetency" modelObjectNameSpace="WithLatestItem" modelObjectType="JoinNodeInput">

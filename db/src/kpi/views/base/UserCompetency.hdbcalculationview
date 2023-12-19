@@ -35,6 +35,8 @@
       <viewAttribute id="EXPIRATION_DATE"/>
     
       <viewAttribute id="LAST_ITEM_ASSIGNED_BY"/>
+    
+      <viewAttribute id="CC_RANKDATE"/>
     </viewAttributes>
     <calculatedViewAttributes>
       <calculatedViewAttribute id="PRIORITY_BY_DATE" datatype="SECONDDATE" expressionLanguage="COLUMN_ENGINE">
@@ -70,13 +72,15 @@
       <viewAttribute id="PRIORITY_BY_DATE"/>
     
       <viewAttribute id="LAST_ITEM_ASSIGNED_BY"/>
+    
+      <viewAttribute id="CC_RANKDATE"/>
     </viewAttributes>
     <calculatedViewAttributes/>
     <input node="Completions"/>
     <rankingFilter type="RANK" offset="0" offsetReference="FRONT" dynamicPartitionAttributes="false">
       <partitionViewAttributeName id="USERID"/>
       <partitionViewAttributeName id="COMPETENCY_ID"/>
-      <order byViewAttributeName="PRIORITY_BY_DATE" direction="DESC"/>
+      <order byViewAttributeName="CC_RANKDATE" direction="DESC"/>
       <rankThreshold>
         <value>1</value>
       </rankThreshold>

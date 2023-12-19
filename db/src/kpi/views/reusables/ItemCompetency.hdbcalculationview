@@ -224,7 +224,7 @@ if(isNull(&quot;RETAININGNUMER&quot;) or (&quot;RETAININGNUMER&quot;=0) or daysb
     </calculatedAttribute>
     <calculatedAttribute id="TIME_TO_EXPIRATION" order="26" semanticType="empty" displayAttribute="false" attributeHierarchyActive="false">
       <keyCalculation datatype="INTEGER" expressionLanguage="COLUMN_ENGINE">
-        <formula>if(isNull(&quot;LASTACCUMULATIONDATE&quot;) or isNull(&quot;RETAININGNUMER&quot;),
+        <formula>if(isNull(&quot;LASTACCUMULATIONDATE&quot;) or isNull(&quot;RETAININGNUMER&quot;) or &quot;RETAININGNUMER&quot;=0,
 int(null),
 &quot;RETAININGNUMER&quot; - daysbetween(&quot;LASTACCUMULATIONDATE&quot;,now()))</formula>
       </keyCalculation>

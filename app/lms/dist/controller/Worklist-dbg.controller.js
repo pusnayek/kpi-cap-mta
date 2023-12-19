@@ -274,7 +274,7 @@ sap.ui.define([
 				var blob = new Blob([$response.content]);
 				var link = document.createElement('a');
 				link.href = window.URL.createObjectURL(blob);
-				link.download = $response.filename;
+				link.download = $response.filename.replaceAll('"','');
 				link.click();
 			}).fail(function() {
 				$this.getView().setBusy(false);
