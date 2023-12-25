@@ -77,7 +77,7 @@
     </viewAttributes>
     <calculatedViewAttributes/>
     <input node="Completions"/>
-    <rankingFilter type="RANK" offset="0" offsetReference="FRONT" dynamicPartitionAttributes="false">
+    <rankingFilter type="ROW_NUMBER" offset="0" offsetReference="FRONT" dynamicPartitionAttributes="false">
       <partitionViewAttributeName id="USERID"/>
       <partitionViewAttributeName id="COMPETENCY_ID"/>
       <order byViewAttributeName="CC_RANKDATE" direction="DESC"/>

@@ -274,7 +274,8 @@ sap.ui.define([
 				var blob = new Blob([$response.content]);
 				var link = document.createElement('a');
 				link.href = window.URL.createObjectURL(blob);
-				link.download = $response.filename.replaceAll('"','');
+				link.download = decodeURIComponent($response.filename.replaceAll('"',''));
+				// link.download = 'Kpi.xlsx';
 				link.click();
 			}).fail(function() {
 				$this.getView().setBusy(false);

@@ -274,72 +274,72 @@
 <layout>
   <shapes>
     <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
-      <upperLeftCorner x="275.8009718613731" y="112"/>
+      <upperLeftCorner x="275" y="112"/>
     
       <rectangleSize width="160"/>
     </shape>
     
   
     <shape expanded="true" modelObjectName="LastActTime" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="142.559117183421" y="846.9999964237213"/>
+      <upperLeftCorner x="142" y="846"/>
       <rectangleSize height="30" width="160"/>
     </shape>
   
     <shape expanded="true" modelObjectName="ActTimes" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="352.559117183421" y="846.9999964237213"/>
+      <upperLeftCorner x="352" y="846"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="MergeOps" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="92" y="601"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="Extracts" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="364" y="356"/>
       <rectangleSize height="30" width="160"/>
     </shape>
     <shape expanded="true" modelObjectName="LatestAction" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="302" y="706.9999976158142"/>
+      <upperLeftCorner x="302" y="706"/>
       <rectangleSize height="30" width="160"/>
     </shape>
     <shape modelObjectName="LastActTime" modelObjectNameSpace="LatestAction" modelObjectType="JoinNodeInput">
       <upperLeftCorner x="20" y="30"/>
-      <rectangleSize width="223.52685546875"/>
+      <rectangleSize width="223"/>
     </shape>
     <shape modelObjectName="ActTimes" modelObjectNameSpace="LatestAction" modelObjectType="JoinNodeInput">
       <upperLeftCorner x="320" y="30"/>
-      <rectangleSize width="223.52685546875"/>
+      <rectangleSize width="223"/>
     </shape>
     <shape expanded="true" modelObjectName="MergeMultiOps" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="302" y="601.9999976158142"/>
-      <rectangleSize height="30" width="160"/>
-    </shape>
-    <shape expanded="true" modelObjectName="MergeOps" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="92" y="601.9999976158142"/>
+      <upperLeftCorner x="302" y="601"/>
       <rectangleSize height="30" width="160"/>
     </shape>
     <shape expanded="true" modelObjectName="WithMergeOps" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="154.76005192511354" y="461.9999988079071"/>
+      <upperLeftCorner x="154" y="461"/>
       <rectangleSize height="30" width="160"/>
     </shape>
     <shape modelObjectName="MergeMultiOps" modelObjectNameSpace="WithMergeOps" modelObjectType="JoinNodeInput">
       <upperLeftCorner x="20" y="30"/>
-      <rectangleSize width="223.52685546875"/>
+      <rectangleSize width="223"/>
     </shape>
     <shape modelObjectName="MergeOps" modelObjectNameSpace="WithMergeOps" modelObjectType="JoinNodeInput">
       <upperLeftCorner x="320" y="30"/>
-      <rectangleSize width="149.9697265625"/>
+      <rectangleSize width="149"/>
     </shape>
     <shape expanded="true" modelObjectName="OneOperationPerTimeStamp" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="154.76005192511352" y="356.9999988079071"/>
-      <rectangleSize height="30" width="160"/>
-    </shape>
-    <shape expanded="true" modelObjectName="Extracts" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="364.76005192511354" y="356.9999988079071"/>
+      <upperLeftCorner x="154" y="356"/>
       <rectangleSize height="30" width="160"/>
     </shape>
     <shape expanded="true" modelObjectName="LatestActionData" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="275.8009718613731" y="217"/>
+      <upperLeftCorner x="275" y="217"/>
       <rectangleSize height="30" width="160"/>
     </shape>
     <shape modelObjectName="OneOperationPerTimeStamp" modelObjectNameSpace="LatestActionData" modelObjectType="JoinNodeInput">
       <upperLeftCorner x="20" y="30"/>
-      <rectangleSize width="227.822265625"/>
+      <rectangleSize width="227"/>
     </shape>
     <shape modelObjectName="Extracts" modelObjectNameSpace="LatestActionData" modelObjectType="JoinNodeInput">
       <upperLeftCorner x="320" y="30"/>
-      <rectangleSize width="223.52685546875"/>
+      <rectangleSize width="223"/>
     </shape>
   </shapes>
 </layout>

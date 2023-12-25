@@ -18,7 +18,14 @@
       <viewAttribute id="PROFESSIONAL_COMPETENCY_PERCENTAGE"/>
       <viewAttribute id="REGULATION_COMPETENCY_PERCENTAGE"/>
     </viewAttributes>
-    <calculatedViewAttributes/>
+    <calculatedViewAttributes>
+      <calculatedViewAttribute id="CC_MANAGER_CLOCK_VALUE" datatype="INTEGER" expressionLanguage="COLUMN_ENGINE">
+        <formula>if(&quot;ACTOR_TYPE&quot;='RE',&quot;TOTAL_COMPETENCY_PERCENTAGE&quot;,0)</formula>
+      </calculatedViewAttribute>
+      <calculatedViewAttribute id="CC_EMPLOYEE_CLOCK_VALUE" datatype="INTEGER" expressionLanguage="COLUMN_ENGINE">
+        <formula>if(&quot;ACTOR_TYPE&quot;='RM',&quot;TOTAL_COMPETENCY_PERCENTAGE&quot;,0)</formula>
+      </calculatedViewAttribute>
+    </calculatedViewAttributes>
     <restrictedViewAttributes/>
     <input node="EMPLOYEECOMPETENCY">
     
@@ -32,27 +39,35 @@
     <attribute id="ACTING_USERID" order="1" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="ACTING_USERID"/>
       <keyMapping columnObjectName="Competencies" columnName="ACTING_USERID"/>
-    </attribute>
-    <attribute id="ACTOR" order="2" displayAttribute="false" attributeHierarchyActive="false">
-      <descriptions defaultDescription="ACTOR"/>
-      <keyMapping columnObjectName="Competencies" columnName="ACTOR_TYPE"/>
-    </attribute>
-  </attributes>
-  <calculatedAttributes/>
+    </attribute></attributes>
+  <calculatedAttributes>
+    <calculatedAttribute id="CC_MANAGER_CLOCK_STATUS" order="2" semanticType="empty" displayAttribute="false" attributeHierarchyActive="false">
+      <keyCalculation datatype="NVARCHAR" expressionLanguage="COLUMN_ENGINE" length="1">
+        <formula>if(&quot;CC_MANAGER_CLOCK_VALUE&quot;&lt;50,'R',
+if(&quot;CC_MANAGER_CLOCK_VALUE&quot;&lt;95,'Y','G'))</formula>
+      </keyCalculation>
+    </calculatedAttribute>
+    <calculatedAttribute id="CC_EMPLOYEE_CLOCK_STATUS" order="3" semanticType="empty" displayAttribute="false" attributeHierarchyActive="false">
+      <keyCalculation datatype="NVARCHAR" expressionLanguage="COLUMN_ENGINE" length="1">
+        <formula>if(&quot;CC_EMPLOYEE_CLOCK_VALUE&quot;&lt;50,'R',
+if(&quot;CC_EMPLOYEE_CLOCK_VALUE&quot;&lt;95,'Y','G'))</formula>
+      </keyCalculation>
+    </calculatedAttribute>
+    <calculatedAttribute id="CC_ETHNICITY" order="6" semanticType="empty" displayAttribute="false" attributeHierarchyActive="false">
+      <keyCalculation datatype="NVARCHAR" expressionLanguage="COLUMN_ENGINE" length="2">
+        <formula>&quot;CC_EMPLOYEE_CLOCK_STATUS&quot;+&quot;CC_MANAGER_CLOCK_STATUS&quot;</formula>
+      </keyCalculation>
+    </calculatedAttribute>
+  </calculatedAttributes>
   <baseMeasures>
-    <measure id="TOTAL_COMPETENCY_PERCENTAGE" order="3" aggregationType="sum" measureType="simple">
-      <descriptions defaultDescription="TOTAL_COMPETENCY_PERCENTAGE"/>
-      <measureMapping columnObjectName="Competencies" columnName="TOTAL_COMPETENCY_PERCENTAGE"/>
+    <measure id="CC_MANAGER_CLOCK_VALUE" order="4" aggregationType="sum" measureType="simple">
+      <descriptions defaultDescription="CC_MANAGER_CLOCK_VALUE"/>
+      <measureMapping columnObjectName="Competencies" columnName="CC_MANAGER_CLOCK_VALUE"/>
       <exceptionAggregationMetadata/>
     </measure>
-    <measure id="PROFESSIONAL_COMPETENCY_PERCENTAGE" order="4" aggregationType="sum" measureType="simple">
-      <descriptions defaultDescription="PROFESSIONAL_COMPETENCY_PERCENTAGE"/>
-      <measureMapping columnObjectName="Competencies" columnName="PROFESSIONAL_COMPETENCY_PERCENTAGE"/>
-      <exceptionAggregationMetadata/>
-    </measure>
-    <measure id="REGULATION_COMPETENCY_PERCENTAGE" order="5" aggregationType="sum" measureType="simple">
-      <descriptions defaultDescription="REGULATION_COMPETENCY_PERCENTAGE"/>
-      <measureMapping columnObjectName="Competencies" columnName="REGULATION_COMPETENCY_PERCENTAGE"/>
+    <measure id="CC_EMPLOYEE_CLOCK_VALUE" order="5" aggregationType="sum" measureType="simple">
+      <descriptions defaultDescription="CC_EMPLOYEE_CLOCK_VALUE"/>
+      <measureMapping columnObjectName="Competencies" columnName="CC_EMPLOYEE_CLOCK_VALUE"/>
       <exceptionAggregationMetadata/>
     </measure>
   </baseMeasures>
