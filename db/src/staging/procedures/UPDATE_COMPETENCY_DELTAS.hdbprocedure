@@ -147,6 +147,11 @@ BEGIN
     /**
     * End inserting data in competency DB
     */
+    UPSERT ST_TILEDELTAS (
+        "USERID"
+    )
+    SELECT DISTINCT "USERID" FROM ST_COMPTENCYDELTAS WHERE "PROCESSINGSTATUS" = 'P';
+    COMMIT;
 
     /**
     * Delete all records with status 'P' from extraction table

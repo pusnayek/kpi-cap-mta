@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="CLOCKVALUES" applyPrivilegeType="NONE" dataCategory="CUBE" schemaVersion="3.0" hierarchyGeneration="SQL" outputViewType="Aggregation" cacheInvalidationPeriod="NONE" enforceSqlExecution="true" runWithInvokerPrivileges="true">
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="CLOCKVALUES" applyPrivilegeType="NONE" dataCategory="DIMENSION" schemaVersion="3.0" hierarchyGeneration="SQL" outputViewType="Aggregation" cacheInvalidationPeriod="NONE" enforceSqlExecution="true" runWithInvokerPrivileges="true">
 <descriptions defaultDescription="ClockValues"/>
 <localVariables/>
 <variableMappings/>
@@ -7,10 +7,19 @@
   <DataSource id="EMPLOYEECOMPETENCY">
     <resourceUri>EMPLOYEECOMPETENCY</resourceUri>
   </DataSource>
+  <DataSource id="ST_TILEDELTAS">
+    <resourceUri>ST_TILEDELTAS</resourceUri>
+  </DataSource>
+  <DataSource id="FT_MANAGERREPORTEES">
+    <resourceUri>FT_MANAGERREPORTEES</resourceUri>
+  </DataSource>
+  <DataSource id="DeltaSubordinates$$$$ST_TILEDELTAS$$">
+    <resourceUri>ST_TILEDELTAS</resourceUri>
+  </DataSource>
 </dataSources>
 <snapshotProcedures/>
 <calculationViews>
-  <calculationView xsi:type="Calculation:AggregationView" id="Competencies">
+  <calculationView xsi:type="Calculation:ProjectionView" id="Competencies">
     <viewAttributes>
       <viewAttribute id="ACTING_USERID"/>
       <viewAttribute id="ACTOR_TYPE"/>
@@ -19,73 +28,182 @@
       <viewAttribute id="REGULATION_COMPETENCY_PERCENTAGE"/>
     </viewAttributes>
     <calculatedViewAttributes>
-      <calculatedViewAttribute id="CC_MANAGER_CLOCK_VALUE" datatype="INTEGER" expressionLanguage="COLUMN_ENGINE">
-        <formula>if(&quot;ACTOR_TYPE&quot;='RE',&quot;TOTAL_COMPETENCY_PERCENTAGE&quot;,0)</formula>
+      <calculatedViewAttribute id="CC_MANAGER_CLOCK_VALUE" datatype="NVARCHAR" expressionLanguage="COLUMN_ENGINE" length="1">
+        <formula>if(&quot;ACTOR_TYPE&quot;='RM',
+if(&quot;TOTAL_COMPETENCY_PERCENTAGE&quot;&lt;50,'R',if(&quot;TOTAL_COMPETENCY_PERCENTAGE&quot;&lt;95,'Y','G')),'')</formula>
       </calculatedViewAttribute>
-      <calculatedViewAttribute id="CC_EMPLOYEE_CLOCK_VALUE" datatype="INTEGER" expressionLanguage="COLUMN_ENGINE">
-        <formula>if(&quot;ACTOR_TYPE&quot;='RM',&quot;TOTAL_COMPETENCY_PERCENTAGE&quot;,0)</formula>
+      <calculatedViewAttribute id="CC_EMPLOYEE_CLOCK_VALUE" datatype="NVARCHAR" expressionLanguage="COLUMN_ENGINE" length="1">
+        <formula>if(&quot;ACTOR_TYPE&quot;='RE',
+if(&quot;TOTAL_COMPETENCY_PERCENTAGE&quot;&lt;50,'R',if(&quot;TOTAL_COMPETENCY_PERCENTAGE&quot;&lt;95,'Y','G')),'')</formula>
       </calculatedViewAttribute>
     </calculatedViewAttributes>
-    <restrictedViewAttributes/>
     <input node="EMPLOYEECOMPETENCY">
     
       <mapping xsi:type="Calculation:AttributeMapping" target="ACTOR_TYPE" source="ACTOR"/>
     </input>
   </calculationView>
+  <calculationView xsi:type="Calculation:ProjectionView" id="Users">
+    <viewAttributes>
+      <viewAttribute id="USERID"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="ST_TILEDELTAS"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:AggregationView" id="Managers">
+    <viewAttributes>
+      <viewAttribute id="MANAGERUSERID"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <restrictedViewAttributes/>
+    <input node="FT_MANAGERREPORTEES"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:ProjectionView" id="DeltaSubordinates">
+    <viewAttributes>
+      <viewAttribute id="USERID"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="DeltaSubordinates$$$$ST_TILEDELTAS$$"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:AggregationView" id="AggrCompetencies">
+    <viewAttributes>
+      <viewAttribute id="ACTING_USERID"/>
+      <viewAttribute id="CC_MANAGER_CLOCK_VALUE" aggregationType="max"/>
+      <viewAttribute id="CC_EMPLOYEE_CLOCK_VALUE" aggregationType="max"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <restrictedViewAttributes/>
+    <input node="Competencies"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:JoinView" id="ManagerUsers" cardinality="CN_N" joinType="inner">
+    <viewAttributes>
+      <viewAttribute id="USERID"/>
+      <viewAttribute hidden="true" id="JOIN$MANAGERUSERID$USERID"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="Managers">
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$MANAGERUSERID$USERID" source="MANAGERUSERID"/>
+    </input>
+    <input node="DeltaSubordinates">
+      <mapping xsi:type="Calculation:AttributeMapping" target="USERID" source="USERID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$MANAGERUSERID$USERID" source="USERID"/>
+    </input>
+    <joinAttribute name="JOIN$MANAGERUSERID$USERID"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:UnionView" id="Combine">
+    <viewAttributes>
+      <viewAttribute id="USERID"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="Users" emptyUnionBehavior="NO_ROW">
+      <mapping xsi:type="Calculation:AttributeMapping" target="USERID" source="USERID"/>
+    </input>
+    <input node="ManagerUsers" emptyUnionBehavior="NO_ROW">
+      <mapping xsi:type="Calculation:AttributeMapping" target="USERID" source="USERID"/>
+    </input>
+  </calculationView>
+  <calculationView xsi:type="Calculation:JoinView" id="WithDeltaUsers" cardinality="CN_N" joinType="inner">
+    <viewAttributes>
+      <viewAttribute id="ACTING_USERID"/>
+      <viewAttribute id="CC_MANAGER_CLOCK_VALUE"/>
+      <viewAttribute id="CC_EMPLOYEE_CLOCK_VALUE"/>
+      <viewAttribute hidden="true" id="JOIN$ACTING_USERID$USERID"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="AggrCompetencies">
+      <mapping xsi:type="Calculation:AttributeMapping" target="ACTING_USERID" source="ACTING_USERID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CC_MANAGER_CLOCK_VALUE" source="CC_MANAGER_CLOCK_VALUE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CC_EMPLOYEE_CLOCK_VALUE" source="CC_EMPLOYEE_CLOCK_VALUE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$ACTING_USERID$USERID" source="ACTING_USERID"/>
+    </input>
+    <input node="Combine">
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$ACTING_USERID$USERID" source="USERID"/>
+    </input>
+    <joinAttribute name="JOIN$ACTING_USERID$USERID"/>
+  </calculationView>
 </calculationViews>
 
-<logicalModel id="Competencies">
+<logicalModel id="WithDeltaUsers">
   <attributes>
     <attribute id="ACTING_USERID" order="1" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="ACTING_USERID"/>
-      <keyMapping columnObjectName="Competencies" columnName="ACTING_USERID"/>
-    </attribute></attributes>
-  <calculatedAttributes>
-    <calculatedAttribute id="CC_MANAGER_CLOCK_STATUS" order="2" semanticType="empty" displayAttribute="false" attributeHierarchyActive="false">
-      <keyCalculation datatype="NVARCHAR" expressionLanguage="COLUMN_ENGINE" length="1">
-        <formula>if(&quot;CC_MANAGER_CLOCK_VALUE&quot;&lt;50,'R',
-if(&quot;CC_MANAGER_CLOCK_VALUE&quot;&lt;95,'Y','G'))</formula>
-      </keyCalculation>
-    </calculatedAttribute>
-    <calculatedAttribute id="CC_EMPLOYEE_CLOCK_STATUS" order="3" semanticType="empty" displayAttribute="false" attributeHierarchyActive="false">
-      <keyCalculation datatype="NVARCHAR" expressionLanguage="COLUMN_ENGINE" length="1">
-        <formula>if(&quot;CC_EMPLOYEE_CLOCK_VALUE&quot;&lt;50,'R',
-if(&quot;CC_EMPLOYEE_CLOCK_VALUE&quot;&lt;95,'Y','G'))</formula>
-      </keyCalculation>
-    </calculatedAttribute>
-    <calculatedAttribute id="CC_ETHNICITY" order="6" semanticType="empty" displayAttribute="false" attributeHierarchyActive="false">
-      <keyCalculation datatype="NVARCHAR" expressionLanguage="COLUMN_ENGINE" length="2">
-        <formula>&quot;CC_EMPLOYEE_CLOCK_STATUS&quot;+&quot;CC_MANAGER_CLOCK_STATUS&quot;</formula>
-      </keyCalculation>
-    </calculatedAttribute>
-  </calculatedAttributes>
-  <baseMeasures>
-    <measure id="CC_MANAGER_CLOCK_VALUE" order="4" aggregationType="sum" measureType="simple">
+      <keyMapping columnObjectName="WithDeltaUsers" columnName="ACTING_USERID"/>
+    </attribute>
+    <attribute id="CC_MANAGER_CLOCK_VALUE" hidden="true" order="2" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="CC_MANAGER_CLOCK_VALUE"/>
-      <measureMapping columnObjectName="Competencies" columnName="CC_MANAGER_CLOCK_VALUE"/>
-      <exceptionAggregationMetadata/>
-    </measure>
-    <measure id="CC_EMPLOYEE_CLOCK_VALUE" order="5" aggregationType="sum" measureType="simple">
+      <keyMapping columnObjectName="WithDeltaUsers" columnName="CC_MANAGER_CLOCK_VALUE"/>
+    </attribute>
+    <attribute id="CC_EMPLOYEE_CLOCK_VALUE" hidden="true" order="3" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="CC_EMPLOYEE_CLOCK_VALUE"/>
-      <measureMapping columnObjectName="Competencies" columnName="CC_EMPLOYEE_CLOCK_VALUE"/>
-      <exceptionAggregationMetadata/>
-    </measure>
-  </baseMeasures>
+      <keyMapping columnObjectName="WithDeltaUsers" columnName="CC_EMPLOYEE_CLOCK_VALUE"/>
+    </attribute>
+  </attributes>
+  <calculatedAttributes>
+    <calculatedAttribute id="CC_ETHNICITY" order="4" semanticType="empty" displayAttribute="false" attributeHierarchyActive="false">
+      <keyCalculation datatype="NVARCHAR" expressionLanguage="COLUMN_ENGINE" length="2">
+        <formula>&quot;CC_EMPLOYEE_CLOCK_VALUE&quot;+&quot;CC_MANAGER_CLOCK_VALUE&quot;</formula>
+      </keyCalculation>
+      </calculatedAttribute>
+  </calculatedAttributes>
+  <baseMeasures/>
   <calculatedMeasures/>
-  <restrictedMeasures/>
-  <localDimensions/>
-</logicalModel>
+  <restrictedMeasures/></logicalModel>
 <layout>
   <shapes>
     <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
-      <upperLeftCorner x="92" y="112"/>
+      <upperLeftCorner x="400.59385425392685" y="112"/>
     
       <rectangleSize width="160"/>
     </shape>
     
   
     <shape expanded="true" modelObjectName="Competencies" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="92" y="217"/>
+      <upperLeftCorner x="514.7040621368427" y="516.9999976158142"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="Users" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="91.99999999999997" y="516.9999976158142"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="Managers" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="188.89739701363345" y="676.9999964237213"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="DeltaSubordinates" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="398.8973970136335" y="676.9999964237213"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+  
+    <shape expanded="true" modelObjectName="ManagerUsers" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="303.8476631470725" y="516.9999976158142"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape modelObjectName="Managers" modelObjectNameSpace="ManagerUsers" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="20" y="30"/>
+      <rectangleSize width="183"/>
+    </shape>
+    <shape modelObjectName="DeltaSubordinates" modelObjectNameSpace="ManagerUsers" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="320" y="30"/>
+      <rectangleSize width="170"/>
+    </shape>
+    <shape expanded="true" modelObjectName="Combine" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="118.6666666666666" y="376.9999988079071"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+  
+    <shape expanded="true" modelObjectName="WithDeltaUsers" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="400.59385425392685" y="217"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape modelObjectName="AggrCompetencies" modelObjectNameSpace="WithDeltaUsers" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="20" y="30"/>
+      <rectangleSize width="336"/>
+    </shape>
+    <shape modelObjectName="Combine" modelObjectNameSpace="WithDeltaUsers" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="415" y="24"/>
+      <rectangleSize width="127"/>
+    </shape>
+    <shape expanded="true" modelObjectName="AggrCompetencies" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="457.239760963672" y="384.4999988079071"/>
       <rectangleSize height="30" width="160"/>
     </shape>
   </shapes>
