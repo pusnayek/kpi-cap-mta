@@ -17,7 +17,7 @@
     		growingScrollToLoad="false"
 			width="auto"
 			updateFinished="scroll"
-			items="{/CompetencyGaps}"
+			items="{path: '/CompetencyGaps', sorter: { path: 'USERID', descending: false}}"
 			noDataText="{i18n>detailLineItemTableNoDataText}"
 			class="sapUiResponsiveMargin">
 			<headerToolbar>
@@ -59,7 +59,7 @@
 						<ObjectIdentifier titleActive="true" titlePress="handleItemCompetencyPopover"
 							title="{COMPETENCY_ID}"
 							text="{COMPETENCY_NAME}"/>
-						<Text text="{CompetencyDescription}"/>	
+						<Text text="{COMPETENCY_DESCRIPTION}"/>	
 						<CheckBox selected="{path: 'IS_QUALIFIED', formatter: '.formatter.isQualified'}" displayOnly="true"/>
 						<Text text="{DAYS_INCOMPLETE}"/>	
 						<Text text="{path : 'ASSIGNMENTDATE', type : 'sap.ui.model.type.Date',

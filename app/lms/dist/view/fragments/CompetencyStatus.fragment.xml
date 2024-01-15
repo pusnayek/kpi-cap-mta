@@ -14,7 +14,7 @@
 			id="CompetencyStatus"
 			width="auto"
 			updateFinished="scroll"
-			items="{/CompetencyStatuses}"
+			items="{path: '/CompetencyStatuses', sorter: { path: 'USERID', descending: false}}"
 			noDataText="{i18n>detailLineItemTableNoDataText}"
 			growing="true"
     		growingThreshold="100"

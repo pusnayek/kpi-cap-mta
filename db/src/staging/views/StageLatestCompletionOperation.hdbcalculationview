@@ -25,7 +25,7 @@
       <viewAttribute id="USERID"/>
       <viewAttribute id="ITEMID"/>
       <viewAttribute id="ITEMTYPE"/>
-      <viewAttribute id="COMPLETIONDATE"/>
+      <viewAttribute id="COMPLETIONDATE" aggregationType="max"/>
     </viewAttributes>
     <calculatedViewAttributes/>
     <restrictedViewAttributes/>
