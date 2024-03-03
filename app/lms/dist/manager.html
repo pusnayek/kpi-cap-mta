@@ -16,10 +16,7 @@
 
         $.ajax("/service/sf/getUser()", {}).done(function(json) {
             var url = '/uilms/kpi.html?sap-language='+json.value.defaultLocale;
-            var mode = $.urlParam('mode');
-            if(mode !== undefined && mode !== null) {
-                url = url.concat('&').concat('mode=').concat(mode);
-            }
+            url = url.concat('&').concat('mode=').concat('RM');
             window.location = url;
         }).fail(function (Response) {
             $(document).ready(function() {

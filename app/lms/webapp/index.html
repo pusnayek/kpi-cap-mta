@@ -4,8 +4,23 @@
       <script type = "text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js">
       </script>   
       <script type = "text/javascript" language = "javascript">
+        (function() {
+            $.urlParam = function(name){
+                var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+                if (results==null) {
+                return null;
+                }
+                return decodeURI(results[1]) || 0;
+            }
+        })();
+
         $.ajax("/service/sf/getUser()", {}).done(function(json) {
-            window.location = '/uilms/kpi.html?sap-language='+json.value.defaultLocale;
+            var url = '/uilms/kpi.html?sap-language='+json.value.defaultLocale;
+            var mode = $.urlParam('mode');
+            if(mode !== undefined && mode !== null) {
+                url = url.concat('&').concat('mode=').concat(mode);
+            }
+            window.location = url;
         }).fail(function (Response) {
             $(document).ready(function() {
                 $("p").html("<i>Failed to connect to Successfactors</i>");
