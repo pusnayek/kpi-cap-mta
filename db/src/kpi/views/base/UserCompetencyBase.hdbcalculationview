@@ -120,7 +120,7 @@
       <mapping xsi:type="Calculation:AttributeMapping" target="USERID" source="USERID"/>
       <mapping xsi:type="Calculation:AttributeMapping" target="ITEMID" source="ITEMID"/>
       <mapping xsi:type="Calculation:AttributeMapping" target="ITEMTYPE" source="ITEMTYPE"/>
-      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="ASSIGNMENTDATE" null="true" value=""/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="ASSIGNMENTDATE" null="true"/>
     </input>
   </calculationView>
   <calculationView xsi:type="Calculation:UnionView" id="LatestCompletions">
@@ -138,14 +138,14 @@
       <mapping xsi:type="Calculation:AttributeMapping" target="ITEMID" source="ITEMID"/>
       <mapping xsi:type="Calculation:AttributeMapping" target="ITEMTYPE" source="ITEMTYPE"/>
       <mapping xsi:type="Calculation:AttributeMapping" target="ASSIGNMENTDATE" source="ASSIGNMENTDATE"/>
-      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="COMPLETIONSTATUS" null="true" value=""/>
-      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="COMPLETIONDATE" null="true" value=""/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="COMPLETIONSTATUS" null="true"/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="COMPLETIONDATE" null="true"/>
     </input>
     <input node="Completions" emptyUnionBehavior="NO_ROW">
       <mapping xsi:type="Calculation:AttributeMapping" target="USERID" source="USERID"/>
       <mapping xsi:type="Calculation:AttributeMapping" target="ITEMID" source="ITEMID"/>
       <mapping xsi:type="Calculation:AttributeMapping" target="ITEMTYPE" source="ITEMTYPE"/>
-      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="ASSIGNMENTDATE" null="true" value=""/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="ASSIGNMENTDATE" null="true"/>
       <mapping xsi:type="Calculation:AttributeMapping" target="COMPLETIONSTATUS" source="COMPLETIONSTATUS"/>
       <mapping xsi:type="Calculation:AttributeMapping" target="COMPLETIONDATE" source="COMPLETIONDATE"/>
     </input>
@@ -399,7 +399,7 @@
         <formula>if(isNull(&quot;COMPLETIONSTATUS&quot;),if(not(isnull(&quot;ASSIGNMENTDATE&quot;)),&quot;ASSIGNMENTDATE&quot;,now()),
 if(&quot;COMPLETIONSTATUS&quot;='Complete',
 if(not(isnull(&quot;COMPLETIONDATE&quot;)),adddays(&quot;COMPLETIONDATE&quot;,
-9999+if(not(isnull(&quot;ASSIGNMENTDATE&quot;)),daysbetween(now(),&quot;ASSIGNMENTDATE&quot;),0))
+9999+if(not(isnull(&quot;ASSIGNMENTDATE&quot;)),daysbetween(&quot;ASSIGNMENTDATE&quot;,now()),0))
 ,if(not(isnull(&quot;ASSIGNMENTDATE&quot;)),&quot;ASSIGNMENTDATE&quot;,now())),
 if(not(isnull(&quot;ASSIGNMENTDATE&quot;)),&quot;ASSIGNMENTDATE&quot;,now())))</formula>
   
