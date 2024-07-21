@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="StagingReadiness" applyPrivilegeType="NONE" dataCategory="CUBE" dimensionType="STANDARD" schemaVersion="3.0" hierarchyGeneration="SQL" outputViewType="Aggregation" cacheInvalidationPeriod="NONE" enforceSqlExecution="true" runWithInvokerPrivileges="true">
+<descriptions defaultDescription="StagingReadiness"/>
+<localVariables/>
+<variableMappings/>
+<dataSources>
+  <DataSource id="CT_EXTRACTIONSTATUS">
+    <resourceUri>CT_EXTRACTIONSTATUS</resourceUri>
+  </DataSource>
+</dataSources>
+<snapshotProcedures/>
+<calculationViews>
+  <calculationView xsi:type="Calculation:ProjectionView" id="StatusData" filterExpressionLanguage="COLUMN_ENGINE">
+    <viewAttributes>
+      <viewAttribute id="EXTRACTIONTYPE"/>
+      <viewAttribute id="REPLICATIONSTART"/>
+      <viewAttribute id="REPLICATIONEND"/>
+      <viewAttribute id="DELTAPULLTIME"/>
+      <viewAttribute id="ACTIVE"/>
+    </viewAttributes>
+    <calculatedViewAttributes>
+      <calculatedViewAttribute id="DATALOADED_AFTER_EXTRACTION" datatype="TINYINT" expressionLanguage="COLUMN_ENGINE">
+        <formula>if(isNull(&quot;DELTAPULLTIME&quot;) or &quot;REPLICATIONEND&quot; &gt; &quot;DELTAPULLTIME&quot;,1,0)</formula>
+      </calculatedViewAttribute>
+      <calculatedViewAttribute id="EXTRACTION_CATEGORY" datatype="NVARCHAR" length="50" expressionLanguage="COLUMN_ENGINE">
+        <formula>if(&quot;EXTRACTIONTYPE&quot;='RecentAssignment','Assignment',
+if(&quot;EXTRACTIONTYPE&quot;='RecentCompletion','Completion',
+&quot;EXTRACTIONTYPE&quot;))</formula>
+      </calculatedViewAttribute>
+    </calculatedViewAttributes>
+    <input node="CT_EXTRACTIONSTATUS"/>
+    <filter>&quot;ACTIVE&quot;=1</filter>
+  </calculationView>
+</calculationViews>
+
+<logicalModel id="StatusData">
+  <attributes>
+    <attribute id="EXTRACTION_CATEGORY" order="1" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="EXTRACTION_CATEGORY"/>
+      <keyMapping columnObjectName="StatusData" columnName="EXTRACTION_CATEGORY"/>
+    </attribute>
+  </attributes>
+  <calculatedAttributes/>
+  <baseMeasures>
+    <measure id="READY_TO_REPLICATE" order="2" aggregationType="min" measureType="simple" restrictionExpressionLanguage="SQL">
+      <descriptions defaultDescription="DATALOADED_AFTER_EXTRACTION"/>
+      <measureMapping columnObjectName="StatusData" columnName="DATALOADED_AFTER_EXTRACTION"/>
+      <exceptionAggregationMetadata/>
+    </measure>
+    <measure id="REPLICATIONSTART" order="3" aggregationType="min" measureType="simple" restrictionExpressionLanguage="SQL">
+      <descriptions defaultDescription="REPLICATIONSTART"/>
+      <measureMapping columnObjectName="StatusData" columnName="REPLICATIONSTART"/>
+      <exceptionAggregationMetadata/>
+    </measure>
+    <measure id="REPLICATIONEND" order="4" aggregationType="max" measureType="simple" restrictionExpressionLanguage="SQL">
+      <descriptions defaultDescription="REPLICATIONEND"/>
+      <measureMapping columnObjectName="StatusData" columnName="REPLICATIONEND"/>
+      <exceptionAggregationMetadata/>
+    </measure>
+    <measure id="DELTAPULLTIME" order="5" aggregationType="min" measureType="simple" restrictionExpressionLanguage="SQL">
+      <descriptions defaultDescription="DELTAPULLTIME"/>
+      <measureMapping columnObjectName="StatusData" columnName="DELTAPULLTIME"/>
+      <exceptionAggregationMetadata/>
+    </measure>
+  </baseMeasures>
+  <calculatedMeasures/>
+  <restrictedMeasures/>
+
+
+  <localDimensions/>
+
+</logicalModel>
+<layout>
+  <shapes>
+    <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+      <upperLeftCorner x="92" y="112"/>
+    
+      <rectangleSize width="160"/>
+    </shape>
+    
+  
+    <shape expanded="true" modelObjectName="StatusData" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="92" y="217"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+  </shapes>
+</layout>
+</Calculation:scenario>

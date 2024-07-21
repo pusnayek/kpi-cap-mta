@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="StageItemLatestOperation" applyPrivilegeType="NONE" dataCategory="DIMENSION" dimensionType="STANDARD" schemaVersion="3.0" hierarchyGeneration="SQL" outputViewType="Projection" cacheInvalidationPeriod="NONE" enforceSqlExecution="true" runWithInvokerPrivileges="true">
+<descriptions defaultDescription="StageItemLatestOperation"/>
+<localVariables/>
+<variableMappings/>
+<dataSources>
+  <DataSource id="BaseItem">
+    <resourceUri>BaseItem</resourceUri>
+  </DataSource>
+  <DataSource id="ActTimes$$$$BaseItem$$">
+    <resourceUri>BaseItem</resourceUri>
+  </DataSource>
+  <DataSource id="CT_OPSMERGE">
+    <resourceUri>CT_OPSMERGE</resourceUri>
+  </DataSource>
+  <DataSource id="Extracts$$$$BaseItem$$">
+    <resourceUri>BaseItem</resourceUri>
+  </DataSource>
+</dataSources>
+<snapshotProcedures/>
+<calculationViews>
+  <calculationView xsi:type="Calculation:AggregationView" id="LastActTime">
+    <viewAttributes>
+      <viewAttribute id="ITEMID"/>
+      <viewAttribute id="ITEMTYPE"/>
+      <viewAttribute id="DELTA_LASTUPDATETIME" aggregationType="max"/></viewAttributes>
+    <calculatedViewAttributes/>
+    <restrictedViewAttributes/>
+    <input node="BaseItem"/></calculationView>
+  <calculationView xsi:type="Calculation:AggregationView" id="ActTimes">
+    <viewAttributes>
+      <viewAttribute id="ITEMID"/>
+      <viewAttribute id="ITEMTYPE"/>
+      <viewAttribute id="DELTA_ACTION"/>
+      <viewAttribute id="DELTA_LASTUPDATETIME"/></viewAttributes>
+    <calculatedViewAttributes/>
+    <restrictedViewAttributes/>
+    <input node="ActTimes$$$$BaseItem$$"/></calculationView>
+  <calculationView xsi:type="Calculation:ProjectionView" id="MergeOps">
+    <viewAttributes>
+      <viewAttribute id="INSERT"/>
+      <viewAttribute id="UPDATE"/>
+      <viewAttribute id="DELETE"/>
+      <viewAttribute id="OPERATION"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="CT_OPSMERGE"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:AggregationView" id="Extracts">
+    <viewAttributes>
+      <viewAttribute id="ITEMID"/>
+      <viewAttribute id="ITEMTYPE"/>
+      <viewAttribute id="DELTA_ACTION"/>
+      <viewAttribute id="DELTA_LASTUPDATETIME" aggregationType="max"/>
+      <viewAttribute id="ITEMTITLE"/>
+      <viewAttribute id="COMPETENCY_ID"/>
+      <viewAttribute id="COMPETENCY_NAME"/>
+      <viewAttribute id="COMPETENCY_AREA"/>
+      <viewAttribute id="COMPETENCY_DESCRIPTION"/>
+      <viewAttribute id="COMPETENCY_COMPETENCYTYPE"/>
+      <viewAttribute id="COMPETENCY_GRANTSCERTIFICATE"/>
+      <viewAttribute id="RETAININGNUMER"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <restrictedViewAttributes/>
+    <input node="Extracts$$$$BaseItem$$"/></calculationView>
+  <calculationView xsi:type="Calculation:JoinView" id="LatestAction" cardinality="CN_N" joinType="inner">
+    <viewAttributes>
+      <viewAttribute id="ITEMID"/>
+      <viewAttribute id="ITEMTYPE"/>
+      <viewAttribute id="DELTA_LASTUPDATETIME"/>
+      <viewAttribute id="DELTA_ACTION"/>
+      <viewAttribute hidden="true" id="JOIN$DELTA_LASTUPDATETIME$DELTA_LASTUPDATETIME"/>
+      <viewAttribute hidden="true" id="JOIN$ITEMID$ITEMID"/>
+      <viewAttribute hidden="true" id="JOIN$ITEMTYPE$ITEMTYPE"/>
+    </viewAttributes>
+    <calculatedViewAttributes>
+      <calculatedViewAttribute id="CC_INSERTOPERATION" datatype="TINYINT" expressionLanguage="COLUMN_ENGINE">
+        <formula>IF(&quot;DELTA_ACTION&quot;='I',1,0)</formula>
+      </calculatedViewAttribute>
+      <calculatedViewAttribute id="CC_UPDATEOPERATION" datatype="TINYINT" expressionLanguage="COLUMN_ENGINE">
+        <formula>IF(&quot;DELTA_ACTION&quot;='M' OR &quot;DELTA_ACTION&quot;='U',1,0)</formula>
+      </calculatedViewAttribute>
+      <calculatedViewAttribute id="CC_DELETEOPERATION" datatype="TINYINT" expressionLanguage="COLUMN_ENGINE">
+        <formula>IF(&quot;DELTA_ACTION&quot;='D',1,0)</formula>
+      </calculatedViewAttribute>
+    </calculatedViewAttributes>
+    <input node="LastActTime">
+      <mapping xsi:type="Calculation:AttributeMapping" target="DELTA_LASTUPDATETIME" source="DELTA_LASTUPDATETIME"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ITEMID" source="ITEMID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ITEMTYPE" source="ITEMTYPE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$DELTA_LASTUPDATETIME$DELTA_LASTUPDATETIME" source="DELTA_LASTUPDATETIME"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$ITEMID$ITEMID" source="ITEMID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$ITEMTYPE$ITEMTYPE" source="ITEMTYPE"/>
+    </input>
+    <input node="ActTimes">
+      <mapping xsi:type="Calculation:AttributeMapping" target="DELTA_ACTION" source="DELTA_ACTION"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$DELTA_LASTUPDATETIME$DELTA_LASTUPDATETIME" source="DELTA_LASTUPDATETIME"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$ITEMID$ITEMID" source="ITEMID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$ITEMTYPE$ITEMTYPE" source="ITEMTYPE"/>
+    </input>
+    <joinAttribute name="JOIN$DELTA_LASTUPDATETIME$DELTA_LASTUPDATETIME"/>
+    <joinAttribute name="JOIN$ITEMID$ITEMID"/>
+    <joinAttribute name="JOIN$ITEMTYPE$ITEMTYPE"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:AggregationView" id="MergeMultiOps">
+    <viewAttributes>
+      <viewAttribute id="ITEMID"/>
+      <viewAttribute id="ITEMTYPE"/>
+      <viewAttribute id="DELTA_LASTUPDATETIME"/>
+      <viewAttribute id="CC_INSERTOPERATION" aggregationType="max"/>
+      <viewAttribute id="CC_UPDATEOPERATION" aggregationType="max"/>
+      <viewAttribute id="CC_DELETEOPERATION" aggregationType="max"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <restrictedViewAttributes/>
+    <input node="LatestAction"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:JoinView" id="WithMergeOps" cardinality="CN_N" joinType="inner">
+    <viewAttributes>
+      <viewAttribute id="ITEMID"/>
+      <viewAttribute id="ITEMTYPE"/>
+      <viewAttribute id="DELTA_LASTUPDATETIME"/>
+      <viewAttribute id="OPERATION"/>
+      <viewAttribute hidden="true" id="JOIN$CC_INSERTOPERATION$INSERT"/>
+      <viewAttribute hidden="true" id="JOIN$CC_UPDATEOPERATION$UPDATE"/>
+      <viewAttribute hidden="true" id="JOIN$CC_DELETEOPERATION$DELETE"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="MergeMultiOps">
+      <mapping xsi:type="Calculation:AttributeMapping" target="DELTA_LASTUPDATETIME" source="DELTA_LASTUPDATETIME"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ITEMID" source="ITEMID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ITEMTYPE" source="ITEMTYPE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$CC_INSERTOPERATION$INSERT" source="CC_INSERTOPERATION"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$CC_UPDATEOPERATION$UPDATE" source="CC_UPDATEOPERATION"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$CC_DELETEOPERATION$DELETE" source="CC_DELETEOPERATION"/>
+    </input>
+    <input node="MergeOps">
+      <mapping xsi:type="Calculation:AttributeMapping" target="OPERATION" source="OPERATION"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$CC_INSERTOPERATION$INSERT" source="INSERT"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$CC_UPDATEOPERATION$UPDATE" source="UPDATE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$CC_DELETEOPERATION$DELETE" source="DELETE"/>
+    </input>
+    <joinAttribute name="JOIN$CC_INSERTOPERATION$INSERT"/>
+    <joinAttribute name="JOIN$CC_UPDATEOPERATION$UPDATE"/>
+    <joinAttribute name="JOIN$CC_DELETEOPERATION$DELETE"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:AggregationView" id="OneOpsPerTimeStamp">
+    <viewAttributes>
+      <viewAttribute id="ITEMID"/>
+      <viewAttribute id="ITEMTYPE"/>
+      <viewAttribute id="DELTA_LASTUPDATETIME"/>
+      <viewAttribute id="DELTA_ACTION"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <restrictedViewAttributes/>
+    <input node="WithMergeOps">
+      <mapping xsi:type="Calculation:AttributeMapping" target="DELTA_ACTION" source="OPERATION"/>
+    </input>
+  </calculationView>
+  <calculationView xsi:type="Calculation:JoinView" id="LatestActionData" cardinality="CN_N" joinType="inner" filterExpressionLanguage="SQL">
+    <viewAttributes>
+      <viewAttribute id="ITEMID"/>
+      <viewAttribute id="ITEMTYPE"/>
+      <viewAttribute id="DELTA_LASTUPDATETIME"/>
+      <viewAttribute id="DELTA_ACTION"/>
+      <viewAttribute id="ITEMTITLE"/>
+      <viewAttribute id="COMPETENCY_ID"/>
+      <viewAttribute id="COMPETENCY_NAME"/>
+      <viewAttribute id="COMPETENCY_AREA"/>
+      <viewAttribute id="COMPETENCY_DESCRIPTION"/>
+      <viewAttribute id="COMPETENCY_COMPETENCYTYPE"/>
+      <viewAttribute id="COMPETENCY_GRANTSCERTIFICATE"/>
+      <viewAttribute id="RETAININGNUMER"/>
+      <viewAttribute hidden="true" id="JOIN$DELTA_LASTUPDATETIME$DELTA_LASTUPDATETIME"/>
+      <viewAttribute hidden="true" id="JOIN$DELTA_ACTION$DELTA_ACTION"/>
+      <viewAttribute hidden="true" id="JOIN$ITEMID$ITEMID"/>
+      <viewAttribute hidden="true" id="JOIN$ITEMTYPE$ITEMTYPE"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="OneOpsPerTimeStamp">
+      <mapping xsi:type="Calculation:AttributeMapping" target="DELTA_LASTUPDATETIME" source="DELTA_LASTUPDATETIME"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="DELTA_ACTION" source="DELTA_ACTION"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ITEMID" source="ITEMID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ITEMTYPE" source="ITEMTYPE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$DELTA_LASTUPDATETIME$DELTA_LASTUPDATETIME" source="DELTA_LASTUPDATETIME"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$DELTA_ACTION$DELTA_ACTION" source="DELTA_ACTION"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$ITEMID$ITEMID" source="ITEMID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$ITEMTYPE$ITEMTYPE" source="ITEMTYPE"/>
+    </input>
+    <input node="Extracts">
+      <mapping xsi:type="Calculation:AttributeMapping" target="ITEMTITLE" source="ITEMTITLE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMPETENCY_ID" source="COMPETENCY_ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMPETENCY_NAME" source="COMPETENCY_NAME"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMPETENCY_AREA" source="COMPETENCY_AREA"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMPETENCY_DESCRIPTION" source="COMPETENCY_DESCRIPTION"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMPETENCY_COMPETENCYTYPE" source="COMPETENCY_COMPETENCYTYPE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMPETENCY_GRANTSCERTIFICATE" source="COMPETENCY_GRANTSCERTIFICATE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="RETAININGNUMER" source="RETAININGNUMER"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$DELTA_LASTUPDATETIME$DELTA_LASTUPDATETIME" source="DELTA_LASTUPDATETIME"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$DELTA_ACTION$DELTA_ACTION" source="DELTA_ACTION"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$ITEMID$ITEMID" source="ITEMID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$ITEMTYPE$ITEMTYPE" source="ITEMTYPE"/>
+    </input>
+    <joinAttribute name="JOIN$DELTA_LASTUPDATETIME$DELTA_LASTUPDATETIME"/>
+    <joinAttribute name="JOIN$DELTA_ACTION$DELTA_ACTION"/>
+    <joinAttribute name="JOIN$ITEMID$ITEMID"/>
+    <joinAttribute name="JOIN$ITEMTYPE$ITEMTYPE"/>
+  </calculationView>
+</calculationViews>
+
+<logicalModel id="LatestActionData">
+  <attributes>
+    <attribute id="ITEMID" order="1" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="ITEMID"/>
+      <keyMapping columnObjectName="LatestActionData" columnName="ITEMID"/>
+    </attribute>
+    <attribute id="ITEMTYPE" order="2" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="ITEMTYPE"/>
+      <keyMapping columnObjectName="LatestActionData" columnName="ITEMTYPE"/>
+    </attribute>
+    <attribute id="DELTA_LASTUPDATETIME" order="3" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="DELTA_LASTUPDATETIME"/>
+      <keyMapping columnObjectName="LatestActionData" columnName="DELTA_LASTUPDATETIME"/>
+    </attribute>
+    <attribute id="DELTA_ACTION" order="4" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="OPERATION"/>
+      <keyMapping columnObjectName="LatestActionData" columnName="DELTA_ACTION"/>
+    </attribute>
+    <attribute id="ITEMTITLE" order="5" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="ITEMTITLE"/>
+      <keyMapping columnObjectName="LatestActionData" columnName="ITEMTITLE"/>
+    </attribute>
+    <attribute id="COMPETENCY_ID" order="6" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="COMPETENCY_ID"/>
+      <keyMapping columnObjectName="LatestActionData" columnName="COMPETENCY_ID"/>
+    </attribute>
+    <attribute id="COMPETENCY_NAME" order="7" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="COMPETENCY_NAME"/>
+      <keyMapping columnObjectName="LatestActionData" columnName="COMPETENCY_NAME"/>
+    </attribute>
+    <attribute id="COMPETENCY_AREA" order="8" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="COMPETENCY_AREA"/>
+      <keyMapping columnObjectName="LatestActionData" columnName="COMPETENCY_AREA"/>
+    </attribute>
+    <attribute id="COMPETENCY_DESCRIPTION" order="9" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="COMPETENCY_DESCRIPTION"/>
+      <keyMapping columnObjectName="LatestActionData" columnName="COMPETENCY_DESCRIPTION"/>
+    </attribute>
+    <attribute id="COMPETENCY_COMPETENCYTYPE" order="10" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="COMPETENCY_COMPETENCYTYPE"/>
+      <keyMapping columnObjectName="LatestActionData" columnName="COMPETENCY_COMPETENCYTYPE"/>
+    </attribute>
+    <attribute id="COMPETENCY_GRANTSCERTIFICATE" order="11" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="COMPETENCY_GRANTSCERTIFICATE"/>
+      <keyMapping columnObjectName="LatestActionData" columnName="COMPETENCY_GRANTSCERTIFICATE"/>
+    </attribute>
+    <attribute id="RETAININGNUMER" order="12" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="RETAININGNUMER"/>
+      <keyMapping columnObjectName="LatestActionData" columnName="RETAININGNUMER"/>
+    </attribute>
+  </attributes>
+  <calculatedAttributes/>
+  <baseMeasures/>
+  <calculatedMeasures/>
+  <restrictedMeasures/>
+</logicalModel>
+<layout>
+  <shapes>
+    <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+      <upperLeftCorner x="275" y="112"/>
+    
+      <rectangleSize width="160"/>
+    </shape>
+    
+  
+    <shape expanded="true" modelObjectName="LastActTime" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="142" y="866"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="ActTimes" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="352" y="866"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="MergeOps" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="92" y="621"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="Extracts" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="364" y="356"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="LatestAction" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="302" y="726"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape modelObjectName="LastActTime" modelObjectNameSpace="LatestAction" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="20" y="30"/>
+      <rectangleSize width="223"/>
+    </shape>
+    <shape modelObjectName="ActTimes" modelObjectNameSpace="LatestAction" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="320" y="30"/>
+      <rectangleSize width="223"/>
+    </shape>
+    <shape expanded="true" modelObjectName="MergeMultiOps" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="302" y="621"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="WithMergeOps" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="154" y="481"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape modelObjectName="MergeMultiOps" modelObjectNameSpace="WithMergeOps" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="20" y="30"/>
+      <rectangleSize width="223"/>
+    </shape>
+    <shape modelObjectName="MergeOps" modelObjectNameSpace="WithMergeOps" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="320" y="30"/>
+      <rectangleSize width="149"/>
+    </shape>
+    <shape expanded="true" modelObjectName="OneOpsPerTimeStamp" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="154" y="366"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="LatestActionData" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="275" y="217"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape modelObjectName="OneOpsPerTimeStamp" modelObjectNameSpace="LatestActionData" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="20" y="30"/>
+      <rectangleSize width="223"/>
+    </shape>
+    <shape modelObjectName="Extracts" modelObjectNameSpace="LatestActionData" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="320" y="30"/>
+      <rectangleSize width="223"/>
+    </shape>
+  </shapes>
+</layout>
+</Calculation:scenario>

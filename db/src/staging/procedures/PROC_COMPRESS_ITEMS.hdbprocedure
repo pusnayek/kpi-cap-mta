@@ -1,0 +1,68 @@
+PROCEDURE PROC_COMPRESS_ITEMS( )
+LANGUAGE SQLSCRIPT
+SQL SECURITY INVOKER
+--DEFAULT SCHEMA <default_schema_name>
+-- READS SQL DATA 
+AS
+BEGIN
+
+    /**
+    * Set processing status to 'P' - in process for all records; 
+    * this will avoid conflicts with records which are inserted after this processing starts and can be deleted safely
+    */
+    UPDATE ST_Item SET "PROCESSINGSTATUS" = 'P';
+    COMMIT;
+
+    /**
+    * Update delta queue to update competency cache
+    **/
+    CALL "UPDATE_COMPETENCY_DELTA_LOG" ( );
+
+    /**
+    * Transfer records with latest timestamp timestamp and distinct Action value with processing status P
+    * to stage table
+    */
+    DELETE FROM FT_Item
+    WHERE ("ITEMID","ITEMTYPE") IN (
+        SELECT "ITEMID","ITEMTYPE" FROM "CompressItemOperations" WHERE "DELTA_ACTION" = 'D'
+    );
+
+    
+    UPSERT FT_Item (
+    	"ITEMID",
+    	"ITEMTYPE",
+    	"ITEMTITLE",
+    	"COMPETENCY_ID",
+    	"COMPETENCY_NAME",
+    	"COMPETENCY_AREA",
+    	"COMPETENCY_DESCRIPTION",
+    	"COMPETENCY_COMPETENCYTYPE",
+    	"COMPETENCY_GRANTSCERTIFICATE",
+    	"RETAININGNUMER"
+    ) SELECT
+    	 "ITEMID",
+    	 "ITEMTYPE",
+    	 "ITEMTITLE",
+    	 "COMPETENCY_ID" AS "COMPETENCY_ID",
+    	 "COMPETENCY_NAME" AS "COMPETENCY_NAME",
+    	 "COMPETENCY_AREA" AS "COMPETENCY_AREA",
+    	 "COMPETENCY_DESCRIPTION" AS "COMPETENCY_DESCRIPTION",
+    	 "COMPETENCY_COMPETENCYTYPE" AS "COMPETENCY_COMPETENCYTYPE",
+    	 "COMPETENCY_GRANTSCERTIFICATE" AS "COMPETENCY_GRANTSCERTIFICATE",
+    	 "RETAININGNUMER" 
+    FROM "CompressItemOperations" 
+    WHERE "DELTA_ACTION" != 'D';
+    COMMIT;
+
+ /**
+    * Delete all records with status 'P' from extraction table
+    */
+    DELETE FROM ST_Item WHERE "PROCESSINGSTATUS" = 'P';
+    COMMIT;
+
+    /**
+    * Update competency DB
+    */
+    CALL "UPDATE_COMPETENCY_DELTAS" ( );
+
+END

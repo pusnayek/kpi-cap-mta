@@ -1,0 +1,90 @@
+<core:FragmentDefinition 
+	xmlns="sap.m"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:semantic="sap.m.semantic"
+	xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:l="sap.ui.layout" 	
+	xmlns:core="sap.ui.core"
+	xmlns:cust="ui.lms.controls"
+	xmlns:custdata="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+	
+
+	<!--<l:VerticalLayout>-->
+		<Table
+			id="CompetencyStatus"
+			width="auto"
+			updateFinished="scroll"
+			items="{path: '/CompetencyStatuses', sorter: { path: 'USERID', descending: false}}"
+			noDataText="{i18n>detailLineItemTableNoDataText}"
+			growing="true"
+    		growingThreshold="100"
+    		growingScrollToLoad="false"
+			class="sapUiResponsiveMargin">
+			<headerToolbar>
+				<OverflowToolbar>
+					<ToolbarSpacer/>
+					<!-- Add the Personalization button -->
+					<!--<Button icon="sap-icon://action-settings" press="personalizeTable" >-->
+					<!--	<layoutData>-->
+					<!--		<OverflowToolbarLayoutData priority="NeverOverflow" />-->
+					<!--	</layoutData>-->
+					<!--</Button>-->
+					<Button icon="sap-icon://excel-attachment"  text="{i18n>exportToExcel}" custdata:table="CompetencyStatus" press="exportExcel" >
+						<layoutData>
+							<OverflowToolbarLayoutData priority="NeverOverflow" />
+						</layoutData>
+					</Button>
+				</OverflowToolbar>
+			</headerToolbar>
+			<columns>
+				<Column>
+					<Text text="{i18n>userID}"/>
+				</Column>
+				<Column minScreenWidth="Tablet" demandPopin="true">
+					<Text text="{i18n>competency}"/>
+				</Column>
+				<Column minScreenWidth="Tablet" demandPopin="true">
+					<Text text="{i18n>latestAssignment}"/>
+				</Column>
+				<Column minScreenWidth="Tablet" demandPopin="true">
+					<Text text="{i18n>area}"/>
+				</Column>
+				<Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center" width="8%">
+					<Text text="{i18n>completed}"/>
+				</Column>
+				<Column minScreenWidth="Tablet" demandPopin="true" hAlign="Right">
+					<Text text="{i18n>lastAccumDate}"/>
+				</Column>
+				<Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center" width="10%">
+					<Text text="{i18n>daysToExpiry}"/>
+				</Column>
+				<Column minScreenWidth="Tablet" demandPopin="true" hAlign="Right">
+					<Text text="{i18n>expiryDate}"/>
+				</Column>
+			</columns>
+			<items>
+				<ColumnListItem>
+					<cells>
+						<ObjectIdentifier titleActive="true" titlePress="handleUserPopover"
+							title="{USERID}"
+							text="{FIRSTNAME} {LASTNAME}"/>
+						<ObjectIdentifier titleActive="true" titlePress="handleItemCompetencyPopover"
+							title="{COMPETENCY_ID}"
+							text="{COMPETENCY_NAME}"/>
+						<ObjectIdentifier titleActive="true" titlePress="handleLatestItemPopover"
+							title="{LASTASSIGNEDITEMID}"
+							text="{LASTASSIGNEDITEMTITLE}"/>
+						<Text text="{COMPETENCY_DESCRIPTION}"/>	
+						<CheckBox selected="{path: 'IS_QUALIFIED', formatter: '.formatter.isQualified'}" displayOnly="true"/>
+						<Text text="{path : 'LASTACCUMULATIONDATE', type : 'sap.ui.model.type.Date',
+            					formatOptions: { style : 'medium'}}"/>	
+						<Text text="{TIME_TO_EXPIRATION}"/>	
+						<Text text="{path : 'EXPIRATIONDATE', type : 'sap.ui.model.type.Date',
+            					formatOptions: { style : 'medium'}}"/>	
+					</cells>
+				</ColumnListItem>
+			</items>
+		</Table>
+	<!--</l:VerticalLayout>-->
+
+</core:FragmentDefinition>

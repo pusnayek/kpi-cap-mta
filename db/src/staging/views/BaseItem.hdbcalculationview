@@ -10,7 +10,7 @@
 </dataSources>
 <snapshotProcedures/>
 <calculationViews>
-  <calculationView xsi:type="Calculation:ProjectionView" id="Items">
+  <calculationView xsi:type="Calculation:ProjectionView" id="Items" filterExpressionLanguage="COLUMN_ENGINE">
     <viewAttributes>
       <viewAttribute id="ITEMID"/>
       <viewAttribute id="ITEMTYPE"/>
@@ -29,6 +29,8 @@
     </viewAttributes>
     <calculatedViewAttributes/>
     <input node="ET_ITEM"/>
+  
+    <filter>&quot;PROCESSINGSTATUS&quot;='P'</filter>
   </calculationView>
 </calculationViews>
 

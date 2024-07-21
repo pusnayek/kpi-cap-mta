@@ -1,0 +1,58 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+	<ResponsivePopover
+		title="{UserCard>USERID}"
+		class="sapUiPopupWithPadding"
+		placement="HorizontalPreferredRight" >
+		<content>
+			<Panel width="auto" height="100%">
+				<QuickViewCard id="quickViewCard">
+					<QuickViewPage
+							header="{i18n>UserID}"
+							icon="sap-icon://employee"
+							title="{UserCard>FIRSTNAME} {UserCard>LASTNAME}"
+							description="{UserCard>EMPLOYEEID}">
+						<QuickViewGroup>
+							<QuickViewGroupElement
+									label="{i18n>domain}" value="{UserCard>DOMAIN}" type="text">
+							</QuickViewGroupElement>
+							<QuickViewGroupElement
+									label="{i18n>department}" value="{UserCard>DEPARTMENT}" type="text">
+							</QuickViewGroupElement>
+							<QuickViewGroupElement
+									label="{i18n>division}" value="{UserCard>DIVISION}" type="text">
+							</QuickViewGroupElement>
+							<QuickViewGroupElement
+									label="{i18n>jobGroup}" value="{UserCard>JOBGROUP}" type="text">
+							</QuickViewGroupElement>
+							<QuickViewGroupElement
+									label="{i18n>jobCode}" value="{UserCard>JOBCODE}" type="text">
+							</QuickViewGroupElement>
+							<QuickViewGroupElement
+									label="{i18n>jobLocation}" value="{UserCard>JOBLOCATION}" type="text">
+							</QuickViewGroupElement>
+
+							<QuickViewGroupElement
+									label="{i18n>groupBU}" value="{UserCard>GROUPBU}" type="text">
+							</QuickViewGroupElement>
+							<QuickViewGroupElement
+									label="{i18n>employeeGroup}" value="{UserCard>EMPLOYEEGROUP}" type="text">
+							</QuickViewGroupElement>
+							<QuickViewGroupElement
+									label="{i18n>empCustomStatus}" value="{UserCard>EMPCUSTOMSTATUS}" type="text">
+							</QuickViewGroupElement>
+
+							<QuickViewGroupElement
+									label="{i18n>managerUserID}" value="{UserCard>MANAGERUSERID}" type="text">
+							</QuickViewGroupElement>
+							<QuickViewGroupElement
+									label="{i18n>managerName}" value="{UserCard>MANAGERNAME}" type="text">
+							</QuickViewGroupElement>
+						</QuickViewGroup>
+					</QuickViewPage>
+				</QuickViewCard>
+			</Panel>
+		</content>
+	</ResponsivePopover>
+</core:FragmentDefinition>

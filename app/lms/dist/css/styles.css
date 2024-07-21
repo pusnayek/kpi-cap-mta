@@ -1,0 +1,48 @@
+g.arc {
+	fill: steelblue;
+}
+ 
+g.label text {
+	text-anchor: middle;
+	font-size: 14px;
+	font-weight: bold;
+	fill: #666;
+}
+
+g.boldlabel text {
+	text-anchor: middle;
+	font-size: 24px;
+	font-weight: bold;
+	fill: #666;
+}
+
+/*.sapMComboBox {*/
+/*	border-style: groove !important;*/
+/*}*/
+
+.sapMSplitContainerHideMode>.sapMSplitContainerDetail 
+.sapMITB.sapUiResponsiveContentPadding>.sapMITBContainerContent>.sapMITBContent, 
+.sapMITB.sapUiResponsiveContentPadding>.sapMITBContainerContent>.sapMITBContent {
+    padding-top: 0rem !important;
+    padding-right: 0rem !important;
+    padding-bottom: 1rem;
+    padding-left: 0rem !important;
+    box-sizing: border-box;
+}
+
+.sapMITBContent {
+    padding: 0rem; 
+}
+
+.sapMTokenizerIndicator {
+    vertical-align: unset !important;
+}
+
+.lineBreaker {
+	  flex-basis: 100% !important;
+  	  max-width: unset !important;
+}
+
+.sapUiSizeCompact .sapMCbBg {
+	font-size: 1.2rem !important;
+}

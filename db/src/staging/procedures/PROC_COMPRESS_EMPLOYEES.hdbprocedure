@@ -1,0 +1,74 @@
+PROCEDURE PROC_COMPRESS_EMPLOYEES( )
+   LANGUAGE SQLSCRIPT
+   SQL SECURITY INVOKER
+   --DEFAULT SCHEMA <default_schema_name>
+   -- READS SQL DATA 
+   AS
+BEGIN
+    DECLARE NumOfEmployeeChanges INTEGER;
+
+    /**
+    * Set processing status to 'P' - in process for all records; 
+    * this will avoid conflicts with records which are inserted after this processing starts and can be deleted safely
+    */
+    UPDATE ST_EMPLOYEE SET "PROCESSINGSTATUS" = 'P';
+    COMMIT;
+
+    /**
+    * Update delta queue to update competency cache
+    **/
+    CALL "UPDATE_COMPETENCY_DELTA_LOG" ( );
+
+    /**
+    * Get the data for compress in a table
+    */
+    lt_compressOperationData = 
+        SELECT 
+        "USERID", "EMPLOYEEID", "FIRSTNAME", "LASTNAME", "EMPLOYEESTATUS", 
+        "DOMAIN", "JOBCODE", "JOBGROUP", "DEPARTMENT", "DIVISION", "JOBLOCATION", 
+        "GROUPBU", "EMPLOYEEGROUP", "EMPCUSTOMSTATUS", "MANAGERUSERID", "MANAGERNAME", "DELTA_ACTION"
+    FROM "CompressEmployeeOperations";
+    
+    SELECT COUNT(1) INTO NumOfEmployeeChanges FROM :lt_compressOperationData;
+
+    /**
+    * Transfer records with latest timestamp timestamp and distinct Action value with processing status P
+    * to stage table
+    */
+    DELETE FROM FT_EMPLOYEE
+    WHERE "USERID" IN (
+        SELECT "USERID" FROM :lt_compressOperationData WHERE "DELTA_ACTION" = 'D'
+    );
+    
+    UPSERT FT_EMPLOYEE (
+        "USERID", "EMPLOYEEID", "FIRSTNAME", "LASTNAME", "EMPLOYEESTATUS", 
+        "DOMAIN", "JOBCODE", "JOBGROUP", "DEPARTMENT", "DIVISION", "JOBLOCATION", 
+        "GROUPBU", "EMPLOYEEGROUP", "EMPCUSTOMSTATUS", "MANAGERUSERID", "MANAGERNAME"
+    )
+    SELECT 
+        "USERID", "EMPLOYEEID", "FIRSTNAME", "LASTNAME", "EMPLOYEESTATUS", 
+        "DOMAIN", "JOBCODE", "JOBGROUP", "DEPARTMENT", "DIVISION", "JOBLOCATION", 
+        "GROUPBU", "EMPLOYEEGROUP", "EMPCUSTOMSTATUS", "MANAGERUSERID", "MANAGERNAME"
+    FROM :lt_compressOperationData
+    WHERE "DELTA_ACTION" != 'D';
+    COMMIT;
+
+    /**
+    * Delete all records with status 'P' from extraction table
+    */
+    DELETE FROM ST_EMPLOYEE WHERE "PROCESSINGSTATUS" = 'P';
+    COMMIT;
+
+    /**
+    * Update competency DB
+    */
+    CALL "UPDATE_COMPETENCY_DELTAS" ( );
+
+    /**
+    * Post-processing to calculate and persist employee-manager relation
+    */
+    IF NumOfEmployeeChanges > 0 THEN
+        CALL "PROC_CALCULATE_MANAGER_SUBORDINATES" ( );
+    END IF;
+
+END

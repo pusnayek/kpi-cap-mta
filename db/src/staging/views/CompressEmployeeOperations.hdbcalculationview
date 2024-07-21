@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="CompressEmployeeOperations" applyPrivilegeType="NONE" dataCategory="DIMENSION" dimensionType="STANDARD" schemaVersion="3.0" hierarchyGeneration="SQL" outputViewType="Projection" cacheInvalidationPeriod="NONE" enforceSqlExecution="true" runWithInvokerPrivileges="true">
+<descriptions defaultDescription="CompressEmployeeOperations"/>
+<localVariables/>
+<variableMappings/>
+<dataSources>
+  <DataSource id="ST_EMPLOYEE">
+    <resourceUri>ST_EMPLOYEE</resourceUri>
+  </DataSource>
+  <DataSource id="StagedRecords$$$$ST_EMPLOYEE$$">
+    <resourceUri>ST_EMPLOYEE</resourceUri>
+  </DataSource>
+</dataSources>
+<snapshotProcedures/>
+<calculationViews>
+  <calculationView xsi:type="Calculation:AggregationView" id="FinalOperation" filterExpressionLanguage="COLUMN_ENGINE">
+    <viewAttributes>
+      <viewAttribute id="USERID"/>
+      <viewAttribute id="DELTA_ACTION"/>
+      <viewAttribute id="DELTA_LASTUPDATETIME" aggregationType="max"/>
+      <viewAttribute id="DELTA_RECORD" aggregationType="min"/>
+      <viewAttribute id="PROCESSINGSTATUS"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <restrictedViewAttributes/>
+    <input node="ST_EMPLOYEE"/>
+    <filter>&quot;PROCESSINGSTATUS&quot;='P'</filter>
+  </calculationView>
+  <calculationView xsi:type="Calculation:ProjectionView" id="StagedRecords" filterExpressionLanguage="COLUMN_ENGINE">
+    <viewAttributes>
+      <viewAttribute id="USERID"/>
+      <viewAttribute id="DELTA_ACTION"/>
+      <viewAttribute id="DELTA_LASTUPDATETIME"/>
+      <viewAttribute id="DELTA_RECORD"/>
+      <viewAttribute id="EMPLOYEEID"/>
+      <viewAttribute id="FIRSTNAME"/>
+      <viewAttribute id="LASTNAME"/>
+      <viewAttribute id="EMPLOYEESTATUS"/>
+      <viewAttribute id="DOMAIN"/>
+      <viewAttribute id="JOBCODE"/>
+      <viewAttribute id="JOBGROUP"/>
+      <viewAttribute id="GROUPBU"/>
+      <viewAttribute id="EMPLOYEEGROUP"/>
+      <viewAttribute id="EMPCUSTOMSTATUS"/>
+      <viewAttribute id="DEPARTMENT"/>
+      <viewAttribute id="DIVISION"/>
+      <viewAttribute id="JOBLOCATION"/>
+      <viewAttribute id="MANAGERUSERID"/>
+      <viewAttribute id="MANAGERNAME"/>
+      <viewAttribute id="PROCESSINGSTATUS"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="StagedRecords$$$$ST_EMPLOYEE$$"/>
+    <filter>&quot;PROCESSINGSTATUS&quot;='P'</filter>
+  </calculationView>
+  <calculationView xsi:type="Calculation:JoinView" id="FinalOps" cardinality="CN_N" joinType="inner">
+    <viewAttributes>
+      <viewAttribute id="USERID"/>
+      <viewAttribute id="DELTA_ACTION"/>
+      <viewAttribute id="EMPLOYEEID"/>
+      <viewAttribute id="FIRSTNAME"/>
+      <viewAttribute id="LASTNAME"/>
+      <viewAttribute id="EMPLOYEESTATUS"/>
+      <viewAttribute id="DOMAIN"/>
+      <viewAttribute id="JOBCODE"/>
+      <viewAttribute id="JOBGROUP"/>
+      <viewAttribute id="GROUPBU"/>
+      <viewAttribute id="EMPLOYEEGROUP"/>
+      <viewAttribute id="EMPCUSTOMSTATUS"/>
+      <viewAttribute id="DEPARTMENT"/>
+      <viewAttribute id="DIVISION"/>
+      <viewAttribute id="JOBLOCATION"/>
+      <viewAttribute id="MANAGERUSERID"/>
+      <viewAttribute id="MANAGERNAME"/>
+      <viewAttribute hidden="true" id="JOIN$USERID$USERID"/>
+      <viewAttribute hidden="true" id="JOIN$DELTA_ACTION$DELTA_ACTION"/>
+      <viewAttribute hidden="true" id="JOIN$DELTA_LASTUPDATETIME$DELTA_LASTUPDATETIME"/>
+      <viewAttribute hidden="true" id="JOIN$DELTA_RECORD$DELTA_RECORD"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="FinalOperation">
+      <mapping xsi:type="Calculation:AttributeMapping" target="USERID" source="USERID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="DELTA_ACTION" source="DELTA_ACTION"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$USERID$USERID" source="USERID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$DELTA_ACTION$DELTA_ACTION" source="DELTA_ACTION"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$DELTA_LASTUPDATETIME$DELTA_LASTUPDATETIME" source="DELTA_LASTUPDATETIME"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$DELTA_RECORD$DELTA_RECORD" source="DELTA_RECORD"/>
+    </input>
+    <input node="StagedRecords">
+      <mapping xsi:type="Calculation:AttributeMapping" target="EMPLOYEEID" source="EMPLOYEEID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="FIRSTNAME" source="FIRSTNAME"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="LASTNAME" source="LASTNAME"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="EMPLOYEESTATUS" source="EMPLOYEESTATUS"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="DOMAIN" source="DOMAIN"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOBCODE" source="JOBCODE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOBGROUP" source="JOBGROUP"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="GROUPBU" source="GROUPBU"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="EMPLOYEEGROUP" source="EMPLOYEEGROUP"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="EMPCUSTOMSTATUS" source="EMPCUSTOMSTATUS"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="DEPARTMENT" source="DEPARTMENT"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="DIVISION" source="DIVISION"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOBLOCATION" source="JOBLOCATION"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="MANAGERUSERID" source="MANAGERUSERID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="MANAGERNAME" source="MANAGERNAME"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$USERID$USERID" source="USERID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$DELTA_ACTION$DELTA_ACTION" source="DELTA_ACTION"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$DELTA_LASTUPDATETIME$DELTA_LASTUPDATETIME" source="DELTA_LASTUPDATETIME"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$DELTA_RECORD$DELTA_RECORD" source="DELTA_RECORD"/>
+    </input>
+    <joinAttribute name="JOIN$USERID$USERID"/>
+    <joinAttribute name="JOIN$DELTA_ACTION$DELTA_ACTION"/>
+    <joinAttribute name="JOIN$DELTA_LASTUPDATETIME$DELTA_LASTUPDATETIME"/>
+    <joinAttribute name="JOIN$DELTA_RECORD$DELTA_RECORD"/>
+  </calculationView>
+</calculationViews>
+
+<logicalModel id="FinalOps">
+  <attributes>
+    <attribute id="USERID" order="1" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="USERID"/>
+      <keyMapping columnObjectName="FinalOps" columnName="USERID"/>
+    </attribute>
+    <attribute id="DELTA_ACTION" order="2" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="DELTA_ACTION"/>
+      <keyMapping columnObjectName="FinalOps" columnName="DELTA_ACTION"/>
+    </attribute>
+    <attribute id="EMPLOYEEID" order="3" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="EMPLOYEEID"/>
+      <keyMapping columnObjectName="FinalOps" columnName="EMPLOYEEID"/>
+    </attribute>
+    <attribute id="FIRSTNAME" order="4" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="FIRSTNAME"/>
+      <keyMapping columnObjectName="FinalOps" columnName="FIRSTNAME"/>
+    </attribute>
+    <attribute id="LASTNAME" order="5" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="LASTNAME"/>
+      <keyMapping columnObjectName="FinalOps" columnName="LASTNAME"/>
+    </attribute>
+    <attribute id="EMPLOYEESTATUS" order="6" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="EMPLOYEESTATUS"/>
+      <keyMapping columnObjectName="FinalOps" columnName="EMPLOYEESTATUS"/>
+    </attribute>
+    <attribute id="DOMAIN" order="7" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="DOMAIN"/>
+      <keyMapping columnObjectName="FinalOps" columnName="DOMAIN"/>
+    </attribute>
+    <attribute id="JOBCODE" order="8" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="JOBCODE"/>
+      <keyMapping columnObjectName="FinalOps" columnName="JOBCODE"/>
+    </attribute>
+    <attribute id="JOBGROUP" order="9" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="JOBGROUP"/>
+      <keyMapping columnObjectName="FinalOps" columnName="JOBGROUP"/>
+    </attribute>
+    <attribute id="GROUPBU" order="10" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="GROUPBU"/>
+      <keyMapping columnObjectName="FinalOps" columnName="GROUPBU"/>
+    </attribute>
+    <attribute id="EMPLOYEEGROUP" order="11" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="EMPLOYEEGROUP"/>
+      <keyMapping columnObjectName="FinalOps" columnName="EMPLOYEEGROUP"/>
+    </attribute>
+    <attribute id="EMPCUSTOMSTATUS" order="12" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="EMPCUSTOMSTATUS"/>
+      <keyMapping columnObjectName="FinalOps" columnName="EMPCUSTOMSTATUS"/>
+    </attribute>
+    <attribute id="DEPARTMENT" order="13" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="DEPARTMENT"/>
+      <keyMapping columnObjectName="FinalOps" columnName="DEPARTMENT"/>
+    </attribute>
+    <attribute id="DIVISION" order="14" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="DIVISION"/>
+      <keyMapping columnObjectName="FinalOps" columnName="DIVISION"/>
+    </attribute>
+    <attribute id="JOBLOCATION" order="15" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="JOBLOCATION"/>
+      <keyMapping columnObjectName="FinalOps" columnName="JOBLOCATION"/>
+    </attribute>
+    <attribute id="MANAGERUSERID" order="16" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="MANAGERUSERID"/>
+      <keyMapping columnObjectName="FinalOps" columnName="MANAGERUSERID"/>
+    </attribute>
+    <attribute id="MANAGERNAME" order="17" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="MANAGERNAME"/>
+      <keyMapping columnObjectName="FinalOps" columnName="MANAGERNAME"/>
+    </attribute>
+  </attributes>
+  <calculatedAttributes/>
+  <baseMeasures/>
+  <calculatedMeasures/>
+  <restrictedMeasures/>
+</logicalModel>
+<layout>
+  <shapes>
+    <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+      <upperLeftCorner x="221" y="112"/>
+    
+      <rectangleSize width="160"/>
+    </shape>
+    
+  
+    <shape expanded="true" modelObjectName="FinalOperation" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="92" y="356"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="StagedRecords" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="302" y="356"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="FinalOps" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="221" y="217"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape modelObjectName="FinalOperation" modelObjectNameSpace="FinalOps" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="20" y="30"/>
+      <rectangleSize width="223"/>
+    </shape>
+    <shape modelObjectName="StagedRecords" modelObjectNameSpace="FinalOps" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="320" y="30"/>
+      <rectangleSize width="223"/>
+    </shape>
+  </shapes>
+</layout>
+</Calculation:scenario>

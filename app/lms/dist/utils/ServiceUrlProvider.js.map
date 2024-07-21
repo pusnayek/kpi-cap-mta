@@ -1,0 +1,1 @@
+{"version":3,"file":"ServiceUrlProvider.js","names":["sap","ui","define","JSONModel","User","Xls","BigXls","BigXlsCheck","TableConfig"],"sources":["ServiceUrlProvider-dbg.js"],"mappings":"AAAAA,IAAIC,GAAGC,OAAO,CACb,+BACE,SAASC,GACX,aAEA,MAAO,CAGNC,KAAM,8CAGNC,IAAK,6CAGLC,OAAQ,gDAGRC,YAAa,qDAEbC,YAAa,yBAKf,EAAG"}

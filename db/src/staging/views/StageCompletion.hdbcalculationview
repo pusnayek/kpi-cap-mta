@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="StageCompletion" applyPrivilegeType="NONE" dataCategory="DIMENSION" dimensionType="STANDARD" schemaVersion="3.0" hierarchyGeneration="SQL" outputViewType="Projection" cacheInvalidationPeriod="NONE" enforceSqlExecution="true" runWithInvokerPrivileges="true">
+<descriptions defaultDescription="StageCompletion"/>
+<localVariables/>
+<variableMappings/>
+<dataSources>
+  <DataSource id="StageLatestCompletionOperation">
+    <resourceUri>StageLatestCompletionOperation</resourceUri>
+  </DataSource>
+  <DataSource id="StageCompletionLatestOperation">
+    <resourceUri>StageCompletionLatestOperation</resourceUri>
+  </DataSource>
+</dataSources>
+<snapshotProcedures/>
+<calculationViews>
+  <calculationView xsi:type="Calculation:ProjectionView" id="LastOperation">
+    <viewAttributes>
+      <viewAttribute id="MODE"/>
+      <viewAttribute id="USERID"/>
+      <viewAttribute id="ITEMID"/>
+      <viewAttribute id="ITEMTYPE"/>
+      <viewAttribute id="OPERATION"/>
+      <viewAttribute id="DELTA_LASTUPDATETIME"/>
+      <viewAttribute id="COMPLETIONSTATUS"/>
+      <viewAttribute id="COMPLETIONDATE"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="StageLatestCompletionOperation"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:ProjectionView" id="LastCompletion" filterExpressionLanguage="COLUMN_ENGINE">
+    <viewAttributes>
+      <viewAttribute id="MODE"/>
+      <viewAttribute id="USERID"/>
+      <viewAttribute id="ITEMID"/>
+      <viewAttribute id="ITEMTYPE"/>
+      <viewAttribute id="DELTA_LASTUPDATETIME"/>
+      <viewAttribute id="DELTA_ACTION"/>
+      <viewAttribute id="COMPLETIONSTATUS"/>
+      <viewAttribute id="COMPLETIONDATE"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="StageCompletionLatestOperation"/>
+    <filter>&quot;DELTA_ACTION&quot;='D'</filter>
+  </calculationView>
+  <calculationView xsi:type="Calculation:UnionView" id="Combine">
+    <viewAttributes>
+      <viewAttribute id="MODE"/>
+      <viewAttribute id="USERID"/>
+      <viewAttribute id="ITEMID"/>
+      <viewAttribute id="ITEMTYPE"/>
+      <viewAttribute id="DELTA_ACTION"/>
+      <viewAttribute id="DELTA_LASTUPDATETIME"/>
+      <viewAttribute id="COMPLETIONSTATUS"/>
+      <viewAttribute id="COMPLETIONDATE"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="LastOperation" emptyUnionBehavior="NO_ROW">
+      <mapping xsi:type="Calculation:AttributeMapping" target="MODE" source="MODE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="USERID" source="USERID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ITEMID" source="ITEMID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ITEMTYPE" source="ITEMTYPE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="DELTA_ACTION" source="OPERATION"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="DELTA_LASTUPDATETIME" source="DELTA_LASTUPDATETIME"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMPLETIONSTATUS" source="COMPLETIONSTATUS"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMPLETIONDATE" source="COMPLETIONDATE"/>
+    </input>
+    <input node="LastCompletion" emptyUnionBehavior="NO_ROW">
+      <mapping xsi:type="Calculation:AttributeMapping" target="MODE" source="MODE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="USERID" source="USERID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ITEMID" source="ITEMID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ITEMTYPE" source="ITEMTYPE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="DELTA_ACTION" source="DELTA_ACTION"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="DELTA_LASTUPDATETIME" source="DELTA_LASTUPDATETIME"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMPLETIONSTATUS" source="COMPLETIONSTATUS"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMPLETIONDATE" source="COMPLETIONDATE"/>
+    </input>
+  </calculationView>
+  <calculationView xsi:type="Calculation:RankView" id="Latest">
+    <viewAttributes>
+      <viewAttribute id="MODE"/>
+      <viewAttribute id="USERID"/>
+      <viewAttribute id="ITEMID"/>
+      <viewAttribute id="ITEMTYPE"/>
+      <viewAttribute id="DELTA_ACTION"/>
+      <viewAttribute id="DELTA_LASTUPDATETIME"/>
+      <viewAttribute id="COMPLETIONSTATUS"/>
+      <viewAttribute id="COMPLETIONDATE"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="Combine"/>
+    <rankingFilter type="RANK" offset="0" offsetReference="FRONT" dynamicPartitionAttributes="false">
+      <partitionViewAttributeName id="USERID"/>
+      <partitionViewAttributeName id="ITEMID"/>
+      <partitionViewAttributeName id="ITEMTYPE"/>
+      <order byViewAttributeName="DELTA_LASTUPDATETIME" direction="DESC"/>
+      <rankThreshold>
+        <value>1</value>
+      </rankThreshold>
+    </rankingFilter>
+  </calculationView>
+</calculationViews>
+
+<logicalModel id="Latest">
+  <attributes>
+    <attribute id="MODE" order="1" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="MODE"/>
+      <keyMapping columnObjectName="Latest" columnName="MODE"/>
+    </attribute>
+    <attribute id="USERID" order="2" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="USERID"/>
+      <keyMapping columnObjectName="Latest" columnName="USERID"/>
+    </attribute>
+    <attribute id="ITEMID" order="3" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="ITEMID"/>
+      <keyMapping columnObjectName="Latest" columnName="ITEMID"/>
+    </attribute>
+    <attribute id="ITEMTYPE" order="4" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="ITEMTYPE"/>
+      <keyMapping columnObjectName="Latest" columnName="ITEMTYPE"/>
+    </attribute>
+    <attribute id="DELTA_ACTION" order="5" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="OPERATION"/>
+      <keyMapping columnObjectName="Latest" columnName="DELTA_ACTION"/>
+    </attribute>
+    <attribute id="DELTA_LASTUPDATETIME" order="6" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="DELTA_LASTUPDATETIME"/>
+      <keyMapping columnObjectName="Latest" columnName="DELTA_LASTUPDATETIME"/>
+    </attribute>
+    <attribute id="COMPLETIONSTATUS" order="7" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="COMPLETIONSTATUS"/>
+      <keyMapping columnObjectName="Latest" columnName="COMPLETIONSTATUS"/>
+    </attribute>
+    <attribute id="COMPLETIONDATE" order="8" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="COMPLETIONDATE"/>
+      <keyMapping columnObjectName="Latest" columnName="COMPLETIONDATE"/>
+    </attribute>
+  </attributes>
+  <calculatedAttributes/>
+  <baseMeasures/>
+  <calculatedMeasures/>
+  <restrictedMeasures/>
+</logicalModel>
+<layout>
+  <shapes>
+    <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+      <upperLeftCorner x="241" y="112"/>
+    
+      <rectangleSize width="160"/>
+    </shape>
+    
+  
+    <shape expanded="true" modelObjectName="LastOperation" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="92" y="481"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+  
+    <shape expanded="true" modelObjectName="LastCompletion" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="302" y="481"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="Combine" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="222" y="341"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="Latest" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="222" y="236"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+  </shapes>
+</layout>
+</Calculation:scenario>

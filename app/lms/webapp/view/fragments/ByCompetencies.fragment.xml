@@ -1,0 +1,66 @@
+<core:FragmentDefinition 
+	xmlns="sap.m"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:semantic="sap.m.semantic"
+	xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:l="sap.ui.layout" 	
+	xmlns:core="sap.ui.core"
+	xmlns:cust="ui.lms.controls"
+	xmlns:custdata="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+	
+
+	<l:VerticalLayout>
+		<Table
+			id="ByCompetencies"
+			growing="true"
+    		growingThreshold="100"
+    		growingScrollToLoad="false"
+			width="auto"
+			updateFinished="scroll"
+			items="{path: '/'}"
+			noDataText="{i18n>detailLineItemTableNoDataText}"
+			class="sapUiResponsiveMargin">
+			<headerToolbar>
+				<OverflowToolbar>
+					<ToolbarSpacer/>
+					<Button icon="sap-icon://excel-attachment"  text="{i18n>exportToExcel}" custdata:table="ByCompetencies" press="exportExcel" >
+						<layoutData>
+							<OverflowToolbarLayoutData priority="NeverOverflow" />
+						</layoutData>
+					</Button>
+				</OverflowToolbar>
+			</headerToolbar>
+			<columns>
+				<Column minScreenWidth="Tablet" demandPopin="true">
+					<Text text="{i18n>competency}"/>
+				</Column>
+				<Column minScreenWidth="Tablet" demandPopin="true">
+					<Text text="{i18n>area}"/>
+				</Column>
+				<Column minScreenWidth="Tablet" demandPopin="true" hAlign="Right">
+					<Text text="{i18n>numOfEmployees}"/>
+				</Column>
+				<Column minScreenWidth="Tablet" demandPopin="true" hAlign="Right">
+					<Text text="{i18n>numOfQualifiedEmployees}"/>
+				</Column>
+				<Column minScreenWidth="Tablet" demandPopin="true"  hAlign="Right">
+					<Text text="{i18n>qualificationPercentage}"/>
+				</Column>
+			</columns>
+			<items>
+				<ColumnListItem>
+					<cells>
+						<ObjectIdentifier titleActive="true" titlePress="handleCompetencyPopover"
+							title="{COMPETENCY_ID}"
+							text="{COMPETENCY_NAME}"/>
+						<Text text="{COMPETENCY_DESCRIPTION}"/>	
+						<Text text="{NumberOfEmployees}"/>	
+						<Text text="{NumberOfQualifiedEmployees}"/>	
+						<Text text="{QaulificationPercentage}"/>	
+					</cells>
+				</ColumnListItem>
+			</items>
+		</Table>
+	</l:VerticalLayout>
+
+</core:FragmentDefinition>

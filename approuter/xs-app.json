@@ -1,20 +1,35 @@
 {
-    "authenticationMethod": "route",
-    "logout": {
-        "logoutEndpoint": "/app-logout"
+  "authenticationMethod": "route",
+  "logout": {
+    "logoutEndpoint": "/app-logout",
+    "logoutMethod": "GET"
+  },
+  "routes": [
+    {
+      "source": "^/user-api(.*)",
+      "target": "$1",
+      "service": "sap-approuter-userapi"
     },
-    "routes": [
-        {
-            "source": "^/user-api(.*)",
-            "target": "$1",
-            "service": "sap-approuter-userapi"
-        },
-        {
-            "source": "^/(.*)$",
-            "target": "$1",
-            "destination": "srv-api",
-            "csrfProtection": true,
-            "authenticationType": "xsuaa"
-        }
-    ]
+    {
+      "source": "^/excel/(.*)$",
+      "target": "/excel/$1",
+      "destination": "py-utils",
+      "authenticationType": "none",
+      "csrfProtection": false
+    },
+    {
+      "source": "^/(.*)$",
+      "target": "$1",
+      "destination": "srv-api",
+      "csrfProtection": true,
+      "authenticationType": "xsuaa"
+    },
+    {
+        "source": "^(.*)$",
+        "target": "$1",
+        "service": "html5-apps-repo-rt",
+        "authenticationType": "xsuaa"
+    }
+  ],
+  "welcomeFile": "/uilms/index.html"
 }

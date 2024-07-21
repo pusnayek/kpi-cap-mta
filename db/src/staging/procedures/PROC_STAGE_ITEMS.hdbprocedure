@@ -1,0 +1,71 @@
+PROCEDURE PROC_STAGE_ITEMS( )
+   LANGUAGE SQLSCRIPT
+   SQL SECURITY INVOKER
+   --DEFAULT SCHEMA <default_schema_name>
+   -- READS SQL DATA 
+   AS
+BEGIN
+
+
+    /**
+    * Set processing status to 'P' - in process for all records; 
+    * this will avoid conflicts with records which are inserted after this processing starts and can be deleted safely
+    */
+    UPDATE ET_ITEM SET "PROCESSINGSTATUS" = 'P';
+    COMMIT;
+
+    /**
+    * Set the operation flag to M incase it is U - both are modification operations
+    **/
+    UPDATE ET_ITEM
+    SET   "DELTA_ACTION" = 'M'
+    WHERE "DELTA_ACTION" = 'U' AND "PROCESSINGSTATUS" = 'P';
+    COMMIT;
+
+
+    /**
+    * Transfer records with latest timestamp timestamp and distinct Action value with processing status P
+    * to stage table
+    */
+    DELETE FROM ST_ITEM;
+
+    INSERT INTO ST_ITEM (
+    	"ITEMID",
+    	"DELTA_ACTION",
+    	"DELTA_LASTUPDATETIME",
+    	"DELTA_RECORD",
+    	"ITEMTYPE",
+    	"ITEMTITLE",
+    	"COMPETENCY_ID",
+    	"COMPETENCY_NAME",
+    	"COMPETENCY_AREA",
+    	"COMPETENCY_DESCRIPTION",
+    	"COMPETENCY_COMPETENCYTYPE",
+    	"COMPETENCY_GRANTSCERTIFICATE",
+    	"RETAININGNUMER",
+    	"PROCESSINGSTATUS"
+    ) SELECT
+    	 "ITEMID",
+    	 "DELTA_ACTION" AS "DELTA_ACTION",
+    	 "DELTA_LASTUPDATETIME" AS "DELTA_LASTUPDATETIME",
+    	 ROW_NUMBER() OVER (PARTITION BY "ITEMID", "ITEMTYPE", "DELTA_ACTION" ORDER BY "DELTA_ACTION" DESC) AS  "DELTA_RECORD",
+    	 "ITEMTYPE",
+    	 "ITEMTITLE",
+    	 "COMPETENCY_ID" AS "COMPETENCY_ID",
+    	 "COMPETENCY_NAME" AS "COMPETENCY_NAME",
+    	 "COMPETENCY_AREA" AS "COMPETENCY_AREA",
+    	 "COMPETENCY_DESCRIPTION" AS "COMPETENCY_DESCRIPTION",
+    	 "COMPETENCY_COMPETENCYTYPE" AS "COMPETENCY_COMPETENCYTYPE",
+    	 "COMPETENCY_GRANTSCERTIFICATE" AS "COMPETENCY_GRANTSCERTIFICATE",
+    	 "RETAININGNUMER", 
+         '' AS "PROCESSINGSTATUS"        	 
+    FROM "StageItemLatestOperation"; 
+    COMMIT;
+
+    /**
+    * Delete all records with status 'P' from extraction table
+    */
+    DELETE FROM ET_ITEM WHERE "PROCESSINGSTATUS" = 'P';
+    COMMIT;
+    
+END

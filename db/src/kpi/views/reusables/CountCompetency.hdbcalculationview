@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="CountCompetency" applyPrivilegeType="NONE" dataCategory="CUBE" schemaVersion="3.0" hierarchyGeneration="SQL" outputViewType="Aggregation" cacheInvalidationPeriod="NONE" enforceSqlExecution="true">
+<descriptions defaultDescription="CountCompetency"/>
+<localVariables/>
+<variableMappings/>
+<dataSources>
+  <DataSource id="ItemCompetency">
+    <resourceUri>ItemCompetency</resourceUri>
+  </DataSource>
+</dataSources>
+<snapshotProcedures/>
+<calculationViews>
+  <calculationView xsi:type="Calculation:AggregationView" id="Competencies">
+    <viewAttributes>
+      <viewAttribute id="ACTING_USERID"/>
+      <viewAttribute id="USERID"/>
+      <viewAttribute id="ACTOR"/>
+      <viewAttribute id="COMPETENCY_ID"/>
+      <viewAttribute id="COMPETENCY_TYPE"/>
+      <viewAttribute id="QUALIFIED"/>
+      <viewAttribute id="COMPLETIONDATE"/>
+      <viewAttribute id="COMPETENCY_NAME"/>
+      <viewAttribute id="COMPETENCY_AREA"/>
+      <viewAttribute id="COMPETENCY_DESCRIPTION"/>
+      <viewAttribute id="COMPETENCY_GRANTSCERTIFICATE"/>
+      <viewAttribute id="RETAININGNUMER"/>
+    </viewAttributes>
+    <calculatedViewAttributes>
+      <calculatedViewAttribute id="PROFESSIONAL_COMPETENCYID" datatype="VARCHAR" length="50" expressionLanguage="COLUMN_ENGINE">
+        <formula>if(&quot;COMPETENCY_TYPE&quot;='Prof Competency',&quot;COMPETENCY_ID&quot;,string(null))</formula>
+      </calculatedViewAttribute>
+      <calculatedViewAttribute id="REGULATION_COMPETENCYID" datatype="VARCHAR" length="50" expressionLanguage="COLUMN_ENGINE">
+        <formula>if(&quot;COMPETENCY_TYPE&quot;='Regulation',&quot;COMPETENCY_ID&quot;,string(null))</formula>
+      </calculatedViewAttribute>
+      <calculatedViewAttribute id="TOTAL_QUALIFIED_COMPETENCYID" datatype="VARCHAR" length="50" expressionLanguage="COLUMN_ENGINE">
+        <formula>if(&quot;QUALIFIED&quot;=1,&quot;COMPETENCY_ID&quot;,string(null))</formula>
+      </calculatedViewAttribute>
+      <calculatedViewAttribute id="PROFESSIONAL_QUALIFIED_COMPETENCYID" datatype="VARCHAR" length="50" expressionLanguage="COLUMN_ENGINE">
+        <formula>if(&quot;COMPETENCY_TYPE&quot;='Prof Competency' and &quot;QUALIFIED&quot;=1,&quot;COMPETENCY_ID&quot;,string(null))</formula>
+      </calculatedViewAttribute>
+      <calculatedViewAttribute id="REGULATION_QUALIFIED_COMPETENCYID" datatype="VARCHAR" length="50" expressionLanguage="COLUMN_ENGINE">
+        <formula>if(&quot;COMPETENCY_TYPE&quot;='Regulation' and &quot;QUALIFIED&quot;=1,&quot;COMPETENCY_ID&quot;,string(null))</formula>
+      </calculatedViewAttribute>
+    </calculatedViewAttributes>
+    <restrictedViewAttributes/>
+    <input node="ItemCompetency">
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMPETENCY_TYPE" source="COMPETENCY_COMPETENCYTYPE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMPLETIONDATE" source="LASTACCUMULATIONDATE"/>
+    </input>
+  </calculationView>
+</calculationViews>
+
+<logicalModel id="Competencies">
+  <attributes>
+    <attribute id="ACTING_USERID" order="1" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="ACTING_USERID"/>
+      <keyMapping columnObjectName="Competencies" columnName="ACTING_USERID"/>
+    </attribute>
+    <attribute id="USERID" order="2" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="USERID"/>
+      <keyMapping columnObjectName="Competencies" columnName="USERID"/>
+    </attribute>
+    <attribute id="ACTOR" order="3" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="ACTOR"/>
+      <keyMapping columnObjectName="Competencies" columnName="ACTOR"/>
+    </attribute>
+    <attribute id="COMPETENCY_ID" order="4" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="COMPETENCY_ID"/>
+      <keyMapping columnObjectName="Competencies" columnName="COMPETENCY_ID"/>
+    </attribute>
+    <attribute id="COMPETENCY_NAME" order="5" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="COMPETENCY_NAME"/>
+      <keyMapping columnObjectName="Competencies" columnName="COMPETENCY_NAME"/>
+    </attribute>
+    <attribute id="COMPETENCY_AREA" order="6" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="COMPETENCY_AREA"/>
+      <keyMapping columnObjectName="Competencies" columnName="COMPETENCY_AREA"/>
+    </attribute>
+    <attribute id="COMPETENCY_TYPE" order="7" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="COMPETENCY_TYPE"/>
+      <keyMapping columnObjectName="Competencies" columnName="COMPETENCY_TYPE"/>
+    </attribute>
+    <attribute id="COMPETENCY_DESCRIPTION" order="8" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="COMPETENCY_DESCRIPTION"/>
+      <keyMapping columnObjectName="Competencies" columnName="COMPETENCY_DESCRIPTION"/>
+    </attribute>
+    <attribute id="COMPETENCY_GRANTSCERTIFICATE" order="9" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="COMPETENCY_GRANTSCERTIFICATE"/>
+      <keyMapping columnObjectName="Competencies" columnName="COMPETENCY_GRANTSCERTIFICATE"/>
+    </attribute>
+    <attribute id="RETAININGNUMER" order="10" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="RETAININGNUMER"/>
+      <keyMapping columnObjectName="Competencies" columnName="RETAININGNUMER"/>
+    </attribute>
+    <attribute id="QUALIFIED" order="11" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="QUALIFIED"/>
+      <keyMapping columnObjectName="Competencies" columnName="QUALIFIED"/>
+    </attribute>
+    <attribute id="COMPLETIONDATE" order="12" semanticType="empty" displayAttribute="false" attributeHierarchyActive="false" hidden="true">
+      <descriptions defaultDescription="COMPLETIONDATE"/>
+      <keyMapping columnObjectName="Competencies" columnName="COMPLETIONDATE"/>
+    </attribute>
+    <attribute id="PROFESSIONAL_COMPETENCYID" hidden="true" order="13" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="PROFESSIONAL_COMPETENCYID"/>
+      <keyMapping columnObjectName="Competencies" columnName="PROFESSIONAL_COMPETENCYID"/>
+    </attribute>
+    <attribute id="REGULATION_COMPETENCYID" hidden="true" order="14" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="REGULATION_COMPETENCYID"/>
+      <keyMapping columnObjectName="Competencies" columnName="REGULATION_COMPETENCYID"/>
+    </attribute>
+    <attribute id="TOTAL_QUALIFIED_COMPETENCYID" hidden="true" order="15" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="TOTAL_QUALIFIED_COMPETENCYID"/>
+      <keyMapping columnObjectName="Competencies" columnName="TOTAL_QUALIFIED_COMPETENCYID"/>
+    </attribute>
+    <attribute id="PROFESSIONAL_QUALIFIED_COMPETENCYID" hidden="true" order="16" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="PROFESSIONAL_QUALIFIED_COMPETENCYID"/>
+      <keyMapping columnObjectName="Competencies" columnName="PROFESSIONAL_QUALIFIED_COMPETENCYID"/>
+    </attribute>
+    <attribute id="REGULATION_QUALIFIED_COMPETENCYID" hidden="true" order="17" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="REGULATION_QUALIFIED_COMPETENCYID"/>
+      <keyMapping columnObjectName="Competencies" columnName="REGULATION_QUALIFIED_COMPETENCYID"/>
+    </attribute>
+  </attributes>
+  <calculatedAttributes/>
+  <baseMeasures/>
+  <calculatedMeasures>
+    <measure id="PROFESSIONAL_QUALIFIED_COMPETENCY" order="18" aggregationType="sum" measureType="simple" calculatedMeasureType="counter" datatype="BIGINT" length="" restrictionExpressionLanguage="SQL">
+      <descriptions defaultDescription="PROFESSIONAL_QUALIFIED_COMPETENCY"/>
+      <exceptionAggregation>
+        <attribute attributeName="PROFESSIONAL_QUALIFIED_COMPETENCYID"/>
+      </exceptionAggregation>
+      <formula>1</formula>
+      
+      <exceptionAggregationMetadata/>
+    </measure>
+    <measure id="PROFESSIONAL_COMPETENCY" order="19" aggregationType="sum" measureType="simple" calculatedMeasureType="counter" datatype="BIGINT" length="" restrictionExpressionLanguage="SQL">
+      <descriptions defaultDescription="PROFESSIONAL_COMPETENCY"/>
+      <exceptionAggregation>
+        <attribute attributeName="PROFESSIONAL_COMPETENCYID"/>
+      </exceptionAggregation>
+      <formula>1</formula>
+      
+      <exceptionAggregationMetadata/>
+    </measure>
+    <measure id="REGULATION_QUALIFIED_COMPETENCY" order="20" aggregationType="sum" measureType="simple" calculatedMeasureType="counter" datatype="BIGINT" length="" restrictionExpressionLanguage="SQL">
+      <descriptions defaultDescription="REGULATION_QUALIFIED_COMPETENCY"/>
+      <exceptionAggregation>
+        <attribute attributeName="REGULATION_QUALIFIED_COMPETENCYID"/>
+      </exceptionAggregation>
+      <formula>1</formula>
+      
+      <exceptionAggregationMetadata/>
+    </measure>
+    <measure id="REGULATION_COMPETENCY" order="21" aggregationType="sum" measureType="simple" calculatedMeasureType="counter" datatype="BIGINT" length="" restrictionExpressionLanguage="SQL">
+      <descriptions defaultDescription="REGULATION_COMPETENCY"/>
+      <exceptionAggregation>
+        <attribute attributeName="REGULATION_COMPETENCYID"/>
+      </exceptionAggregation>
+      <formula>1</formula>
+      
+      <exceptionAggregationMetadata/>
+    </measure>
+    <measure id="TOTAL_QUALIFIED_COMPETENCY" order="22" aggregationType="sum" measureType="simple" calculatedMeasureType="counter" datatype="BIGINT" length="" restrictionExpressionLanguage="SQL">
+      <descriptions defaultDescription="TOTAL_QUALIFIED_COMPETENCY"/>
+      <exceptionAggregation>
+        <attribute attributeName="TOTAL_QUALIFIED_COMPETENCYID"/>
+      </exceptionAggregation>
+      <formula>1</formula>
+      
+      <exceptionAggregationMetadata/>
+    </measure>
+    <measure id="TOTAL_COMPETENCY" order="23" aggregationType="sum" measureType="simple" calculatedMeasureType="counter" datatype="BIGINT" length="" restrictionExpressionLanguage="SQL">
+      <descriptions defaultDescription="TOTAL_COMPETENCY"/>
+      <exceptionAggregation>
+        <attribute attributeName="COMPETENCY_ID"/>
+      </exceptionAggregation>
+      <formula>1</formula>
+      
+      <exceptionAggregationMetadata/>
+    </measure>
+  </calculatedMeasures>
+  <restrictedMeasures/>
+  <localDimensions/>
+</logicalModel>
+<layout>
+  <shapes>
+    <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+      <upperLeftCorner x="92" y="112"/>
+    
+      <rectangleSize width="160"/>
+    </shape>
+    
+  
+    <shape expanded="true" modelObjectName="Competencies" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="92" y="217"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+  </shapes>
+</layout>
+</Calculation:scenario>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="AdminAccessDomains" applyPrivilegeType="NONE" dataCategory="DIMENSION" dimensionType="STANDARD" schemaVersion="3.0" hierarchyGeneration="SQL" outputViewType="Projection" cacheInvalidationPeriod="NONE" enforceSqlExecution="true" runWithInvokerPrivileges="true">
+<descriptions defaultDescription="AdminAccessDomains"/>
+<localVariables/>
+<variableMappings/>
+<dataSources>
+  <DataSource id="FT_TRAININGADMINACCESS">
+    <resourceUri>FT_TRAININGADMINACCESS</resourceUri>
+  </DataSource>
+</dataSources>
+<snapshotProcedures/>
+<calculationViews>
+  <calculationView xsi:type="Calculation:ProjectionView" id="AdminAccess">
+    <viewAttributes>
+      <viewAttribute id="USERID"/>
+      <viewAttribute id="DOMAIN"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="FT_TRAININGADMINACCESS"/>
+  </calculationView>
+</calculationViews>
+
+<logicalModel id="AdminAccess">
+  <attributes>
+    <attribute id="USERID" order="1" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="USERID"/>
+      <keyMapping columnObjectName="AdminAccess" columnName="USERID"/>
+    </attribute>
+    <attribute id="DOMAIN" order="2" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="DOMAIN"/>
+      <keyMapping columnObjectName="AdminAccess" columnName="DOMAIN"/>
+    </attribute>
+  </attributes>
+  <calculatedAttributes/>
+  <baseMeasures/>
+  <calculatedMeasures/>
+  <restrictedMeasures/>
+</logicalModel>
+<layout>
+  <shapes>
+    <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+      <upperLeftCorner x="92" y="112"/>
+    
+      <rectangleSize width="160"/>
+    </shape>
+    
+  
+    <shape expanded="true" modelObjectName="AdminAccess" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="92" y="217"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+  </shapes>
+</layout>
+</Calculation:scenario>

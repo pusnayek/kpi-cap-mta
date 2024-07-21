@@ -103,3 +103,7 @@ entity ComptencyDeltas {
 
         ProcessingStatus   : Structures.ProcessingStatus;
 };  
+
+entity TileDeltas {
+    key  UserID            : Structures.UserID;
+};  

@@ -1,0 +1,162 @@
+PROCEDURE UPDATE_COMPETENCY_DELTAS( )
+   LANGUAGE SQLSCRIPT
+   SQL SECURITY INVOKER
+   --DEFAULT SCHEMA <default_schema_name>
+   -- READS SQL DATA 
+   AS
+BEGIN
+
+    DECLARE EXIT HANDLER FOR sqlexception
+        INSERT INTO XT_ReplicationTrace
+         VALUES(CURRENT_TIMESTAMP, 'UpdateCompetencyDeltas', ::SQL_ERROR_CODE, ::SQL_ERROR_MESSAGE);
+
+    /**
+    * Set processing status to 'P' - in process for all records; 
+    * this will avoid conflicts with records which are inserted after this processing starts and can be deleted safely
+    */
+    UPDATE ST_COMPTENCYDELTAS SET "PROCESSINGSTATUS" = 'P';
+    COMMIT;
+
+    /**
+    * Transfer records with latest timestamp timestamp and distinct Action value with processing status P
+    * to stage table
+    */
+    DELETE FROM FT_COMPETENCIES
+    WHERE ("USERID", "COMPETENCY_ID") IN (
+        SELECT "USERID", "COMPETENCYID" AS "COMPETENCY_ID"
+        FROM ST_COMPTENCYDELTAS
+        WHERE "ACTION" = 'D'
+    );
+    COMMIT;
+    
+    /**
+    * Delete rows with user and competencyId combination and then insert user competency data
+    */
+    lt_competencyDelta = 
+    SELECT 
+	 "USERID",
+	 "ITEMID",
+	 "ITEMTYPE",
+	 "ITEMTITLE",
+	 "COMPETENCY_ID" AS "COMPETENCY_ID",
+	 "COMPETENCY_NAME" AS "COMPETENCY_NAME",
+	 "COMPETENCY_AREA" AS "COMPETENCY_AREA",
+	 "COMPETENCY_DESCRIPTION" AS "COMPETENCY_DESCRIPTION",
+	 "COMPETENCY_COMPETENCYTYPE" AS "COMPETENCY_COMPETENCYTYPE",
+	 "COMPETENCY_GRANTSCERTIFICATE" AS "COMPETENCY_GRANTSCERTIFICATE",
+	 "RETAININGNUMER",
+	 "COMPLETIONSTATUS",
+	 "COMPLETIONDATE",
+	 "ASSIGNMENTDATE",
+	 "LAST_ASSIGNED_ITEMID",
+	 "LAST_ASSIGNED_ITEMTYPE",
+	 "LAST_ASSIGNED_ITEMTITLE",
+	 "LATEST_ITEM_ASSIGNMENTDATE",
+	 "LAST_ITEM_ASSIGNED_BY",
+	 "HAS_CURRENT_ASSIGNMENT",
+	 "HAS_EXPIRY",
+	 "EXPIRATION_DATE" 
+    FROM "DeltaUserCompetency";
+
+
+    
+    DELETE FROM "FT_COMPETENCIES"
+    WHERE ("USERID") IN (
+        SELECT "USERID"
+        FROM :lt_competencyDelta
+    );
+    COMMIT; 
+
+    
+    UPSERT "FT_COMPETENCIES" (
+        "USERID",
+        "ITEMID",
+        "ITEMTYPE",
+        "ITEMTITLE",
+        "COMPETENCY_ID",
+        "COMPETENCY_NAME",
+        "COMPETENCY_AREA",
+        "COMPETENCY_DESCRIPTION",
+        "COMPETENCY_COMPETENCYTYPE",
+        "COMPETENCY_GRANTSCERTIFICATE",
+        "RETAININGNUMER",
+        "COMPLETIONSTATUS",
+        "COMPLETIONDATE",
+        "ASSIGNMENTDATE",
+        "LASTASSIGNEDITEMID",
+        "LASTASSIGNEDITEMTYPE",
+        "LASTASSIGNEDITEMTITLE",
+        "LATESTITEMASSIGNMENTDATE",
+        "LASTITEMASSIGNEDBY",
+        "HASCURRENTASSIGNMENT",
+        "HASEXPIRY",
+        "EXPIRATIONDATE" 
+   )
+   SELECT         
+		"USERID",
+        "ITEMID",
+        "ITEMTYPE",
+        "ITEMTITLE",
+        "COMPETENCY_ID",
+        "COMPETENCY_NAME",
+        "COMPETENCY_AREA",
+        "COMPETENCY_DESCRIPTION",
+        "COMPETENCY_COMPETENCYTYPE",
+        "COMPETENCY_GRANTSCERTIFICATE",
+        "RETAININGNUMER",
+        "COMPLETIONSTATUS",
+        "COMPLETIONDATE",
+        "ASSIGNMENTDATE",
+        "LASTASSIGNEDITEMID",
+        "LASTASSIGNEDITEMTYPE",
+        "LASTASSIGNEDITEMTITLE",
+        "LATESTITEMASSIGNMENTDATE",
+        "LASTITEMASSIGNEDBY",
+        "HASCURRENTASSIGNMENT",
+        "HASEXPIRY",
+        "EXPIRATIONDATE"
+	FROM (
+        SELECT
+            "USERID",
+            "ITEMID",
+            "ITEMTYPE",
+            "ITEMTITLE",
+            "COMPETENCY_ID",
+            "COMPETENCY_NAME",
+            "COMPETENCY_AREA",
+            "COMPETENCY_DESCRIPTION",
+            "COMPETENCY_COMPETENCYTYPE",
+            "COMPETENCY_GRANTSCERTIFICATE",
+            "RETAININGNUMER",
+            "COMPLETIONSTATUS",
+            "COMPLETIONDATE",
+            "ASSIGNMENTDATE",
+            "LAST_ASSIGNED_ITEMID" AS "LASTASSIGNEDITEMID",
+            "LAST_ASSIGNED_ITEMTYPE" AS "LASTASSIGNEDITEMTYPE",
+            "LAST_ASSIGNED_ITEMTITLE" AS "LASTASSIGNEDITEMTITLE",
+            "LATEST_ITEM_ASSIGNMENTDATE" AS "LATESTITEMASSIGNMENTDATE",
+            "LAST_ITEM_ASSIGNED_BY" AS "LASTITEMASSIGNEDBY",
+            "HAS_CURRENT_ASSIGNMENT" AS "HASCURRENTASSIGNMENT",
+            "HAS_EXPIRY" AS "HASEXPIRY",
+            "EXPIRATION_DATE" AS "EXPIRATIONDATE",
+            ROW_NUMBER() OVER (PARTITION BY "USERID", "ITEMID", "ITEMTYPE" ORDER BY "COMPETENCY_ID") row_id
+        FROM :lt_competencyDelta
+    ) WHERE row_id = 1;
+    COMMIT;
+    
+    /**
+    * End inserting data in competency DB
+    */
+    UPSERT ST_TILEDELTAS (
+        "USERID"
+    )
+    SELECT DISTINCT "USERID" FROM ST_COMPTENCYDELTAS WHERE "PROCESSINGSTATUS" = 'P';
+    COMMIT;
+
+    /**
+    * Delete all records with status 'P' from extraction table
+    */
+    DELETE FROM ST_COMPTENCYDELTAS WHERE "PROCESSINGSTATUS" = 'P';
+    COMMIT;
+
+END

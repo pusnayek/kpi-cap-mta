@@ -6,24 +6,59 @@
   "license": "UNLICENSED",
   "private": true,
   "dependencies": {
-    "@sap/cds": "^6",
+    "@sap-cloud-sdk/connectivity": "^3.8.1",
+    "@sap-cloud-sdk/core": "^1.54.2",
+    "@sap-cloud-sdk/http-client": "^3.8.1",
+    "@sap-cloud-sdk/resilience": "^3.8.1",
+    "@sap/cds": "^6.8.2",
+    "@sap/cds-odata-v2-adapter-proxy": "^1.9.21",
+    "@sap/xsenv": "^3",
+    "@sap/xssec": "^3",
     "express": "^4",
     "hdb": "^0.19.0",
-    "@sap/xssec": "^3",
-    "@sap/xsenv": "^3",
     "passport": "^0"
   },
   "devDependencies": {
+    "@sap/approuter": "^14.0.0",
     "@sap/hdi-deploy": "^4.6.1",
-    "@sap/approuter": "^14.0.0"
+    "cds-plugin-ui5": "^0.1.4",
+    "rimraf": "^3.0.2"
   },
   "scripts": {
-    "start": "cds-serve"
+    "start": "cds-serve",
+    "watch-lms": "cds watch --open ui.lms/index.html?sap-ui-xx-viewCache=false --livereload false",
+    "undeploy": "cf undeploy kpi --delete-services --delete-service-keys --delete-service-brokers",
+    "build": "rimraf resources mta_archives && mbt build --mtar archive",
+    "deploy": "cf deploy mta_archives/kpi_1.0.0.mtar --retries 1",
+    "watch-hybrid": "cds watch --profile hybrid",
+    "start-approuter": "cds bind --exec -- npm start --prefix approuter"
   },
   "cds": {
+    "query": {
+      "limit": {
+        "default": 50000,
+        "max": 50000
+      }
+    },
     "requires": {
       "db": "hana-cloud",
-      "auth": "xsuaa"
+      "auth": "xsuaa",
+      "[hybrid]": {
+        "auth": "xsuaa"
+      },
+      "PLTUserManagement": {
+        "kind": "odata-v2",
+        "model": "srv/external/PLTUserManagement",
+        "csrf": true,
+        "csrfInBatch": true,
+        "credentials": {
+          "destination": "sap_hcmcloud_core_odata"
+        }
+      },
+      "destinations": true
     }
-  }
+  },
+  "workspaces": [
+    "app/*"
+  ]
 }

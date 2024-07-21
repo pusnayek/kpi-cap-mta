@@ -1,0 +1,54 @@
+PROCEDURE "PROC_DELTA_PULL_ITEMS"( )
+   LANGUAGE SQLSCRIPT
+   SQL SECURITY INVOKER
+   --DEFAULT SCHEMA <default_schema_name>
+   --READS SQL DATA 
+   AS
+BEGIN
+
+    DECLARE ReadyToReplicate    INTEGER;
+    DECLARE DeltaPullStartTime  TIMESTAMP;
+    DECLARE DeltaPullEndTime    TIMESTAMP;
+
+    DECLARE EXIT HANDLER FOR sqlexception
+        INSERT INTO XT_ReplicationTrace
+            VALUES(CURRENT_TIMESTAMP, 'DeltaPullItems', ::SQL_ERROR_CODE, ::SQL_ERROR_MESSAGE);
+
+    /**Start of process**/
+    DeltaPullStartTime = NOW();
+    
+    -- SELECT MIN("READY_TO_REPLICATE") INTO ReadyToReplicate
+    --     FROM "StagingReadiness"
+    --     WHERE ("EXTRACTION_CATEGORY" = 'Item');
+                
+    -- IF ReadyToReplicate > 0 THEN
+        /**Stage**/
+        CALL "PROC_STAGE_ITEMS"();
+        /**Compress and put in final table **/
+        CALL "PROC_COMPRESS_ITEMS"();
+
+        /** Update timestamp **/
+        UPDATE CT_ExtractionStatus
+            SET "DELTAPULLTIME" = CURRENT_TIMESTAMP
+            WHERE ("EXTRACTIONTYPE" = 'Item');
+        COMMIT;
+    -- END IF;
+
+    /**End of process**/
+    DeltaPullEndTime = NOW();
+    /**Log history**/
+    INSERT INTO CT_EXTRACTIONSTATUSHISTORY
+    ("EXTRACTIONTYPE", "DELTAPULLSTART", "DELTAPULLEND", "REPLICATIONSTART", "REPLICATIONEND", "DELTAPULLTIME", "REPLICATED", "RECORDS")
+    SELECT 
+        Extraction."EXTRACTIONTYPE",
+        DeltaPullStartTime AS "DELTAPULLSTART",
+        DeltaPullEndTime AS "DELTAPULLEND",
+        Extraction."REPLICATIONSTART",
+        Extraction."REPLICATIONEND",
+        Extraction."DELTAPULLTIME",
+        CASE WHEN ReadyToReplicate > 0 THEN 1 ELSE 0 END AS "REPLICATED",
+        Extraction."RECORDS"
+    FROM CT_EXTRACTIONSTATUS AS Extraction
+    WHERE "EXTRACTIONTYPE" = 'Item';
+    COMMIT;
+END

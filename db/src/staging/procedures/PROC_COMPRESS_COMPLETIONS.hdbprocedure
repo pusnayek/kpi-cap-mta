@@ -1,0 +1,58 @@
+PROCEDURE PROC_COMPRESS_COMPLETIONS( )
+LANGUAGE SQLSCRIPT
+SQL SECURITY INVOKER
+--DEFAULT SCHEMA <default_schema_name>
+-- READS SQL DATA 
+AS
+BEGIN
+
+    /**
+    * Set processing status to 'P' - in process for all records; 
+    * this will avoid conflicts with records which are inserted after this processing starts and can be deleted safely
+    */
+    UPDATE ST_COMPLETION SET "PROCESSINGSTATUS" = 'P';
+    COMMIT;
+
+    /**
+    * Update delta queue to update competency cache
+    **/
+    CALL "UPDATE_COMPETENCY_DELTA_LOG" ( );
+
+    /**
+    * Transfer records with latest timestamp timestamp and distinct Action value with processing status P
+    * to stage table
+    */
+    DELETE FROM FT_COMPLETION
+    WHERE ("USERID", "ITEMID","ITEMTYPE") IN (
+        SELECT "USERID", "ITEMID","ITEMTYPE" FROM "CompressCompletionOperations" WHERE "DELTA_ACTION" = 'D'
+    );
+    
+    UPSERT FT_COMPLETION (
+	 "USERID",
+	 "ITEMID",
+	 "ITEMTYPE",
+	 "COMPLETIONSTATUS",
+	 "COMPLETIONDATE"
+    )
+    SELECT 
+	 "USERID",
+	 "ITEMID",
+	 "ITEMTYPE",
+	 "COMPLETIONSTATUS",
+	 "COMPLETIONDATE"
+    FROM "CompressCompletionOperations" 
+    WHERE "DELTA_ACTION" != 'D';
+    COMMIT;
+
+    /**
+    * Delete all records with status 'P' from extraction table
+    */
+    DELETE FROM ST_COMPLETION WHERE "PROCESSINGSTATUS" = 'P';
+    COMMIT;
+
+    /**
+    * Update competency DB
+    */
+    CALL "UPDATE_COMPETENCY_DELTAS" ( );
+
+END

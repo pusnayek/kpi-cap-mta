@@ -1,0 +1,72 @@
+<mvc:View
+	controllerName="ui.lms.controller.Worklist"
+	xmlns="sap.m"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:semantic="sap.m.semantic"
+	xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:l="sap.ui.layout" 	
+	xmlns:core="sap.ui.core"
+	xmlns:cust="ui.lms.controls"
+	xmlns:custdata="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+
+	<semantic:SemanticPage
+		id="page" showFooter="false">
+
+		<semantic:content>
+			<VBox>
+				<core:Fragment fragmentName="ui.lms.view.fragments.Filters" type="XML"> </core:Fragment>
+
+				<l:VerticalLayout width="100%">
+					<l:Grid class="sapUiSmallMarginTop"  hSpacing="20" defaultSpan="XL4 L4" width="100%">
+						<l:content>
+							<cust:Donut class="genrCompetency" text="{graphModel>/general/text}" value="{graphModel>/general/value}" title="{graphModel>/general/title}"
+								innerRadius="30" outerRadius="50"/>
+							<cust:Donut class="profCompetency" text="{graphModel>/professional/text}" value="{graphModel>/professional/value}" title="{graphModel>/professional/title}"
+								innerRadius="40" outerRadius="50"/>
+							<cust:Donut class="reguCompetency" text="{graphModel>/regulation/text}" value="{graphModel>/regulation/value}" title="{graphModel>/regulation/title}"
+								innerRadius="40" outerRadius="50"/>
+						</l:content>								
+					</l:Grid>
+				</l:VerticalLayout>
+
+				<IconTabBar
+					id="idIconTabBar" expanded="{device>/isNoPhone}" class="sapUiResponsiveContentPadding" select="selectTable">
+					<items>
+						<IconTabFilter custdata:loaded="true" text="{i18n>competencyStatuses}" visible="{tableVisibilityModel>/CompetencyStatus}">
+							<core:Fragment fragmentName="ui.lms.view.fragments.CompetencyStatus" type="XML"> </core:Fragment>
+						</IconTabFilter>
+						<IconTabFilter custdata:frag="CompetencyGaps" custdata:loaded="false" text="{i18n>competencyGaps}" visible="{tableVisibilityModel>/CompetencyGaps}">
+							<VBox  id="tabCompetencyGaps"></VBox>
+							<!--<core:Fragment fragmentName="ui.lms.view.fragments.CompetencyGaps" type="XML"> </core:Fragment>-->
+						</IconTabFilter>
+						<IconTabFilter custdata:frag="ByCompetencies" custdata:loaded="false" text="{i18n>byCompetency}" visible="{tableVisibilityModel>/ByCompetencies}">
+							<VBox  id="tabByCompetencies"></VBox>
+							<!--<core:Fragment fragmentName="ui.lms.view.fragments.ByCompetencies" type="XML"> </core:Fragment>-->
+						</IconTabFilter>
+						<IconTabFilter custdata:frag="ByEmployees" custdata:loaded="false" text="{i18n>byEmployees}" visible="{tableVisibilityModel>/ByEmployees}">
+							<VBox  id="tabByEmployees"></VBox>
+							<!--<core:Fragment fragmentName="ui.lms.view.fragments.ByEmployees" type="XML"> </core:Fragment>-->
+						</IconTabFilter>
+						<IconTabFilter custdata:frag="ByManagers" custdata:loaded="false" text="{i18n>byManager}" visible="{tableVisibilityModel>/ByManagers}">
+							<VBox  id="tabByManagers"></VBox>
+							<!--<core:Fragment fragmentName="ui.lms.view.fragments.ByManagers" type="XML"> </core:Fragment>-->
+						</IconTabFilter>
+						<IconTabFilter custdata:frag="ByCompanies" custdata:loaded="false" text="{i18n>byCompany}" visible="{tableVisibilityModel>/ByCompanies}">
+							<VBox  id="tabByCompanies"></VBox>
+							<!--<core:Fragment fragmentName="ui.lms.view.fragments.ByCompanies" type="XML"> </core:Fragment>-->
+						</IconTabFilter>
+						<IconTabFilter custdata:frag="ByDivisions" custdata:loaded="false" text="{i18n>byDivision}" visible="{tableVisibilityModel>/ByDivisions}">
+							<VBox  id="tabByDivisions"></VBox>
+							<!--<core:Fragment fragmentName="ui.lms.view.fragments.ByDivisions" type="XML"> </core:Fragment>-->
+						</IconTabFilter>
+						<IconTabFilter custdata:frag="ByDepartments" custdata:loaded="false" text="{i18n>byDepartment}" visible="{tableVisibilityModel>/ByDepartments}">
+							<VBox  id="tabByDepartments"></VBox>
+							<!--<core:Fragment fragmentName="ui.lms.view.fragments.ByDepartments" type="XML"> </core:Fragment>-->
+						</IconTabFilter>
+					</items>
+				</IconTabBar>
+
+			</VBox>
+		</semantic:content>
+	</semantic:SemanticPage>
+</mvc:View>

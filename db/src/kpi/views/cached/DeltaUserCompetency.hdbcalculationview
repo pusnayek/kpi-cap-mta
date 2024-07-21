@@ -1,0 +1,378 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="DeltaUserCompetency" applyPrivilegeType="NONE" dataCategory="DIMENSION" dimensionType="STANDARD" schemaVersion="3.0" hierarchyGeneration="SQL" outputViewType="Aggregation" cacheInvalidationPeriod="NONE" enforceSqlExecution="true" runWithInvokerPrivileges="true">
+<descriptions defaultDescription="DeltaUserCompetency"/>
+<localVariables/>
+<variableMappings/>
+<dataSources>
+  <DataSource id="UserCompetency">
+    <resourceUri>UserCompetency</resourceUri>
+  </DataSource>
+  <DataSource id="ExcludeCompetencies">
+    <resourceUri>ExcludeCompetencies</resourceUri>
+  </DataSource>
+  <DataSource id="ST_COMPTENCYDELTAS">
+    <resourceUri>ST_COMPTENCYDELTAS</resourceUri>
+  </DataSource>
+</dataSources>
+<snapshotProcedures/>
+<calculationViews>
+  <calculationView xsi:type="Calculation:ProjectionView" id="CompetencyData">
+    <viewAttributes>
+      <viewAttribute id="USERID"/>
+      <viewAttribute id="ITEMID"/>
+      <viewAttribute id="ITEMTYPE"/>
+      <viewAttribute id="ASSIGNMENTDATE"/>
+      <viewAttribute id="COMPLETIONSTATUS"/>
+      <viewAttribute id="COMPLETIONDATE"/>
+      <viewAttribute id="ITEMTITLE"/>
+      <viewAttribute id="COMPETENCY_ID"/>
+      <viewAttribute id="COMPETENCY_NAME"/>
+      <viewAttribute id="COMPETENCY_AREA"/>
+      <viewAttribute id="COMPETENCY_DESCRIPTION"/>
+      <viewAttribute id="COMPETENCY_COMPETENCYTYPE"/>
+      <viewAttribute id="COMPETENCY_GRANTSCERTIFICATE"/>
+      <viewAttribute id="RETAININGNUMER"/>
+      <viewAttribute id="LAST_ASSIGNED_ITEMID"/>
+      <viewAttribute id="LAST_ASSIGNED_ITEMTYPE"/>
+      <viewAttribute id="LATEST_ITEM_ASSIGNMENTDATE"/>
+      <viewAttribute id="LAST_ASSIGNED_ITEMTITLE"/>
+      <viewAttribute id="HAS_CURRENT_ASSIGNMENT"/>
+      <viewAttribute id="HAS_EXPIRY"/>
+      <viewAttribute id="EXPIRATION_DATE"/>
+    
+      <viewAttribute id="LAST_ITEM_ASSIGNED_BY"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="UserCompetency"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:ProjectionView" id="Exclusions">
+    <viewAttributes>
+      <viewAttribute id="USERID"/>
+      <viewAttribute id="COMPETENCY_ID"/>
+    </viewAttributes>
+    <calculatedViewAttributes>
+      <calculatedViewAttribute id="CC_EXCLUDE_COMPETENCY" datatype="TINYINT" expressionLanguage="COLUMN_ENGINE">
+        <formula>1</formula>
+      </calculatedViewAttribute>
+    </calculatedViewAttributes>
+    <input node="ExcludeCompetencies"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:ProjectionView" id="DeltaUpdates" filterExpressionLanguage="COLUMN_ENGINE">
+    <viewAttributes>
+      <viewAttribute id="USERID"/>
+      <viewAttribute id="COMPETENCYID"/>
+      <viewAttribute id="ACTION"/>
+      <viewAttribute id="PROCESSINGSTATUS"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="ST_COMPTENCYDELTAS"/>
+    <filter>&quot;PROCESSINGSTATUS&quot;='P'</filter>
+  </calculationView>
+  <calculationView xsi:type="Calculation:JoinView" id="WithExclusions" cardinality="CN_N" joinType="leftOuter">
+    <viewAttributes>
+      <viewAttribute id="USERID"/>
+      <viewAttribute id="ITEMID"/>
+      <viewAttribute id="ITEMTYPE"/>
+      <viewAttribute id="ASSIGNMENTDATE"/>
+      <viewAttribute id="COMPLETIONSTATUS"/>
+      <viewAttribute id="COMPLETIONDATE"/>
+      <viewAttribute id="ITEMTITLE"/>
+      <viewAttribute id="COMPETENCY_ID"/>
+      <viewAttribute id="COMPETENCY_NAME"/>
+      <viewAttribute id="COMPETENCY_AREA"/>
+      <viewAttribute id="COMPETENCY_DESCRIPTION"/>
+      <viewAttribute id="COMPETENCY_COMPETENCYTYPE"/>
+      <viewAttribute id="COMPETENCY_GRANTSCERTIFICATE"/>
+      <viewAttribute id="RETAININGNUMER"/>
+      <viewAttribute id="LAST_ASSIGNED_ITEMID"/>
+      <viewAttribute id="LAST_ASSIGNED_ITEMTYPE"/>
+      <viewAttribute id="LATEST_ITEM_ASSIGNMENTDATE"/>
+      <viewAttribute id="LAST_ASSIGNED_ITEMTITLE"/>
+      <viewAttribute id="HAS_CURRENT_ASSIGNMENT"/>
+      <viewAttribute id="HAS_EXPIRY"/>
+      <viewAttribute id="EXPIRATION_DATE"/>
+      <viewAttribute id="CC_EXCLUDE_COMPETENCY"/>
+      <viewAttribute id="LAST_ITEM_ASSIGNED_BY"/>
+      <viewAttribute hidden="true" id="JOIN$USERID$USERID"/>
+      <viewAttribute hidden="true" id="JOIN$COMPETENCY_ID$COMPETENCY_ID"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="CompetencyData">
+      <mapping xsi:type="Calculation:AttributeMapping" target="USERID" source="USERID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ITEMID" source="ITEMID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ITEMTYPE" source="ITEMTYPE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ASSIGNMENTDATE" source="ASSIGNMENTDATE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMPLETIONSTATUS" source="COMPLETIONSTATUS"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMPLETIONDATE" source="COMPLETIONDATE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ITEMTITLE" source="ITEMTITLE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMPETENCY_ID" source="COMPETENCY_ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMPETENCY_NAME" source="COMPETENCY_NAME"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMPETENCY_AREA" source="COMPETENCY_AREA"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMPETENCY_DESCRIPTION" source="COMPETENCY_DESCRIPTION"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMPETENCY_COMPETENCYTYPE" source="COMPETENCY_COMPETENCYTYPE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMPETENCY_GRANTSCERTIFICATE" source="COMPETENCY_GRANTSCERTIFICATE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="RETAININGNUMER" source="RETAININGNUMER"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="LAST_ASSIGNED_ITEMID" source="LAST_ASSIGNED_ITEMID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="LAST_ASSIGNED_ITEMTYPE" source="LAST_ASSIGNED_ITEMTYPE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="LATEST_ITEM_ASSIGNMENTDATE" source="LATEST_ITEM_ASSIGNMENTDATE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="LAST_ASSIGNED_ITEMTITLE" source="LAST_ASSIGNED_ITEMTITLE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="HAS_CURRENT_ASSIGNMENT" source="HAS_CURRENT_ASSIGNMENT"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="HAS_EXPIRY" source="HAS_EXPIRY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="EXPIRATION_DATE" source="EXPIRATION_DATE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="LAST_ITEM_ASSIGNED_BY" source="LAST_ITEM_ASSIGNED_BY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$USERID$USERID" source="USERID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$COMPETENCY_ID$COMPETENCY_ID" source="COMPETENCY_ID"/>
+    </input>
+    <input node="Exclusions">
+      <mapping xsi:type="Calculation:AttributeMapping" target="CC_EXCLUDE_COMPETENCY" source="CC_EXCLUDE_COMPETENCY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$USERID$USERID" source="USERID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$COMPETENCY_ID$COMPETENCY_ID" source="COMPETENCY_ID"/>
+    </input>
+    <joinAttribute name="JOIN$USERID$USERID"/>
+    <joinAttribute name="JOIN$COMPETENCY_ID$COMPETENCY_ID"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:ProjectionView" id="Exclude" filterExpressionLanguage="COLUMN_ENGINE">
+    <viewAttributes>
+      <viewAttribute id="USERID"/>
+      <viewAttribute id="ITEMID"/>
+      <viewAttribute id="ITEMTYPE"/>
+      <viewAttribute id="ASSIGNMENTDATE"/>
+      <viewAttribute id="COMPLETIONSTATUS"/>
+      <viewAttribute id="COMPLETIONDATE"/>
+      <viewAttribute id="ITEMTITLE"/>
+      <viewAttribute id="COMPETENCY_ID"/>
+      <viewAttribute id="COMPETENCY_NAME"/>
+      <viewAttribute id="COMPETENCY_AREA"/>
+      <viewAttribute id="COMPETENCY_DESCRIPTION"/>
+      <viewAttribute id="COMPETENCY_COMPETENCYTYPE"/>
+      <viewAttribute id="COMPETENCY_GRANTSCERTIFICATE"/>
+      <viewAttribute id="RETAININGNUMER"/>
+      <viewAttribute id="LAST_ASSIGNED_ITEMID"/>
+      <viewAttribute id="LAST_ASSIGNED_ITEMTYPE"/>
+      <viewAttribute id="LATEST_ITEM_ASSIGNMENTDATE"/>
+      <viewAttribute id="LAST_ASSIGNED_ITEMTITLE"/>
+      <viewAttribute id="HAS_CURRENT_ASSIGNMENT"/>
+      <viewAttribute id="HAS_EXPIRY"/>
+      <viewAttribute id="EXPIRATION_DATE"/>
+      <viewAttribute id="CC_EXCLUDE_COMPETENCY"/>
+    
+      <viewAttribute id="LAST_ITEM_ASSIGNED_BY"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="WithExclusions"/>
+    <filter>(isNull(&quot;CC_EXCLUDE_COMPETENCY&quot;))</filter>
+  </calculationView>
+  <calculationView xsi:type="Calculation:JoinView" id="Deltas" cardinality="CN_N" joinType="inner">
+    <viewAttributes>
+      <viewAttribute id="USERID"/>
+      <viewAttribute id="ITEMID"/>
+      <viewAttribute id="ITEMTYPE"/>
+      <viewAttribute id="ASSIGNMENTDATE"/>
+      <viewAttribute id="COMPLETIONSTATUS"/>
+      <viewAttribute id="COMPLETIONDATE"/>
+      <viewAttribute id="ITEMTITLE"/>
+      <viewAttribute id="COMPETENCY_ID"/>
+      <viewAttribute id="COMPETENCY_NAME"/>
+      <viewAttribute id="COMPETENCY_AREA"/>
+      <viewAttribute id="COMPETENCY_DESCRIPTION"/>
+      <viewAttribute id="COMPETENCY_COMPETENCYTYPE"/>
+      <viewAttribute id="COMPETENCY_GRANTSCERTIFICATE"/>
+      <viewAttribute id="RETAININGNUMER"/>
+      <viewAttribute id="LAST_ASSIGNED_ITEMID"/>
+      <viewAttribute id="LAST_ASSIGNED_ITEMTYPE"/>
+      <viewAttribute id="LATEST_ITEM_ASSIGNMENTDATE"/>
+      <viewAttribute id="LAST_ASSIGNED_ITEMTITLE"/>
+      <viewAttribute id="HAS_CURRENT_ASSIGNMENT"/>
+      <viewAttribute id="HAS_EXPIRY"/>
+      <viewAttribute id="EXPIRATION_DATE"/>
+      <viewAttribute id="CC_EXCLUDE_COMPETENCY"/>
+      <viewAttribute id="LAST_ITEM_ASSIGNED_BY"/>
+      <viewAttribute hidden="true" id="JOIN$USERID$USERID"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="Exclude">
+      <mapping xsi:type="Calculation:AttributeMapping" target="USERID" source="USERID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ITEMID" source="ITEMID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ITEMTYPE" source="ITEMTYPE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ASSIGNMENTDATE" source="ASSIGNMENTDATE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMPLETIONSTATUS" source="COMPLETIONSTATUS"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMPLETIONDATE" source="COMPLETIONDATE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ITEMTITLE" source="ITEMTITLE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMPETENCY_ID" source="COMPETENCY_ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMPETENCY_NAME" source="COMPETENCY_NAME"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMPETENCY_AREA" source="COMPETENCY_AREA"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMPETENCY_DESCRIPTION" source="COMPETENCY_DESCRIPTION"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMPETENCY_COMPETENCYTYPE" source="COMPETENCY_COMPETENCYTYPE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMPETENCY_GRANTSCERTIFICATE" source="COMPETENCY_GRANTSCERTIFICATE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="RETAININGNUMER" source="RETAININGNUMER"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="LAST_ASSIGNED_ITEMID" source="LAST_ASSIGNED_ITEMID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="LAST_ASSIGNED_ITEMTYPE" source="LAST_ASSIGNED_ITEMTYPE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="LATEST_ITEM_ASSIGNMENTDATE" source="LATEST_ITEM_ASSIGNMENTDATE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="LAST_ASSIGNED_ITEMTITLE" source="LAST_ASSIGNED_ITEMTITLE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="HAS_CURRENT_ASSIGNMENT" source="HAS_CURRENT_ASSIGNMENT"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="HAS_EXPIRY" source="HAS_EXPIRY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="EXPIRATION_DATE" source="EXPIRATION_DATE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CC_EXCLUDE_COMPETENCY" source="CC_EXCLUDE_COMPETENCY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="LAST_ITEM_ASSIGNED_BY" source="LAST_ITEM_ASSIGNED_BY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$USERID$USERID" source="USERID"/>
+    </input>
+    <input node="DeltaUpdates">
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$USERID$USERID" source="USERID"/>
+    </input>
+    <joinAttribute name="JOIN$USERID$USERID"/>
+  </calculationView>
+</calculationViews>
+
+<logicalModel id="Deltas">
+  <attributes>
+    <attribute id="USERID" order="1" displayAttribute="false" attributeHierarchyActive="false" semanticType="empty" descriptionColumnName="USERID">
+      <descriptions defaultDescription="USERID"/>
+      <keyMapping columnObjectName="Deltas" columnName="USERID"/>
+    </attribute>
+    <attribute id="ITEMID" order="2" displayAttribute="false" attributeHierarchyActive="false" semanticType="empty" descriptionColumnName="ITEMID">
+      <descriptions defaultDescription="ITEMID"/>
+      <keyMapping columnObjectName="Deltas" columnName="ITEMID"/>
+    </attribute>
+    <attribute id="ITEMTYPE" order="3" displayAttribute="false" attributeHierarchyActive="false" semanticType="empty" descriptionColumnName="ITEMTYPE">
+      <descriptions defaultDescription="ITEMTYPE"/>
+      <keyMapping columnObjectName="Deltas" columnName="ITEMTYPE"/>
+    </attribute>
+    <attribute id="ASSIGNMENTDATE" order="4" displayAttribute="false" attributeHierarchyActive="false" semanticType="empty" descriptionColumnName="ASSIGNMENTDATE">
+      <descriptions defaultDescription="ASSIGNMENTDATE"/>
+      <keyMapping columnObjectName="Deltas" columnName="ASSIGNMENTDATE"/>
+    </attribute>
+    <attribute id="COMPLETIONSTATUS" order="5" displayAttribute="false" attributeHierarchyActive="false" semanticType="empty" descriptionColumnName="COMPLETIONSTATUS">
+      <descriptions defaultDescription="COMPLETIONSTATUS"/>
+      <keyMapping columnObjectName="Deltas" columnName="COMPLETIONSTATUS"/>
+    </attribute>
+    <attribute id="COMPLETIONDATE" order="6" displayAttribute="false" attributeHierarchyActive="false" semanticType="empty" descriptionColumnName="COMPLETIONDATE">
+      <descriptions defaultDescription="COMPLETIONDATE"/>
+      <keyMapping columnObjectName="Deltas" columnName="COMPLETIONDATE"/>
+    </attribute>
+    <attribute id="ITEMTITLE" order="7" displayAttribute="false" attributeHierarchyActive="false" semanticType="empty" descriptionColumnName="ITEMTITLE">
+      <descriptions defaultDescription="ITEMTITLE"/>
+      <keyMapping columnObjectName="Deltas" columnName="ITEMTITLE"/>
+    </attribute>
+    <attribute id="COMPETENCY_ID" order="8" displayAttribute="false" attributeHierarchyActive="false" semanticType="empty" descriptionColumnName="COMPETENCY_ID">
+      <descriptions defaultDescription="COMPETENCY_ID"/>
+      <keyMapping columnObjectName="Deltas" columnName="COMPETENCY_ID"/>
+    </attribute>
+    <attribute id="COMPETENCY_NAME" order="9" displayAttribute="false" attributeHierarchyActive="false" semanticType="empty" descriptionColumnName="COMPETENCY_NAME">
+      <descriptions defaultDescription="COMPETENCY_NAME"/>
+      <keyMapping columnObjectName="Deltas" columnName="COMPETENCY_NAME"/>
+    </attribute>
+    <attribute id="COMPETENCY_AREA" order="10" displayAttribute="false" attributeHierarchyActive="false" semanticType="empty" descriptionColumnName="COMPETENCY_AREA">
+      <descriptions defaultDescription="COMPETENCY_AREA"/>
+      <keyMapping columnObjectName="Deltas" columnName="COMPETENCY_AREA"/>
+    </attribute>
+    <attribute id="COMPETENCY_DESCRIPTION" order="11" displayAttribute="false" attributeHierarchyActive="false" semanticType="empty" descriptionColumnName="COMPETENCY_DESCRIPTION">
+      <descriptions defaultDescription="COMPETENCY_DESCRIPTION"/>
+      <keyMapping columnObjectName="Deltas" columnName="COMPETENCY_DESCRIPTION"/>
+    </attribute>
+    <attribute id="COMPETENCY_COMPETENCYTYPE" order="12" displayAttribute="false" attributeHierarchyActive="false" semanticType="empty" descriptionColumnName="COMPETENCY_COMPETENCYTYPE">
+      <descriptions defaultDescription="COMPETENCY_COMPETENCYTYPE"/>
+      <keyMapping columnObjectName="Deltas" columnName="COMPETENCY_COMPETENCYTYPE"/>
+    </attribute>
+    <attribute id="COMPETENCY_GRANTSCERTIFICATE" order="13" displayAttribute="false" attributeHierarchyActive="false" semanticType="empty" descriptionColumnName="COMPETENCY_GRANTSCERTIFICATE">
+      <descriptions defaultDescription="COMPETENCY_GRANTSCERTIFICATE"/>
+      <keyMapping columnObjectName="Deltas" columnName="COMPETENCY_GRANTSCERTIFICATE"/>
+    </attribute>
+    <attribute id="RETAININGNUMER" order="14" displayAttribute="false" attributeHierarchyActive="false" semanticType="empty" descriptionColumnName="RETAININGNUMER">
+      <descriptions defaultDescription="RETAININGNUMER"/>
+      <keyMapping columnObjectName="Deltas" columnName="RETAININGNUMER"/>
+    </attribute>
+    <attribute id="LAST_ASSIGNED_ITEMID" order="15" displayAttribute="false" attributeHierarchyActive="false" semanticType="empty" descriptionColumnName="LAST_ASSIGNED_ITEMID">
+      <descriptions defaultDescription="ITEMID"/>
+      <keyMapping columnObjectName="Deltas" columnName="LAST_ASSIGNED_ITEMID"/>
+    </attribute>
+    <attribute id="LAST_ASSIGNED_ITEMTYPE" order="16" displayAttribute="false" attributeHierarchyActive="false" semanticType="empty" descriptionColumnName="LAST_ASSIGNED_ITEMTYPE">
+      <descriptions defaultDescription="ITEMTYPE"/>
+      <keyMapping columnObjectName="Deltas" columnName="LAST_ASSIGNED_ITEMTYPE"/>
+    </attribute>
+    <attribute id="LATEST_ITEM_ASSIGNMENTDATE" order="17" displayAttribute="false" attributeHierarchyActive="false" semanticType="empty" descriptionColumnName="LATEST_ITEM_ASSIGNMENTDATE">
+      <descriptions defaultDescription="ASSIGNMENTDATE"/>
+      <keyMapping columnObjectName="Deltas" columnName="LATEST_ITEM_ASSIGNMENTDATE"/>
+    </attribute>
+    <attribute id="LAST_ASSIGNED_ITEMTITLE" order="18" displayAttribute="false" attributeHierarchyActive="false" semanticType="empty" descriptionColumnName="LAST_ASSIGNED_ITEMTITLE">
+      <descriptions defaultDescription="ITEMTITLE"/>
+      <keyMapping columnObjectName="Deltas" columnName="LAST_ASSIGNED_ITEMTITLE"/>
+    </attribute>
+    <attribute id="HAS_CURRENT_ASSIGNMENT" order="19" displayAttribute="false" attributeHierarchyActive="false" semanticType="empty" descriptionColumnName="HAS_CURRENT_ASSIGNMENT">
+      <descriptions defaultDescription="Currently Assigned? (Y/N)"/>
+      <keyMapping columnObjectName="Deltas" columnName="HAS_CURRENT_ASSIGNMENT"/>
+    </attribute>
+    <attribute id="HAS_EXPIRY" order="20" displayAttribute="false" attributeHierarchyActive="false" semanticType="empty" descriptionColumnName="HAS_EXPIRY">
+      <descriptions defaultDescription="Has Expiry"/>
+      <keyMapping columnObjectName="Deltas" columnName="HAS_EXPIRY"/>
+    </attribute>
+    <attribute id="EXPIRATION_DATE" order="21" displayAttribute="false" attributeHierarchyActive="false" semanticType="empty" descriptionColumnName="EXPIRATION_DATE">
+      <descriptions defaultDescription="Expiration Date"/>
+      <keyMapping columnObjectName="Deltas" columnName="EXPIRATION_DATE"/>
+    </attribute>
+    <attribute id="CC_EXCLUDE_COMPETENCY" order="22" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="CC_EXCLUDE_COMPETENCY"/>
+      <keyMapping columnObjectName="Deltas" columnName="CC_EXCLUDE_COMPETENCY"/>
+    </attribute>
+  
+    <attribute id="LAST_ITEM_ASSIGNED_BY" order="23" displayAttribute="false" attributeHierarchyActive="false" semanticType="empty" descriptionColumnName="LAST_ITEM_ASSIGNED_BY">
+      <descriptions defaultDescription="LAST_ITEM_ASSIGNED_BY"/>
+  
+      <keyMapping columnObjectName="Deltas" columnName="LAST_ITEM_ASSIGNED_BY"/>
+  
+    </attribute>
+  </attributes>
+  <calculatedAttributes/>
+  <baseMeasures/>
+  <calculatedMeasures/>
+  <restrictedMeasures/>
+</logicalModel>
+<layout>
+  <shapes>
+    <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+      <upperLeftCorner x="230" y="112"/>
+    
+      <rectangleSize width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="CompetencyData" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="113" y="641"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="Exclusions" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="323" y="641"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="DeltaUpdates" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="92" y="356"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="WithExclusions" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="232" y="501"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape modelObjectName="CompetencyData" modelObjectNameSpace="WithExclusions" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="20" y="30"/>
+      <rectangleSize width="286"/>
+    </shape>
+    <shape modelObjectName="Exclusions" modelObjectNameSpace="WithExclusions" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="376" y="30"/>
+      <rectangleSize width="180"/>
+    </shape>
+    <shape expanded="true" modelObjectName="Exclude" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="302" y="356"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="Deltas" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="230" y="217"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape modelObjectName="Exclude" modelObjectNameSpace="Deltas" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="20" y="30"/>
+      <rectangleSize width="286"/>
+    </shape>
+    <shape modelObjectName="DeltaUpdates" modelObjectNameSpace="Deltas" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="320" y="30"/>
+      <rectangleSize width="201"/>
+    </shape>
+  </shapes>
+</layout>
+</Calculation:scenario>

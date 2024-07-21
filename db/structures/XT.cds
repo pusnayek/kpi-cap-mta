@@ -12,3 +12,7 @@ entity ReplicationTrace {
         ErrorCode         : Structures.ErrorCode;
         ErrorText         : Structures.ErrorText;
 };
+
+entity Timer {
+    key locked : Integer;
+};

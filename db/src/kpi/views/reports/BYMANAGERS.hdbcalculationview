@@ -1,0 +1,440 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="BYMANAGERS" applyPrivilegeType="NONE" dataCategory="CUBE" schemaVersion="3.0" hierarchyGeneration="SQL" outputViewType="Aggregation" cacheInvalidationPeriod="NONE" enforceSqlExecution="true" runWithInvokerPrivileges="true">
+<descriptions defaultDescription="ByManagers"/>
+<localVariables/>
+<variableMappings/>
+<dataSources>
+  <DataSource id="ManagerSubordinates">
+    <resourceUri>ManagerSubordinates</resourceUri>
+  </DataSource>
+  <DataSource id="GetAllSubordinates">
+    <resourceUri>GetAllSubordinates</resourceUri>
+  </DataSource>
+  <DataSource id="EMPLOYEECOMPETENCY">
+    <resourceUri>EMPLOYEECOMPETENCY</resourceUri>
+  </DataSource>
+  <DataSource id="EmployeesMaster">
+    <resourceUri>EmployeesMaster</resourceUri>
+  </DataSource>
+</dataSources>
+<snapshotProcedures/>
+<calculationViews>
+  <calculationView xsi:type="Calculation:ProjectionView" id="Managers">
+    <viewAttributes>
+      <viewAttribute id="ACTING_USERID"/>
+      <viewAttribute id="ACTOR_TYPE"/>
+      <viewAttribute id="MANAGER"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="ManagerSubordinates">
+      <mapping xsi:type="Calculation:AttributeMapping" target="MANAGER" source="USERID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ACTOR_TYPE" source="ACTOR"/>
+    </input>
+  </calculationView>
+  <calculationView xsi:type="Calculation:ProjectionView" id="Reportees">
+    <viewAttributes>
+      <viewAttribute id="MANAGERUSERID"/>
+      <viewAttribute id="USERID"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="GetAllSubordinates"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:AggregationView" id="CompetencyData">
+    <viewAttributes>
+      <viewAttribute id="ACTING_USERID"/>
+      <viewAttribute id="ACTOR_TYPE"/>
+      <viewAttribute id="USERID"/>
+      <viewAttribute id="COMPETENCY_ID"/>
+      <viewAttribute id="COMPETENCY_NAME"/>
+      <viewAttribute id="COMPETENCY_AREA"/>
+      <viewAttribute id="PROFESSIONAL_QUALIFIED_COMPETENCY" aggregationType="sum"/>
+      <viewAttribute id="PROFESSIONAL_COMPETENCY" aggregationType="sum"/>
+      <viewAttribute id="REGULATION_QUALIFIED_COMPETENCY" aggregationType="sum"/>
+      <viewAttribute id="REGULATION_COMPETENCY" aggregationType="sum"/>
+      <viewAttribute id="TOTAL_QUALIFIED_COMPETENCY" aggregationType="sum"/>
+      <viewAttribute id="TOTAL_COMPETENCY" aggregationType="sum"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <restrictedViewAttributes/>
+    <input node="EMPLOYEECOMPETENCY">
+      <mapping xsi:type="Calculation:AttributeMapping" target="ACTOR_TYPE" source="ACTOR"/>
+    </input>
+  </calculationView>
+  <calculationView xsi:type="Calculation:ProjectionView" id="EmployeeData">
+    <viewAttributes>
+      <viewAttribute id="USERID"/>
+      <viewAttribute id="EMPLOYEEID"/>
+      <viewAttribute id="FIRSTNAME"/>
+      <viewAttribute id="LASTNAME"/>
+      <viewAttribute id="DOMAIN"/>
+      <viewAttribute id="JOBCODE"/>
+      <viewAttribute id="JOBGROUP"/>
+      <viewAttribute id="GROUPBU"/>
+      <viewAttribute id="EMPLOYEEGROUP"/>
+      <viewAttribute id="EMPCUSTOMSTATUS"/>
+      <viewAttribute id="DEPARTMENT"/>
+      <viewAttribute id="DIVISION"/>
+      <viewAttribute id="JOBLOCATION"/>
+      <viewAttribute id="MANAGERUSERID"/>
+      <viewAttribute id="MANAGERNAME"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="EmployeesMaster"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:JoinView" id="WithReportees" cardinality="CN_N" joinType="inner">
+    <viewAttributes>
+      <viewAttribute id="ACTING_USERID"/>
+      <viewAttribute id="ACTOR_TYPE"/>
+      <viewAttribute id="MANAGER"/>
+      <viewAttribute id="USERID"/>
+      <viewAttribute hidden="true" id="JOIN$MANAGER$MANAGERUSERID"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="Managers">
+      <mapping xsi:type="Calculation:AttributeMapping" target="ACTING_USERID" source="ACTING_USERID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ACTOR_TYPE" source="ACTOR_TYPE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="MANAGER" source="MANAGER"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$MANAGER$MANAGERUSERID" source="MANAGER"/>
+    </input>
+    <input node="Reportees">
+      <mapping xsi:type="Calculation:AttributeMapping" target="USERID" source="USERID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$MANAGER$MANAGERUSERID" source="MANAGERUSERID"/>
+    </input>
+    <joinAttribute name="JOIN$MANAGER$MANAGERUSERID"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:JoinView" id="WithManager" cardinality="CN_N" joinType="inner">
+    <viewAttributes>
+      <viewAttribute id="ACTING_USERID"/>
+      <viewAttribute id="ACTOR_TYPE"/>
+      <viewAttribute id="USERID"/>
+      <viewAttribute id="COMPETENCY_ID"/>
+      <viewAttribute id="COMPETENCY_NAME"/>
+      <viewAttribute id="COMPETENCY_AREA"/>
+      <viewAttribute id="PROFESSIONAL_QUALIFIED_COMPETENCY" aggregationType="sum"/>
+      <viewAttribute id="PROFESSIONAL_COMPETENCY" aggregationType="sum"/>
+      <viewAttribute id="REGULATION_QUALIFIED_COMPETENCY" aggregationType="sum"/>
+      <viewAttribute id="REGULATION_COMPETENCY" aggregationType="sum"/>
+      <viewAttribute id="TOTAL_QUALIFIED_COMPETENCY" aggregationType="sum"/>
+      <viewAttribute id="TOTAL_COMPETENCY" aggregationType="sum"/>
+      <viewAttribute hidden="true" id="JOIN$ACTING_USERID$ACTING_USERID"/>
+      <viewAttribute hidden="true" id="JOIN$ACTOR_TYPE$ACTOR_TYPE"/>
+      <viewAttribute hidden="true" id="JOIN$USERID$USERID"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="WithReportees">
+      <mapping xsi:type="Calculation:AttributeMapping" target="USERID" source="MANAGER"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ACTING_USERID" source="ACTING_USERID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ACTOR_TYPE" source="ACTOR_TYPE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$ACTING_USERID$ACTING_USERID" source="ACTING_USERID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$ACTOR_TYPE$ACTOR_TYPE" source="ACTOR_TYPE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$USERID$USERID" source="USERID"/>
+    </input>
+    <input node="CompetencyData">
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMPETENCY_ID" source="COMPETENCY_ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMPETENCY_NAME" source="COMPETENCY_NAME"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMPETENCY_AREA" source="COMPETENCY_AREA"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="PROFESSIONAL_QUALIFIED_COMPETENCY" source="PROFESSIONAL_QUALIFIED_COMPETENCY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="PROFESSIONAL_COMPETENCY" source="PROFESSIONAL_COMPETENCY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="REGULATION_QUALIFIED_COMPETENCY" source="REGULATION_QUALIFIED_COMPETENCY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="REGULATION_COMPETENCY" source="REGULATION_COMPETENCY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="TOTAL_QUALIFIED_COMPETENCY" source="TOTAL_QUALIFIED_COMPETENCY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="TOTAL_COMPETENCY" source="TOTAL_COMPETENCY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$ACTING_USERID$ACTING_USERID" source="ACTING_USERID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$ACTOR_TYPE$ACTOR_TYPE" source="ACTOR_TYPE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$USERID$USERID" source="USERID"/>
+    </input>
+    <joinAttribute name="JOIN$ACTING_USERID$ACTING_USERID"/>
+    <joinAttribute name="JOIN$ACTOR_TYPE$ACTOR_TYPE"/>
+    <joinAttribute name="JOIN$USERID$USERID"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:AggregationView" id="ByManager">
+    <viewAttributes>
+      <viewAttribute id="ACTING_USERID"/>
+      <viewAttribute id="ACTOR_TYPE"/>
+      <viewAttribute id="USERID"/>
+      <viewAttribute id="COMPETENCY_ID"/>
+      <viewAttribute id="COMPETENCY_NAME"/>
+      <viewAttribute id="COMPETENCY_AREA"/>
+      <viewAttribute id="PROFESSIONAL_QUALIFIED_COMPETENCY" aggregationType="sum"/>
+      <viewAttribute id="PROFESSIONAL_COMPETENCY" aggregationType="sum"/>
+      <viewAttribute id="REGULATION_QUALIFIED_COMPETENCY" aggregationType="sum"/>
+      <viewAttribute id="REGULATION_COMPETENCY" aggregationType="sum"/>
+      <viewAttribute id="TOTAL_QUALIFIED_COMPETENCY" aggregationType="sum"/>
+      <viewAttribute id="TOTAL_COMPETENCY" aggregationType="sum"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <restrictedViewAttributes/>
+    <input node="WithManager"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:JoinView" id="ManagerData" cardinality="CN_N" joinType="inner">
+    <viewAttributes>
+      <viewAttribute id="ACTING_USERID"/>
+      <viewAttribute id="ACTOR_TYPE"/>
+      <viewAttribute id="USERID"/>
+      <viewAttribute id="EMPLOYEEID"/>
+      <viewAttribute id="FIRSTNAME"/>
+      <viewAttribute id="LASTNAME"/>
+      <viewAttribute id="DOMAIN"/>
+      <viewAttribute id="JOBCODE"/>
+      <viewAttribute id="JOBGROUP"/>
+      <viewAttribute id="GROUPBU"/>
+      <viewAttribute id="EMPLOYEEGROUP"/>
+      <viewAttribute id="EMPCUSTOMSTATUS"/>
+      <viewAttribute id="DEPARTMENT"/>
+      <viewAttribute id="DIVISION"/>
+      <viewAttribute id="JOBLOCATION"/>
+      <viewAttribute id="MANAGERUSERID"/>
+      <viewAttribute id="MANAGERNAME"/>
+      <viewAttribute id="COMPETENCY_ID"/>
+      <viewAttribute id="COMPETENCY_NAME"/>
+      <viewAttribute id="COMPETENCY_AREA"/>
+      <viewAttribute id="PROFESSIONAL_QUALIFIED_COMPETENCY" aggregationType="sum"/>
+      <viewAttribute id="PROFESSIONAL_COMPETENCY" aggregationType="sum"/>
+      <viewAttribute id="REGULATION_QUALIFIED_COMPETENCY" aggregationType="sum"/>
+      <viewAttribute id="REGULATION_COMPETENCY" aggregationType="sum"/>
+      <viewAttribute id="TOTAL_QUALIFIED_COMPETENCY" aggregationType="sum"/>
+      <viewAttribute id="TOTAL_COMPETENCY" aggregationType="sum"/>
+      <viewAttribute hidden="true" id="JOIN$USERID$USERID"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="ByManager">
+      <mapping xsi:type="Calculation:AttributeMapping" target="ACTING_USERID" source="ACTING_USERID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ACTOR_TYPE" source="ACTOR_TYPE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="USERID" source="USERID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMPETENCY_ID" source="COMPETENCY_ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMPETENCY_NAME" source="COMPETENCY_NAME"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMPETENCY_AREA" source="COMPETENCY_AREA"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="PROFESSIONAL_QUALIFIED_COMPETENCY" source="PROFESSIONAL_QUALIFIED_COMPETENCY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="PROFESSIONAL_COMPETENCY" source="PROFESSIONAL_COMPETENCY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="REGULATION_QUALIFIED_COMPETENCY" source="REGULATION_QUALIFIED_COMPETENCY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="REGULATION_COMPETENCY" source="REGULATION_COMPETENCY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="TOTAL_QUALIFIED_COMPETENCY" source="TOTAL_QUALIFIED_COMPETENCY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="TOTAL_COMPETENCY" source="TOTAL_COMPETENCY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$USERID$USERID" source="USERID"/>
+    </input>
+    <input node="EmployeeData">
+      <mapping xsi:type="Calculation:AttributeMapping" target="EMPLOYEEID" source="EMPLOYEEID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="FIRSTNAME" source="FIRSTNAME"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="LASTNAME" source="LASTNAME"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="DOMAIN" source="DOMAIN"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOBCODE" source="JOBCODE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOBGROUP" source="JOBGROUP"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="GROUPBU" source="GROUPBU"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="EMPLOYEEGROUP" source="EMPLOYEEGROUP"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="EMPCUSTOMSTATUS" source="EMPCUSTOMSTATUS"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="DEPARTMENT" source="DEPARTMENT"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="DIVISION" source="DIVISION"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOBLOCATION" source="JOBLOCATION"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="MANAGERUSERID" source="MANAGERUSERID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="MANAGERNAME" source="MANAGERNAME"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$USERID$USERID" source="USERID"/>
+    </input>
+    <joinAttribute name="JOIN$USERID$USERID"/>
+  </calculationView>
+</calculationViews>
+
+<logicalModel id="ManagerData">
+  <attributes>
+    <attribute id="ACTING_USERID" order="1" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="USERID"/>
+      <keyMapping columnObjectName="ManagerData" columnName="ACTING_USERID"/>
+    </attribute>
+    <attribute id="ACTOR" order="2" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="ACTOR"/>
+      <keyMapping columnObjectName="ManagerData" columnName="ACTOR_TYPE"/>
+    </attribute>
+    <attribute id="USERID" order="3" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="USERID"/>
+      <keyMapping columnObjectName="ManagerData" columnName="USERID"/>
+    </attribute>
+    <attribute id="EMPLOYEEID" order="4" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="EMPLOYEEID"/>
+      <keyMapping columnObjectName="ManagerData" columnName="EMPLOYEEID"/>
+    </attribute>
+    <attribute id="FIRSTNAME" order="5" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="FIRSTNAME"/>
+      <keyMapping columnObjectName="ManagerData" columnName="FIRSTNAME"/>
+    </attribute>
+    <attribute id="LASTNAME" order="6" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="LASTNAME"/>
+      <keyMapping columnObjectName="ManagerData" columnName="LASTNAME"/>
+    </attribute>
+    <attribute id="DOMAIN" order="7" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="DOMAIN"/>
+      <keyMapping columnObjectName="ManagerData" columnName="DOMAIN"/>
+    </attribute>
+    <attribute id="JOBCODE" order="8" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="JOBCODE"/>
+      <keyMapping columnObjectName="ManagerData" columnName="JOBCODE"/>
+    </attribute>
+    <attribute id="JOBGROUP" order="9" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="JOBGROUP"/>
+      <keyMapping columnObjectName="ManagerData" columnName="JOBGROUP"/>
+    </attribute>
+    <attribute id="GROUPBU" order="10" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="GROUPBU"/>
+      <keyMapping columnObjectName="ManagerData" columnName="GROUPBU"/>
+    </attribute>
+    <attribute id="EMPLOYEEGROUP" order="11" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="EMPLOYEEGROUP"/>
+      <keyMapping columnObjectName="ManagerData" columnName="EMPLOYEEGROUP"/>
+    </attribute>
+    <attribute id="EMPCUSTOMSTATUS" order="12" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="EMPCUSTOMSTATUS"/>
+      <keyMapping columnObjectName="ManagerData" columnName="EMPCUSTOMSTATUS"/>
+    </attribute>
+    <attribute id="DEPARTMENT" order="13" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="DEPARTMENT"/>
+      <keyMapping columnObjectName="ManagerData" columnName="DEPARTMENT"/>
+    </attribute>
+    <attribute id="DIVISION" order="14" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="DIVISION"/>
+      <keyMapping columnObjectName="ManagerData" columnName="DIVISION"/>
+    </attribute>
+    <attribute id="JOBLOCATION" order="15" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="JOBLOCATION"/>
+      <keyMapping columnObjectName="ManagerData" columnName="JOBLOCATION"/>
+    </attribute>
+    <attribute id="MANAGERUSERID" order="16" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="MANAGERUSERID"/>
+      <keyMapping columnObjectName="ManagerData" columnName="MANAGERUSERID"/>
+    </attribute>
+    <attribute id="MANAGERNAME" order="17" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="MANAGERNAME"/>
+      <keyMapping columnObjectName="ManagerData" columnName="MANAGERNAME"/>
+    </attribute>
+    <attribute id="COMPETENCY_ID" order="18" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="COMPETENCY_ID"/>
+      <keyMapping columnObjectName="ManagerData" columnName="COMPETENCY_ID"/>
+    </attribute>
+    <attribute id="COMPETENCY_NAME" order="19" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="COMPETENCY_NAME"/>
+      <keyMapping columnObjectName="ManagerData" columnName="COMPETENCY_NAME"/>
+    </attribute>
+    <attribute id="COMPETENCY_AREA" order="20" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="COMPETENCY_AREA"/>
+      <keyMapping columnObjectName="ManagerData" columnName="COMPETENCY_AREA"/>
+    </attribute>
+  </attributes>
+  <calculatedAttributes>
+    <calculatedAttribute id="PROFESSIONAL_COMPETENCY_PERCENTAGE" order="27" semanticType="empty" displayAttribute="false" attributeHierarchyActive="false">
+      <keyCalculation datatype="DECIMAL" expressionLanguage="COLUMN_ENGINE" length="3" scale="0">
+        <formula>if(&quot;PROFESSIONAL_COMPETENCY&quot; = 0,decfloat(null),
+decfloat(&quot;PROFESSIONAL_QUALIFIED_COMPETENCY&quot;) * 100 / decfloat(&quot;PROFESSIONAL_COMPETENCY&quot;))</formula>
+      </keyCalculation>
+    </calculatedAttribute>
+    <calculatedAttribute id="REGULATION_COMPETENCY_PERCENTAGE" order="28" semanticType="empty" displayAttribute="false" attributeHierarchyActive="false">
+      <keyCalculation datatype="DECIMAL" expressionLanguage="COLUMN_ENGINE" length="3" scale="0">
+        <formula>if(&quot;REGULATION_COMPETENCY&quot; = 0,decfloat(null),
+decfloat(&quot;REGULATION_QUALIFIED_COMPETENCY&quot;) * 100 / decfloat(&quot;REGULATION_COMPETENCY&quot;))</formula>
+      </keyCalculation>
+    </calculatedAttribute>
+    <calculatedAttribute id="TOTAL_COMPETENCY_PERCENTAGE" order="29" semanticType="empty" displayAttribute="false" attributeHierarchyActive="false">
+      <keyCalculation datatype="DECIMAL" expressionLanguage="COLUMN_ENGINE" length="3" scale="0">
+        <formula>if(&quot;TOTAL_COMPETENCY&quot; = 0,decfloat(null),
+decfloat(&quot;TOTAL_QUALIFIED_COMPETENCY&quot;) * 100 / decfloat(&quot;TOTAL_COMPETENCY&quot;))</formula>
+      </keyCalculation>
+    </calculatedAttribute>
+  </calculatedAttributes>
+  <baseMeasures>
+    <measure id="PROFESSIONAL_QUALIFIED_COMPETENCY" order="21" aggregationType="sum" measureType="simple" restrictionExpressionLanguage="SQL">
+      <descriptions defaultDescription="PROFESSIONAL_QUALIFIED_COMPETENCY"/>
+      <measureMapping columnObjectName="ManagerData" columnName="PROFESSIONAL_QUALIFIED_COMPETENCY"/>
+      <exceptionAggregationMetadata/>
+    </measure>
+    <measure id="PROFESSIONAL_COMPETENCY" order="22" aggregationType="sum" measureType="simple" restrictionExpressionLanguage="SQL">
+      <descriptions defaultDescription="PROFESSIONAL_COMPETENCY"/>
+      <measureMapping columnObjectName="ManagerData" columnName="PROFESSIONAL_COMPETENCY"/>
+      <exceptionAggregationMetadata/>
+    </measure>
+    <measure id="REGULATION_QUALIFIED_COMPETENCY" order="23" aggregationType="sum" measureType="simple" restrictionExpressionLanguage="SQL">
+      <descriptions defaultDescription="REGULATION_QUALIFIED_COMPETENCY"/>
+      <measureMapping columnObjectName="ManagerData" columnName="REGULATION_QUALIFIED_COMPETENCY"/>
+      <exceptionAggregationMetadata/>
+    </measure>
+    <measure id="REGULATION_COMPETENCY" order="24" aggregationType="sum" measureType="simple" restrictionExpressionLanguage="SQL">
+      <descriptions defaultDescription="REGULATION_COMPETENCY"/>
+      <measureMapping columnObjectName="ManagerData" columnName="REGULATION_COMPETENCY"/>
+      <exceptionAggregationMetadata/>
+    </measure>
+    <measure id="TOTAL_QUALIFIED_COMPETENCY" order="25" aggregationType="sum" measureType="simple" restrictionExpressionLanguage="SQL">
+      <descriptions defaultDescription="TOTAL_QUALIFIED_COMPETENCY"/>
+      <measureMapping columnObjectName="ManagerData" columnName="TOTAL_QUALIFIED_COMPETENCY"/>
+      <exceptionAggregationMetadata/>
+    </measure>
+    <measure id="TOTAL_COMPETENCY" order="26" aggregationType="sum" measureType="simple" restrictionExpressionLanguage="SQL">
+      <descriptions defaultDescription="TOTAL_COMPETENCY"/>
+      <measureMapping columnObjectName="ManagerData" columnName="TOTAL_COMPETENCY"/>
+      <exceptionAggregationMetadata/>
+    </measure>
+  </baseMeasures>
+  <calculatedMeasures/>
+  <restrictedMeasures/>
+  <localDimensions/>
+</logicalModel>
+<layout>
+  <shapes>
+    <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+      <upperLeftCorner x="354" y="112"/>
+    
+      <rectangleSize width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="Managers" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="92" y="741"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="Reportees" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="302" y="741"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="CompetencyData" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="385" y="601"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="EmployeeData" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="449" y="356"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="WithReportees" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="118" y="601"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape modelObjectName="Managers" modelObjectNameSpace="WithReportees" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="20" y="30"/>
+      <rectangleSize width="175"/>
+    </shape>
+    <shape modelObjectName="Reportees" modelObjectNameSpace="WithReportees" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="320" y="30"/>
+      <rectangleSize width="183"/>
+    </shape>
+    <shape expanded="true" modelObjectName="WithManager" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="239" y="461"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape modelObjectName="WithReportees" modelObjectNameSpace="WithManager" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="20" y="30"/>
+      <rectangleSize width="175"/>
+    </shape>
+    <shape modelObjectName="CompetencyData" modelObjectNameSpace="WithManager" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="320" y="30"/>
+      <rectangleSize width="319"/>
+    </shape>
+    <shape expanded="true" modelObjectName="ByManager" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="239" y="356"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="ManagerData" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="354" y="217"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape modelObjectName="ByManager" modelObjectNameSpace="ManagerData" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="20" y="30"/>
+      <rectangleSize width="319"/>
+    </shape>
+    <shape modelObjectName="EmployeeData" modelObjectNameSpace="ManagerData" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="447" y="23"/>
+      <rectangleSize width="199"/>
+    </shape>
+  </shapes>
+</layout>
+</Calculation:scenario>

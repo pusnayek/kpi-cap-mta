@@ -1,0 +1,487 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="UserCompetencyRanked" applyPrivilegeType="NONE" dataCategory="DIMENSION" dimensionType="STANDARD" schemaVersion="3.0" hierarchyGeneration="SQL" outputViewType="Aggregation" cacheInvalidationPeriod="NONE" enforceSqlExecution="true" runWithInvokerPrivileges="true">
+<descriptions defaultDescription="UserCompetencyRanked"/>
+<localVariables/>
+<variableMappings/>
+<dataSources>
+  <DataSource id="FT_ASSIGNMENT">
+    <resourceUri>FT_ASSIGNMENT</resourceUri>
+  </DataSource>
+  <DataSource id="FT_COMPLETION">
+    <resourceUri>FT_COMPLETION</resourceUri>
+  </DataSource>
+  <DataSource id="Completions$$$$FT_COMPLETION$$">
+    <resourceUri>FT_COMPLETION</resourceUri>
+  </DataSource>
+  <DataSource id="EmployeesMaster">
+    <resourceUri>EmployeesMaster</resourceUri>
+  </DataSource>
+  <DataSource id="FT_ITEM">
+    <resourceUri>FT_ITEM</resourceUri>
+  </DataSource>
+  <DataSource id="LatestAssignments">
+    <resourceUri>LatestAssignments</resourceUri>
+  </DataSource>
+</dataSources>
+<snapshotProcedures/>
+<calculationViews>
+  <calculationView xsi:type="Calculation:ProjectionView" id="Assignments">
+    <viewAttributes>
+      <viewAttribute id="USERID"/>
+      <viewAttribute id="ITEMID"/>
+      <viewAttribute id="ITEMTYPE"/>
+      <viewAttribute id="ASSIGNMENTDATE"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="FT_ASSIGNMENT"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:ProjectionView" id="InCompletions" filterExpressionLanguage="COLUMN_ENGINE">
+    <viewAttributes>
+      <viewAttribute id="USERID"/>
+      <viewAttribute id="ITEMID"/>
+      <viewAttribute id="ITEMTYPE"/>
+      <viewAttribute id="COMPLETIONSTATUS"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="FT_COMPLETION"/>
+    <filter>&quot;COMPLETIONSTATUS&quot; ='Incomplete'</filter>
+  </calculationView>
+  <calculationView xsi:type="Calculation:ProjectionView" id="Completions" filterExpressionLanguage="COLUMN_ENGINE">
+    <viewAttributes>
+      <viewAttribute id="USERID"/>
+      <viewAttribute id="ITEMID"/>
+      <viewAttribute id="ITEMTYPE"/>
+      <viewAttribute id="COMPLETIONSTATUS"/>
+      <viewAttribute id="COMPLETIONDATE"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="Completions$$$$FT_COMPLETION$$"/>
+    <filter>(&quot;COMPLETIONSTATUS&quot; ='Complete')</filter>
+  </calculationView>
+  <calculationView xsi:type="Calculation:ProjectionView" id="Users">
+    <viewAttributes>
+      <viewAttribute id="USERID"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="EmployeesMaster"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:AggregationView" id="Items" filterExpressionLanguage="COLUMN_ENGINE">
+    <viewAttributes>
+      <viewAttribute id="ITEMID"/>
+      <viewAttribute id="ITEMTYPE"/>
+      <viewAttribute id="ITEMTITLE"/>
+      <viewAttribute id="COMPETENCY_ID"/>
+      <viewAttribute id="COMPETENCY_NAME"/>
+      <viewAttribute id="COMPETENCY_AREA"/>
+      <viewAttribute id="COMPETENCY_DESCRIPTION"/>
+      <viewAttribute id="COMPETENCY_COMPETENCYTYPE"/>
+      <viewAttribute id="COMPETENCY_GRANTSCERTIFICATE"/>
+      <viewAttribute id="RETAININGNUMER" aggregationType="sum"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <restrictedViewAttributes/>
+    <input node="FT_ITEM"/>
+    <filter>&quot;COMPETENCY_ID&quot;!=''</filter>
+  </calculationView>
+  <calculationView xsi:type="Calculation:ProjectionView" id="LatestAssignmentData">
+    <viewAttributes>
+      <viewAttribute id="USERID"/>
+      <viewAttribute id="COMPETENCY_ID"/>
+      <viewAttribute id="LAST_ASSIGNED_ITEMID"/>
+      <viewAttribute id="LAST_ASSIGNED_ITEMTYPE"/>
+      <viewAttribute id="LATEST_ITEM_ASSIGNMENTDATE"/>
+      <viewAttribute id="LAST_ASSIGNED_ITEMTITLE"/>
+      <viewAttribute id="LAST_ITEM_ASSIGNED_BY"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="LatestAssignments">
+      <mapping xsi:type="Calculation:AttributeMapping" target="LAST_ASSIGNED_ITEMID" source="ITEMID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="LAST_ASSIGNED_ITEMTYPE" source="ITEMTYPE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="LATEST_ITEM_ASSIGNMENTDATE" source="ASSIGNMENTDATE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="LAST_ASSIGNED_ITEMTITLE" source="ITEMTITLE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="LAST_ITEM_ASSIGNED_BY" source="ASSIGNED_BY_ENCODED"/>
+    </input>
+  </calculationView>
+  <calculationView xsi:type="Calculation:UnionView" id="AssignmentData">
+    <viewAttributes>
+      <viewAttribute id="USERID"/>
+      <viewAttribute id="ITEMID"/>
+      <viewAttribute id="ITEMTYPE"/>
+      <viewAttribute id="ASSIGNMENTDATE"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="Assignments" emptyUnionBehavior="NO_ROW">
+      <mapping xsi:type="Calculation:AttributeMapping" target="USERID" source="USERID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ITEMID" source="ITEMID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ITEMTYPE" source="ITEMTYPE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ASSIGNMENTDATE" source="ASSIGNMENTDATE"/>
+    </input>
+    <input node="InCompletions" emptyUnionBehavior="NO_ROW">
+      <mapping xsi:type="Calculation:AttributeMapping" target="USERID" source="USERID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ITEMID" source="ITEMID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ITEMTYPE" source="ITEMTYPE"/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="ASSIGNMENTDATE" null="true" value=""/>
+    </input>
+  </calculationView>
+  <calculationView xsi:type="Calculation:UnionView" id="LatestCompletions">
+    <viewAttributes>
+      <viewAttribute id="USERID"/>
+      <viewAttribute id="ITEMID"/>
+      <viewAttribute id="ITEMTYPE"/>
+      <viewAttribute id="ASSIGNMENTDATE"/>
+      <viewAttribute id="COMPLETIONSTATUS"/>
+      <viewAttribute id="COMPLETIONDATE"/>
+    </viewAttributes>
+    <calculatedViewAttributes>
+      <calculatedViewAttribute id="CC_RANK" datatype="DATE" expressionLanguage="COLUMN_ENGINE">
+        <formula>if(&quot;COMPLETIONSTATUS&quot;='Complete',
+if(not(isnull(&quot;COMPLETIONDATE&quot;)),adddays(&quot;COMPLETIONDATE&quot;,99999),&quot;COMPLETIONDATE&quot;),
+&quot;ASSIGNMENTDATE&quot;)</formula>
+      </calculatedViewAttribute>
+    </calculatedViewAttributes>
+    <input node="AssignmentData" emptyUnionBehavior="NO_ROW">
+      <mapping xsi:type="Calculation:AttributeMapping" target="USERID" source="USERID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ITEMID" source="ITEMID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ITEMTYPE" source="ITEMTYPE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ASSIGNMENTDATE" source="ASSIGNMENTDATE"/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="COMPLETIONSTATUS" null="true" value=""/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="COMPLETIONDATE" null="true" value=""/>
+    </input>
+    <input node="Completions" emptyUnionBehavior="NO_ROW">
+      <mapping xsi:type="Calculation:AttributeMapping" target="USERID" source="USERID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ITEMID" source="ITEMID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ITEMTYPE" source="ITEMTYPE"/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="ASSIGNMENTDATE" null="true" value=""/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMPLETIONSTATUS" source="COMPLETIONSTATUS"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMPLETIONDATE" source="COMPLETIONDATE"/>
+    </input>
+  </calculationView>
+  <calculationView xsi:type="Calculation:AggregationView" id="LatestData">
+    <viewAttributes>
+      <viewAttribute id="USERID"/>
+      <viewAttribute id="ITEMID"/>
+      <viewAttribute id="ITEMTYPE"/>
+      <viewAttribute id="ASSIGNMENTDATE" aggregationType="max"/>
+      <viewAttribute id="COMPLETIONSTATUS" aggregationType="max"/>
+      <viewAttribute id="COMPLETIONDATE" aggregationType="max"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <restrictedViewAttributes/>
+    <input node="LatestCompletions"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:JoinView" id="ActiveUsers" cardinality="CN_N" joinType="inner">
+    <viewAttributes>
+      <viewAttribute id="USERID"/>
+      <viewAttribute id="ITEMID"/>
+      <viewAttribute id="ITEMTYPE"/>
+      <viewAttribute id="ASSIGNMENTDATE"/>
+      <viewAttribute id="COMPLETIONSTATUS"/>
+      <viewAttribute id="COMPLETIONDATE"/>
+      <viewAttribute hidden="true" id="JOIN$USERID$USERID"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="LatestData">
+      <mapping xsi:type="Calculation:AttributeMapping" target="USERID" source="USERID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ITEMID" source="ITEMID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ITEMTYPE" source="ITEMTYPE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ASSIGNMENTDATE" source="ASSIGNMENTDATE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMPLETIONSTATUS" source="COMPLETIONSTATUS"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMPLETIONDATE" source="COMPLETIONDATE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$USERID$USERID" source="USERID"/>
+    </input>
+    <input node="Users">
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$USERID$USERID" source="USERID"/>
+    </input>
+    <joinAttribute name="JOIN$USERID$USERID"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:JoinView" id="UserByCompetency" cardinality="CN_N" joinType="inner">
+    <viewAttributes>
+      <viewAttribute id="USERID"/>
+      <viewAttribute id="ITEMID"/>
+      <viewAttribute id="ITEMTYPE"/>
+      <viewAttribute id="ASSIGNMENTDATE"/>
+      <viewAttribute id="COMPLETIONSTATUS"/>
+      <viewAttribute id="COMPLETIONDATE"/>
+      <viewAttribute id="ITEMTITLE"/>
+      <viewAttribute id="COMPETENCY_ID"/>
+      <viewAttribute id="COMPETENCY_NAME"/>
+      <viewAttribute id="COMPETENCY_AREA"/>
+      <viewAttribute id="COMPETENCY_DESCRIPTION"/>
+      <viewAttribute id="COMPETENCY_COMPETENCYTYPE"/>
+      <viewAttribute id="COMPETENCY_GRANTSCERTIFICATE"/>
+      <viewAttribute id="RETAININGNUMER"/>
+      <viewAttribute hidden="true" id="JOIN$ITEMID$ITEMID"/>
+      <viewAttribute hidden="true" id="JOIN$ITEMTYPE$ITEMTYPE"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="ActiveUsers">
+      <mapping xsi:type="Calculation:AttributeMapping" target="USERID" source="USERID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ITEMID" source="ITEMID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ITEMTYPE" source="ITEMTYPE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ASSIGNMENTDATE" source="ASSIGNMENTDATE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMPLETIONSTATUS" source="COMPLETIONSTATUS"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMPLETIONDATE" source="COMPLETIONDATE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$ITEMID$ITEMID" source="ITEMID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$ITEMTYPE$ITEMTYPE" source="ITEMTYPE"/>
+    </input>
+    <input node="Items">
+      <mapping xsi:type="Calculation:AttributeMapping" target="ITEMTITLE" source="ITEMTITLE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMPETENCY_ID" source="COMPETENCY_ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMPETENCY_NAME" source="COMPETENCY_NAME"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMPETENCY_AREA" source="COMPETENCY_AREA"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMPETENCY_DESCRIPTION" source="COMPETENCY_DESCRIPTION"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMPETENCY_COMPETENCYTYPE" source="COMPETENCY_COMPETENCYTYPE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMPETENCY_GRANTSCERTIFICATE" source="COMPETENCY_GRANTSCERTIFICATE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="RETAININGNUMER" source="RETAININGNUMER"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$ITEMID$ITEMID" source="ITEMID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$ITEMTYPE$ITEMTYPE" source="ITEMTYPE"/>
+    </input>
+    <joinAttribute name="JOIN$ITEMID$ITEMID"/>
+    <joinAttribute name="JOIN$ITEMTYPE$ITEMTYPE"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:JoinView" id="WithLatestItem" cardinality="CN_N" joinType="leftOuter">
+    <viewAttributes>
+      <viewAttribute id="USERID"/>
+      <viewAttribute id="ITEMID"/>
+      <viewAttribute id="ITEMTYPE"/>
+      <viewAttribute id="ASSIGNMENTDATE"/>
+      <viewAttribute id="COMPLETIONSTATUS"/>
+      <viewAttribute id="COMPLETIONDATE"/>
+      <viewAttribute id="ITEMTITLE"/>
+      <viewAttribute id="COMPETENCY_ID"/>
+      <viewAttribute id="COMPETENCY_NAME"/>
+      <viewAttribute id="COMPETENCY_AREA"/>
+      <viewAttribute id="COMPETENCY_DESCRIPTION"/>
+      <viewAttribute id="COMPETENCY_COMPETENCYTYPE"/>
+      <viewAttribute id="COMPETENCY_GRANTSCERTIFICATE"/>
+      <viewAttribute id="RETAININGNUMER"/>
+      <viewAttribute id="LAST_ASSIGNED_ITEMID"/>
+      <viewAttribute id="LAST_ASSIGNED_ITEMTYPE"/>
+      <viewAttribute id="LATEST_ITEM_ASSIGNMENTDATE"/>
+      <viewAttribute id="LAST_ASSIGNED_ITEMTITLE"/>
+      <viewAttribute id="LAST_ITEM_ASSIGNED_BY"/>
+      <viewAttribute hidden="true" id="JOIN$USERID$USERID"/>
+      <viewAttribute hidden="true" id="JOIN$COMPETENCY_ID$COMPETENCY_ID"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="UserByCompetency">
+      <mapping xsi:type="Calculation:AttributeMapping" target="USERID" source="USERID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ITEMID" source="ITEMID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ITEMTYPE" source="ITEMTYPE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ASSIGNMENTDATE" source="ASSIGNMENTDATE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMPLETIONSTATUS" source="COMPLETIONSTATUS"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMPLETIONDATE" source="COMPLETIONDATE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ITEMTITLE" source="ITEMTITLE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMPETENCY_ID" source="COMPETENCY_ID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMPETENCY_NAME" source="COMPETENCY_NAME"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMPETENCY_AREA" source="COMPETENCY_AREA"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMPETENCY_DESCRIPTION" source="COMPETENCY_DESCRIPTION"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMPETENCY_COMPETENCYTYPE" source="COMPETENCY_COMPETENCYTYPE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COMPETENCY_GRANTSCERTIFICATE" source="COMPETENCY_GRANTSCERTIFICATE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="RETAININGNUMER" source="RETAININGNUMER"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$USERID$USERID" source="USERID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$COMPETENCY_ID$COMPETENCY_ID" source="COMPETENCY_ID"/>
+    </input>
+    <input node="LatestAssignmentData">
+      <mapping xsi:type="Calculation:AttributeMapping" target="LAST_ASSIGNED_ITEMID" source="LAST_ASSIGNED_ITEMID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="LAST_ASSIGNED_ITEMTYPE" source="LAST_ASSIGNED_ITEMTYPE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="LATEST_ITEM_ASSIGNMENTDATE" source="LATEST_ITEM_ASSIGNMENTDATE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="LAST_ASSIGNED_ITEMTITLE" source="LAST_ASSIGNED_ITEMTITLE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="LAST_ITEM_ASSIGNED_BY" source="LAST_ITEM_ASSIGNED_BY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$USERID$USERID" source="USERID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$COMPETENCY_ID$COMPETENCY_ID" source="COMPETENCY_ID"/>
+    </input>
+    <joinAttribute name="JOIN$USERID$USERID"/>
+    <joinAttribute name="JOIN$COMPETENCY_ID$COMPETENCY_ID"/>
+  </calculationView>
+</calculationViews>
+
+<logicalModel id="WithLatestItem">
+  <attributes>
+    <attribute id="USERID" order="1" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="USERID"/>
+      <keyMapping columnObjectName="WithLatestItem" columnName="USERID"/>
+    </attribute>
+    <attribute id="ITEMID" order="2" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="ITEMID"/>
+      <keyMapping columnObjectName="WithLatestItem" columnName="ITEMID"/>
+    </attribute>
+    <attribute id="ITEMTYPE" order="3" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="ITEMTYPE"/>
+      <keyMapping columnObjectName="WithLatestItem" columnName="ITEMTYPE"/>
+    </attribute>
+    <attribute id="ASSIGNMENTDATE" order="4" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="ASSIGNMENTDATE"/>
+      <keyMapping columnObjectName="WithLatestItem" columnName="ASSIGNMENTDATE"/>
+    </attribute>
+    <attribute id="COMPLETIONSTATUS" order="5" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="COMPLETIONSTATUS"/>
+      <keyMapping columnObjectName="WithLatestItem" columnName="COMPLETIONSTATUS"/>
+    </attribute>
+    <attribute id="COMPLETIONDATE" order="6" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="COMPLETIONDATE"/>
+      <keyMapping columnObjectName="WithLatestItem" columnName="COMPLETIONDATE"/>
+    </attribute>
+    <attribute id="ITEMTITLE" order="7" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="ITEMTITLE"/>
+      <keyMapping columnObjectName="WithLatestItem" columnName="ITEMTITLE"/>
+    </attribute>
+    <attribute id="COMPETENCY_ID" order="8" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="COMPETENCY_ID"/>
+      <keyMapping columnObjectName="WithLatestItem" columnName="COMPETENCY_ID"/>
+    </attribute>
+    <attribute id="COMPETENCY_NAME" order="9" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="COMPETENCY_NAME"/>
+      <keyMapping columnObjectName="WithLatestItem" columnName="COMPETENCY_NAME"/>
+    </attribute>
+    <attribute id="COMPETENCY_AREA" order="10" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="COMPETENCY_AREA"/>
+      <keyMapping columnObjectName="WithLatestItem" columnName="COMPETENCY_AREA"/>
+    </attribute>
+    <attribute id="COMPETENCY_DESCRIPTION" order="11" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="COMPETENCY_DESCRIPTION"/>
+      <keyMapping columnObjectName="WithLatestItem" columnName="COMPETENCY_DESCRIPTION"/>
+    </attribute>
+    <attribute id="COMPETENCY_COMPETENCYTYPE" order="12" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="COMPETENCY_COMPETENCYTYPE"/>
+      <keyMapping columnObjectName="WithLatestItem" columnName="COMPETENCY_COMPETENCYTYPE"/>
+    </attribute>
+    <attribute id="COMPETENCY_GRANTSCERTIFICATE" order="13" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="COMPETENCY_GRANTSCERTIFICATE"/>
+      <keyMapping columnObjectName="WithLatestItem" columnName="COMPETENCY_GRANTSCERTIFICATE"/>
+    </attribute>
+    <attribute id="RETAININGNUMER" order="14" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="RETAININGNUMER"/>
+      <keyMapping columnObjectName="WithLatestItem" columnName="RETAININGNUMER"/>
+    </attribute>
+    <attribute id="LAST_ASSIGNED_ITEMID" order="15" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="ITEMID"/>
+      <keyMapping columnObjectName="WithLatestItem" columnName="LAST_ASSIGNED_ITEMID"/>
+    </attribute>
+    <attribute id="LAST_ASSIGNED_ITEMTYPE" order="16" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="ITEMTYPE"/>
+      <keyMapping columnObjectName="WithLatestItem" columnName="LAST_ASSIGNED_ITEMTYPE"/>
+    </attribute>
+    <attribute id="LATEST_ITEM_ASSIGNMENTDATE" order="17" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="ASSIGNMENTDATE"/>
+      <keyMapping columnObjectName="WithLatestItem" columnName="LATEST_ITEM_ASSIGNMENTDATE"/>
+    </attribute>
+    <attribute id="LAST_ASSIGNED_ITEMTITLE" order="18" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="ITEMTITLE"/>
+      <keyMapping columnObjectName="WithLatestItem" columnName="LAST_ASSIGNED_ITEMTITLE"/>
+    </attribute>
+  
+    <attribute id="LAST_ITEM_ASSIGNED_BY" order="22" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="LAST_ITEM_ASSIGNED_BY"/>
+  
+      <keyMapping columnObjectName="WithLatestItem" columnName="LAST_ITEM_ASSIGNED_BY"/>
+  
+    </attribute>
+  </attributes>
+  <calculatedAttributes>
+    <calculatedAttribute id="HAS_CURRENT_ASSIGNMENT" order="19" semanticType="empty" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Currently Assigned? (Y/N)"/>
+      <keyCalculation datatype="NVARCHAR" expressionLanguage="COLUMN_ENGINE" length="1">
+        <formula>if(isnull(&quot;LAST_ASSIGNED_ITEMID&quot;),'','X')</formula>
+      </keyCalculation>
+      </calculatedAttribute>
+    <calculatedAttribute id="HAS_EXPIRY" order="20" semanticType="empty" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Has Expiry"/>
+      <keyCalculation datatype="NVARCHAR" expressionLanguage="COLUMN_ENGINE" length="1">
+        <formula>if(isnull(&quot;RETAININGNUMER&quot;) or &quot;RETAININGNUMER&quot;=0,'','X')</formula>
+      </keyCalculation>
+      </calculatedAttribute>
+    <calculatedAttribute id="EXPIRATION_DATE" order="21" semanticType="empty" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Expiration Date"/>
+      <keyCalculation datatype="SECONDDATE" expressionLanguage="COLUMN_ENGINE">
+        <formula>adddays(&quot;COMPLETIONDATE&quot;,&quot;RETAININGNUMER&quot;)</formula>
+      </keyCalculation>
+      </calculatedAttribute>
+  </calculatedAttributes>
+  <baseMeasures/>
+  <calculatedMeasures/>
+  <restrictedMeasures/>
+</logicalModel>
+<layout>
+  <shapes>
+    <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+      <upperLeftCorner x="362.90723402423095" y="112"/>
+    
+      <rectangleSize width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="Assignments" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="91.99999999999996" y="1086.9999940395355"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="InCompletions" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="301.99999999999994" y="1086.9999940395355"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="Completions" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="402.60220545045246" y="941.9999952316284"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="Users" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="616.5534595034314" y="696.9999964237213"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="Items" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="369.2716848682104" y="536.9999976158142"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="LatestAssignmentData" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="279.0528565664796" y="376.9999988079071"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+  
+    <shape expanded="true" modelObjectName="AssignmentData" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="118.66666666666657" y="945.3333285649618"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="LatestCompletions" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="375.9355387837858" y="801.9999964237213"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="LatestData" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="375.9355387837858" y="696.9999964237213"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="ActiveUsers" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="579.2716848682104" y="536.9999976158142"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape modelObjectName="LatestData" modelObjectNameSpace="ActiveUsers" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="20" y="30"/>
+      <rectangleSize width="200"/>
+    </shape>
+    <shape modelObjectName="Users" modelObjectNameSpace="ActiveUsers" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="320" y="30"/>
+      <rectangleSize width="127"/>
+    </shape>
+    <shape expanded="true" modelObjectName="UserByCompetency" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="489.0528565664796" y="376.9999988079071"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape modelObjectName="ActiveUsers" modelObjectNameSpace="UserByCompetency" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="20" y="30"/>
+      <rectangleSize width="200"/>
+    </shape>
+    <shape modelObjectName="Items" modelObjectNameSpace="UserByCompetency" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="320" y="30"/>
+      <rectangleSize width="286"/>
+    </shape>
+    <shape expanded="true" modelObjectName="WithLatestItem" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="362.90723402423095" y="217"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape modelObjectName="UserByCompetency" modelObjectNameSpace="WithLatestItem" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="20" y="30"/>
+      <rectangleSize width="286"/>
+    </shape>
+    <shape modelObjectName="LatestAssignmentData" modelObjectNameSpace="WithLatestItem" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="394" y="30"/>
+      <rectangleSize width="266"/>
+    </shape>
+  </shapes>
+</layout>
+</Calculation:scenario>

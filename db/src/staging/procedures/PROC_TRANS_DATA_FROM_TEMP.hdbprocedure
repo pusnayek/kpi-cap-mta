@@ -1,0 +1,130 @@
+PROCEDURE PROC_TRANS_DATA_FROM_TEMP( 
+    IN IN_TYPE VARCHAR(20)
+)
+   LANGUAGE SQLSCRIPT
+   SQL SECURITY INVOKER
+   --DEFAULT SCHEMA <default_schema_name>
+   -- READS SQL DATA 
+   AS
+BEGIN
+
+    DECLARE NumberOfRecords  INTEGER;
+
+    DECLARE EXIT HANDLER FOR sqlexception
+        INSERT INTO XT_ReplicationTrace
+         VALUES(CURRENT_TIMESTAMP, 'TransferDataFromTemporaryStage', ::SQL_ERROR_CODE, ::SQL_ERROR_MESSAGE);
+
+    /**Start of process**/
+    -- delete from "ET_ADMINACCESS";
+    -- delete from "ET_EMPLOYEE";
+    -- delete from "ET_ITEM";
+    -- delete from "ET_ASSIGNMENT";
+    -- delete from "ET_COMPLETION";
+
+    IF IN_TYPE = 'ADMIN' THEN
+        SELECT COUNT(*) INTO NumberOfRecords FROM "TT_ADMINACCESS";
+
+        insert into "ET_ADMINACCESS"
+        select "USERID", "DOMAIN", '' as "SUBDOMAIN", '' as "ROLEASSIGNED", '' as "PROCESSINGSTATUS"
+        from "TT_ADMINACCESS";
+        COMMIT;
+        CALL "PROC_FULL_PULL_ADMIN_ACCESS"();
+        CALL "PROC_ADMIN_ACCESS_DOMAINS"();
+    
+    ELSEIF IN_TYPE = 'EMPLOYEE' THEN
+        SELECT COUNT(*) INTO NumberOfRecords FROM "TT_EMPLOYEES";
+
+        insert into "ET_EMPLOYEE"
+        select 	
+        "USERID",
+        "DELTA_ACTION",
+        "DELTA_LASTUPDATETIME",
+        "DELTA_RECORD",
+        "EMPLOYEEID",
+        "FIRSTNAME",
+        "LASTNAME",
+        "EMPLOYEESTATUS",
+        "DOMAIN",
+        "JOBCODE",
+        "JOBGROUP",
+        "GROUPBU",
+        "EMPLOYEEGROUP",
+        "EMPCUSTOMSTATUS",
+        "MANAGERUSERID",
+        "MANAGERNAME",
+        "DEPARTMENT",
+        "DIVISION",
+        "JOBLOCATION",
+        '' as "PROCESSINGSTATUS"
+        from "TT_EMPLOYEES";
+        COMMIT;
+
+        CALL "PROC_DELTA_PULL_EMPLOYEES"();
+        CALL "PROC_CALCULATE_MANAGER_SUBORDINATES"();
+
+    ELSEIF IN_TYPE = 'ASSIGNMENT' THEN
+        SELECT COUNT(*) INTO NumberOfRecords FROM "TT_ASSIGNMENTS";
+
+        insert into "ET_ASSIGNMENT"
+        SELECT
+            "USERID",
+            "ITEMID",
+            "ITEMTYPE",
+            "DELTA_ACTION",
+            "DELTA_LASTUPDATETIME",
+            0 as "DELTA_RECORD",
+            "ASSIGNMENTDATE",
+            "ASSIGNEDBY",
+            '' as "PROCESSINGSTATUS"
+        FROM "TT_ASSIGNMENTS"
+        COMMIT;
+        CALL "PROC_DELTA_PULL_ASSIGNMENTS"();
+    
+    ELSEIF IN_TYPE = 'COMPLETION' THEN
+        SELECT COUNT(*) INTO NumberOfRecords FROM "TT_COMPLETIONS";
+
+        insert into "ET_COMPLETION"
+        select 
+        "USERID",
+        "DELTA_ACTION",
+        "DELTA_LASTUPDATETIME",
+        "DELTA_RECORD",
+        "ITEMID",
+        "ITEMTYPE",
+        "COMPLETIONSTATUS",
+        "COMPLETIONDATE",
+        '' as "PROCESSINGSTATUS"
+        from "TT_COMPLETIONS";
+        COMMIT;
+        CALL "PROC_DELTA_PULL_COMPLETIONS"();
+    
+    ELSEIF IN_TYPE = 'ITEM' THEN
+        SELECT COUNT(*) INTO NumberOfRecords FROM "TT_ITEMS";
+
+        INSERT INTO "ET_ITEM"
+        SELECT
+        "ITEMID",
+        "ITEMTYPE",
+        "DELTA_ACTION",
+        "DELTA_LASTUPDATETIME",
+        "DELTA_RECORD",
+        "ITEMTITLE",
+        "COMPETENCY_ID",
+        "COMPETENCY_NAME",
+        "COMPETENCY_AREA",
+        "COMPETENCY_DESCRIPTION",
+        "COMPETENCY_COMPETENCYTYPE",
+        "COMPETENCY_GRANTSCERTIFICATE",
+        "RETAININGNUMER",
+        '' AS "PROCESSINGSTATUS"
+        FROM "TT_ITEMS";
+   
+        CALL "PROC_DELTA_PULL_ITEMS"();
+    
+    END IF;
+
+    INSERT INTO XT_ReplicationTrace
+        VALUES(CURRENT_TIMESTAMP, 'TransferDataFromTemporaryStage', :NumberOfRecords, IN_TYPE);
+
+
+END
