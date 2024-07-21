@@ -24,6 +24,6 @@ File or Folder | Purpose
 
 Learn more at https://cap.cloud.sap/docs/get-started/.
 
-## Simulation commands
+## Simulation commands - local
 cds watch --profile hybrid
 cds bind --exec -- npm start --prefix approuter
